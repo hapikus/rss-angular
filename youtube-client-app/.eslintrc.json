@@ -40,7 +40,8 @@
         "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/no-explicit-any": "error",
         "import/prefer-default-export": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "@import/no-extraneous-dependencies": "off"
       }
     },
     {

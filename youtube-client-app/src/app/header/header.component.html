@@ -1,1 +1,32 @@
-<p>header works!</p>
+<div class="container">
+  <div class="content">
+    <button nz-button nzType="primary" nzSize="large">
+      <span nz-icon nzType="play-circle" nzTheme="twotone"></span>
+    </button>
+
+    <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
+      <input type="text" nz-input />
+    </nz-input-group>
+    <ng-template #suffixButton>
+      <button nz-button nzType="primary" nzSize="large" nzSearch>Search</button>
+    </ng-template>
+
+    <button nz-button nzType="primary" nzSize="large" (click)="toggleSettingShow()">
+      <span nz-icon nzType="setting" nzTheme="twotone"></span>
+    </button>
+  </div>
+
+  @if (isShow) {
+    <div class="sorting">
+      <p nz-typography>Sorting by:</p>
+      <div class="sorting__types">
+        <button nz-button nzType="text" (click)="setSorting('date')" class="sorting__type">
+          date
+        </button>
+        <button nz-button nzType="text" (click)="setSorting('views')" class="sorting__type">
+          count of views
+        </button>
+      </div>
+    </div>
+  }
+</div>
