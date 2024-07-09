@@ -1,4 +1,4 @@
-import { SearchItem } from './search-item/search-item.model';
+import { SearchItem } from '../search-item/search-item.model';
 
 interface PageInfo {
   totalResults: number;
