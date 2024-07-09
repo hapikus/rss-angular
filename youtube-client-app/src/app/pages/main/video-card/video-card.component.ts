@@ -4,11 +4,18 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { Statistics } from './video-card.model';
+import { VideoCardBorderDirective } from '../../../directives/video-card-border.directive';
 
 @Component({
   selector: 'app-video-card',
   standalone: true,
-  imports: [NzCardModule, NzTypographyModule, NzIconModule, NzStatisticModule],
+  imports: [
+    NzCardModule,
+    NzTypographyModule,
+    NzIconModule,
+    NzStatisticModule,
+    VideoCardBorderDirective,
+  ],
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss',
 })
@@ -17,6 +24,7 @@ export class VideoCardComponent {
   @Input() public statistics?: Statistics;
   @Input() public previewUrl?: string;
   @Input() public description?: string;
+  @Input() public publishDate?: Date;
 
   public nFormatter(num: number, digits: number) {
     const lookup: { value: number; symbol: string }[] = [
@@ -32,9 +40,9 @@ export class VideoCardComponent {
     const item = lookup.findLast(({ value }) => num >= value);
     return item
       ? (num / item.value)
-        .toFixed(digits)
-        .replace(regexp, '')
-        .concat(item.symbol)
+          .toFixed(digits)
+          .replace(regexp, '')
+          .concat(item.symbol)
       : '0';
   }
 }

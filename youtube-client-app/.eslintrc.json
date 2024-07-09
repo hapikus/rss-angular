@@ -43,7 +43,8 @@
         "linebreak-style": "off",
         "@import/no-extraneous-dependencies": "off",
         "no-param-reassign": ["error", { "props": false }],
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "@typescript-eslint/indent": "off",
       }
     },
     {
