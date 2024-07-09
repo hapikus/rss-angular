@@ -1,1 +1,14 @@
-<p>main works!</p>
+@if (!!store.searchInput) {
+  <div class="container">
+    <div class="items">
+      @for (item of videoCardSort; track $index) {
+        <app-video-card 
+          [title]="item.snippet.title"
+          [statistics]="item.statistics"
+          [previewUrl]="item.snippet.thumbnails['medium'].url"
+          [description]="item.snippet.description"
+        />
+      }
+    </div>
+  </div>
+}

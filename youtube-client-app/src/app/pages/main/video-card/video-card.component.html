@@ -1,0 +1,50 @@
+<div class="card"> 
+  <nz-card 
+    nzHoverable 
+    [nzCover]="coverTemplate" 
+    nzSize="small" 
+  >
+    <nz-card-meta [nzTitle]="title" [nzDescription]="descriptionTemplate"></nz-card-meta>
+  </nz-card>
+
+  <ng-template #coverTemplate>
+    <img class="card__img" alt="preview" [src]="previewUrl" />
+  </ng-template>
+  <ng-template #actionCommentCount>
+    <div class="card__stat">
+      <span nz-icon nzType="copy" nzTheme="fill"></span>
+      {{ nFormatter(statistics?.commentCount ?? 0, 0) }}
+    </div>
+  </ng-template>
+
+  <ng-template #descriptionTemplate>
+    <div class="card__details">
+      <div class="card__description">
+        <p nz-typography nzEllipsis [nzEllipsisRows]="3">
+          {{ description }}
+        </p>
+      </div>
+      <div class="card__statistics">
+        <div class="card__stat">
+          <span nz-icon nzType="eye" nzTheme="fill" style="font-size: 18px;"></span>
+          {{ nFormatter(statistics?.viewCount ?? 0, 0) }}
+        </div>
+
+        <div class="card__stat">
+          <span nz-icon nzType="like" nzTheme="fill" style="font-size: 18px;"></span>
+          {{ nFormatter(statistics?.likeCount ?? 0, 0) }}
+        </div>
+
+        <div class="card__stat">
+          <span nz-icon nzType="dislike" nzTheme="fill" style="font-size: 18px;"></span>
+          {{ nFormatter(statistics?.dislikeCount ?? 0, 0) }}
+        </div>
+
+        <div class="card__stat">
+          <span nz-icon nzType="copy" nzTheme="fill" style="font-size: 18px;"></span>
+          {{ nFormatter(statistics?.commentCount ?? 0, 0) }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

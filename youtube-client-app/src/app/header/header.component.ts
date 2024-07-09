@@ -5,31 +5,33 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+import { store } from '../stores/store';
+import { SortType, Store } from '../stores/types';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    NzButtonModule,
-    NzIconModule,
-    NzInputModule,
     FormsModule,
     NzTypographyModule,
     NzAnchorModule,
+    NzButtonModule,
+    NzInputModule,
+    NzIconModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  public searchValue: string = '';
-  public sorting: string = 'none';
+  public store: Store = store;
+  public sortType = SortType;
   public isShow: boolean = false;
 
   public toggleSettingShow(): void {
     this.isShow = !this.isShow;
   }
 
-  public setSorting(type: string): void {
-    this.sorting = type;
+  public setSorting(sortType: SortType): void {
+    this.store.sortType = sortType;
   }
 }

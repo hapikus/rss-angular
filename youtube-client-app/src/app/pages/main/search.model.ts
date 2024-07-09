@@ -1,4 +1,4 @@
-import { SearchItem } from '../search-item/search-item.model';
+import { VideoCard } from './video-card/video-card.model';
 
 interface PageInfo {
   totalResults: number;
@@ -9,5 +9,5 @@ export interface SearchResponse {
   kind: string;
   etag: string;
   pageInfo: PageInfo;
-  items: SearchItem[];
+  items: VideoCard[];
 }
