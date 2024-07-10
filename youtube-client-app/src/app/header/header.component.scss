@@ -23,6 +23,11 @@
 
   &__types {
     display: flex;
+    column-gap: 20px;
+
+    > input {
+      width: 200px;
+    }
   }
 
   &__type {

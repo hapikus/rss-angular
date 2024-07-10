@@ -21,15 +21,41 @@
     <div class="sorting">
       <p nz-typography>Sorting by:</p>
       <div class="sorting__types">
-        <button nz-button nzType="text" (click)="setSorting(sortType.Date)" class="sorting__type">
-          {{ sortType.Date }}
-        </button>
-        <button nz-button nzType="text" (click)="setSorting(sortType.CountOfViews)" class="sorting__type">
-          {{ sortType.CountOfViews }}
-        </button>
-        <button nz-button nzType="text" (click)="setSorting(sortType.ByWordOrSentance)" class="sorting__type">
-          {{ sortType.ByWordOrSentance }}
-        </button>
+        <nz-radio-group [(ngModel)]="store.sortType">
+          <label nz-radio-button [nzValue]="sortTypeEnum.Date" (click)="setDirection(sortTypeEnum.Date)">
+            {{ sortTypeEnum.Date }}
+            <ng-container *ngIf="store.sortType === sortTypeEnum.Date">
+              <ng-container *ngIf="store.sortDirection === sortDirectionEnum.ASC; else directionDesc">
+                <ng-template [ngTemplateOutlet]="directionAsc"></ng-template>
+              </ng-container>
+            </ng-container>
+          </label>
+          <label nz-radio-button [nzValue]="sortTypeEnum.CountOfViews" (click)="setDirection(sortTypeEnum.CountOfViews)">
+            {{ sortTypeEnum.CountOfViews }}
+            <ng-container *ngIf="store.sortType === sortTypeEnum.CountOfViews">
+              <ng-container *ngIf="store.sortDirection === sortDirectionEnum.ASC; else directionDesc">
+                <ng-template [ngTemplateOutlet]="directionAsc"></ng-template>
+              </ng-container>
+            </ng-container>
+          </label>
+          <label nz-radio-button [nzValue]="sortTypeEnum.ByWordOrSentance" (click)="setDirection(sortTypeEnum.ByWordOrSentance)">
+            {{ sortTypeEnum.ByWordOrSentance }}
+            <ng-container *ngIf="store.sortType === sortTypeEnum.ByWordOrSentance">
+              <ng-container *ngIf="store.sortDirection === sortDirectionEnum.ASC; else directionDesc">
+                <ng-template [ngTemplateOutlet]="directionAsc"></ng-template>
+              </ng-container>
+            </ng-container>
+          </label>
+
+          <ng-template #directionAsc>
+            <span nz-icon nzType="arrow-down" nzTheme="outline"></span>
+          </ng-template>
+
+          <ng-template #directionDesc>
+            <span nz-icon nzType="arrow-up" nzTheme="outline"></span>
+          </ng-template>
+        </nz-radio-group>
+
         <input nz-input placeholder="Type word or sentance" nzSize="small" [(ngModel)]="store.sortInput"/>
       </div>
     </div>

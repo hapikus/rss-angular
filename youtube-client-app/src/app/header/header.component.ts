@@ -5,8 +5,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { store } from '../stores/store';
-import { SortType, Store } from '../stores/types';
+import { SortDirection, SortType, Store } from '../stores/types';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -18,20 +20,33 @@ import { SortType, Store } from '../stores/types';
     NzButtonModule,
     NzInputModule,
     NzIconModule,
+    NzRadioModule,
+    CommonModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   public store: Store = store;
-  public sortType = SortType;
+  public sortTypeEnum = SortType;
+  public sortDirectionEnum = SortDirection;
   public isShow: boolean = false;
+  public sortTypeCurrent = store.sortType;
 
   public toggleSettingShow(): void {
     this.isShow = !this.isShow;
   }
 
-  public setSorting(sortType: SortType): void {
-    this.store.sortType = sortType;
+  public setDirection(sortType: SortType): void {
+    if (this.sortTypeCurrent !== sortType) {
+      this.sortTypeCurrent = sortType;
+      store.sortDirection = SortDirection.ASC;
+      return;
+    }
+
+    store.sortDirection =
+      store.sortDirection === SortDirection.ASC
+        ? SortDirection.DESC
+        : SortDirection.ASC;
   }
 }

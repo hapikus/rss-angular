@@ -10,12 +10,6 @@
   <ng-template #coverTemplate>
     <img class="card__img" alt="preview" [src]="previewUrl" />
   </ng-template>
-  <ng-template #actionCommentCount>
-    <div class="card__stat">
-      <span nz-icon nzType="copy" nzTheme="fill"></span>
-      {{ nFormatter(statistics?.commentCount ?? 0, 0) }}
-    </div>
-  </ng-template>
 
   <ng-template #descriptionTemplate>
     <div class="card__details">
@@ -27,22 +21,22 @@
       <div class="card__statistics">
         <div class="card__stat">
           <span nz-icon nzType="eye" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ nFormatter(statistics?.viewCount ?? 0, 0) }}
+          {{ statistics?.viewCount ?? 0 | nFormatter:0 }}
         </div>
 
         <div class="card__stat">
           <span nz-icon nzType="like" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ nFormatter(statistics?.likeCount ?? 0, 0) }}
+          {{ statistics?.likeCount ?? 0 | nFormatter:0 }}
         </div>
 
         <div class="card__stat">
           <span nz-icon nzType="dislike" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ nFormatter(statistics?.dislikeCount ?? 0, 0) }}
+          {{ statistics?.dislikeCount ?? 0 | nFormatter:0 }}
         </div>
 
         <div class="card__stat">
           <span nz-icon nzType="copy" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ nFormatter(statistics?.commentCount ?? 0, 0) }}
+          {{ statistics?.commentCount ?? 0 | nFormatter:0 }}
         </div>
       </div>
     </div>

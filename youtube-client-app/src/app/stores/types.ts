@@ -8,8 +8,7 @@ export enum SortDirection {
 export enum SortType {
   Date = 'date',
   CountOfViews = 'count of views',
-  ByWordOrSentance = 'by word or sentance',
-  None = 'none',
+  ByWordOrSentance = 'by word or sentence',
 }
 
 export interface Store {

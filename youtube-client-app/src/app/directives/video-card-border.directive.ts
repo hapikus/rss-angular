@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { BorderColors } from './types';
 
 const START_YEAR = 1970;
@@ -10,12 +10,15 @@ const BORDER_HEIGHT = 6;
   standalone: true,
 })
 export class VideoCardBorderDirective implements OnInit {
-  @Input() public appVideoCardBorder?: Date;
-  constructor(public divRef: ElementRef<HTMLDivElement>) {}
+  @Input('appVideoCardBorder') public publicDate?: Date;
+  constructor(
+    public divRef: ElementRef<HTMLDivElement>,
+    private renderer: Renderer2,
+  ) {}
 
   private calculateDif(date: Date) {
     const diff: Date = new Date(
-      new Date().getTime() - new Date(date).getTime()
+      new Date().getTime() - new Date(date).getTime(),
     );
     return {
       month:
@@ -38,11 +41,15 @@ export class VideoCardBorderDirective implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.appVideoCardBorder) {
+    if (!this.publicDate) {
       return;
     }
-    const diff = this.calculateDif(this.appVideoCardBorder);
+    const diff = this.calculateDif(this.publicDate);
     const color = this.getColor(diff);
-    this.divRef.nativeElement.style.borderBottom = `${BORDER_HEIGHT}px solid ${color}`;
+    this.renderer.setStyle(
+      this.divRef.nativeElement,
+      'border-bottom',
+      `${BORDER_HEIGHT}px solid ${color}`,
+    );
   }
 }
