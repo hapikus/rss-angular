@@ -1,4 +1,4 @@
-import { VideoCard } from './video-card/video-card.model';
+import { VideoCard } from './video-card.model';
 
 interface PageInfo {
   totalResults: number;

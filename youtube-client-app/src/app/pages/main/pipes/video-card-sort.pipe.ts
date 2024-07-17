@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { VideoCard } from '../pages/main/video-card/video-card.model';
-import { SortDirection, SortType } from '../stores/types';
+import { VideoCard } from '../../../shared/models/video-card.model';
+import { SortDirection, SortType } from '../../../stores/types';
 
 @Pipe({
   name: 'videoCardSort',
@@ -12,18 +12,16 @@ export class VideoCardSortPipe implements PipeTransform {
     searchInput: string,
     sortType: SortType,
     sortDirection: SortDirection,
-    sortInput: string
+    sortInput: string,
   ): VideoCard[] {
     if (!cards) return [];
     if (!searchInput) return cards;
-    const sortByInput = cards.filter((item) =>
-      item.snippet.title.includes(searchInput)
-    );
+    const sortByInput = cards.filter((item) => item.snippet.title.includes(searchInput));
     const sortByTypeAndDirection = this.sortByTypeAndDirection(
       sortByInput,
       sortType,
       sortDirection,
-      sortInput
+      sortInput,
     );
     return sortByTypeAndDirection;
   }
@@ -32,7 +30,7 @@ export class VideoCardSortPipe implements PipeTransform {
     cards: VideoCard[],
     sortType: SortType,
     sortDirection: SortDirection,
-    sortInput: string
+    sortInput: string,
   ) {
     return cards.toSorted((cardOne, cardTwo) => {
       if (sortDirection === SortDirection.DESC) {
@@ -59,11 +57,11 @@ export class VideoCardSortPipe implements PipeTransform {
 
           const countOne = countOccurrences(
             cardOne.snippet.description,
-            sortInput
+            sortInput,
           );
           const countTwo = countOccurrences(
             cardTwo.snippet.description,
-            sortInput
+            sortInput,
           );
 
           return countTwo - countOne;

@@ -21,22 +21,22 @@
       <div class="card__statistics">
         <div class="card__stat">
           <span nz-icon nzType="eye" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.viewCount ?? 0 | nFormatter:0 }}
+          {{ statistics?.viewCount ?? 0 | nFormatter:1 }}
         </div>
 
         <div class="card__stat">
           <span nz-icon nzType="like" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.likeCount ?? 0 | nFormatter:0 }}
+          {{ statistics?.likeCount ?? 0 | nFormatter:1 }}
         </div>
 
         <div class="card__stat">
           <span nz-icon nzType="dislike" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.dislikeCount ?? 0 | nFormatter:0 }}
+          {{ statistics?.dislikeCount ?? 0 | nFormatter:1 }}
         </div>
 
         <div class="card__stat">
           <span nz-icon nzType="copy" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.commentCount ?? 0 | nFormatter:0 }}
+          {{ statistics?.commentCount ?? 0 | nFormatter:1 }}
         </div>
       </div>
     </div>

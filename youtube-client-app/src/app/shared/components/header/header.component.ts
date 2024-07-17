@@ -7,8 +7,8 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
-import { store } from '../stores/store';
-import { SortDirection, SortType, Store } from '../stores/types';
+import { store } from '../../../stores/store';
+import { SortDirection, SortType, Store } from '../../../stores/types';
 
 @Component({
   selector: 'app-header',
