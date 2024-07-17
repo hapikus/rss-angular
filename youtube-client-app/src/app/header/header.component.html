@@ -5,11 +5,11 @@
     </button>
 
     <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
-      <input type="text" nz-input [(ngModel)]="store.searchInput"/>
+      <input type="text" nz-input [(ngModel)]="localSearch"/>
     </nz-input-group>
 
     <ng-template #suffixButton>
-      <button nz-button nzType="primary" nzSize="large" nzSearch>Search</button>
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="setStoreSearch()">Search</button>
     </ng-template>
 
     <button nz-button nzType="primary" nzSize="large" (click)="toggleSettingShow()">

@@ -6,9 +6,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { CommonModule } from '@angular/common';
 import { store } from '../stores/store';
 import { SortDirection, SortType, Store } from '../stores/types';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +32,7 @@ export class HeaderComponent {
   public sortDirectionEnum = SortDirection;
   public isShow: boolean = false;
   public sortTypeCurrent = store.sortType;
+  public localSearch: string = '';
 
   public toggleSettingShow(): void {
     this.isShow = !this.isShow;
@@ -48,5 +49,9 @@ export class HeaderComponent {
       store.sortDirection === SortDirection.ASC
         ? SortDirection.DESC
         : SortDirection.ASC;
+  }
+
+  public setStoreSearch() {
+    store.searchInput = this.localSearch;
   }
 }

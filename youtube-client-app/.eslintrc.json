@@ -44,7 +44,10 @@
         "@import/no-extraneous-dependencies": "off",
         "no-param-reassign": ["error", { "props": false }],
         "class-methods-use-this": "off",
-        "@typescript-eslint/indent": "off"
+        "@typescript-eslint/indent": "off",
+        "operator-linebreak": "off",
+        "@angular-eslint/template/click-events-have-key-events": "off",
+        "@angular-eslint/template/interactive-supports-focus": "off"
       }
     },
     {
