@@ -1,7 +1,7 @@
 <div class="items">
   <app-video-card
     *ngFor="let item of store.mockData.items 
-      | videoCardSort: store.searchInput
+      | filterItems: store.searchInput
       | sortItems: store.sortType:store.sortDirection:store.sortInput; 
       trackBy: trackById
     "

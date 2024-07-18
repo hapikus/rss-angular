@@ -4,13 +4,13 @@ import { store } from '../../stores/store';
 import { Store } from '../../stores/types';
 import { VideoCard } from '../../shared/models/video-card.model';
 import { VideoCardComponent } from './video-card/video-card.component';
-import { VideoCardSortPipe } from './pipes/video-card-sort.pipe';
+import { FilterItemsPipe } from './pipes/filter-items.pipe';
 import { SortItemsPipe } from './pipes/sort-items.pipe';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [CommonModule, VideoCardComponent, VideoCardSortPipe, SortItemsPipe],
+  imports: [CommonModule, VideoCardComponent, FilterItemsPipe, SortItemsPipe],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
