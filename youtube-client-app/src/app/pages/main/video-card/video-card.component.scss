@@ -1,0 +1,38 @@
+:host {
+  width: fit-content;
+}
+
+.card {
+  width: 263px;
+  height: 327px;
+  border-radius: 8px;
+
+  &__img {
+    object-fit: contain;
+    padding: 10px;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 115px;
+  }
+  
+  &__statistics {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    row-gap: 10px;
+  }
+
+  &__stat {
+    display: flex;
+    column-gap: 3px;
+    font-size: 16px;
+  }
+}
+
+nz-card {
+  height: 100%;
+}

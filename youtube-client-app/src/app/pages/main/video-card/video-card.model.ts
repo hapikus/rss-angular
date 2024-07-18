@@ -11,7 +11,7 @@ interface Thumbnails {
   };
 }
 
-interface Statistics {
+export interface Statistics {
   viewCount: number;
   likeCount: number;
   dislikeCount: number;
@@ -33,7 +33,7 @@ interface Snippet {
   defaultAudioLanguage: string;
 }
 
-export interface SearchItem {
+export interface VideoCard {
   kind: string;
   etag: string;
   id: string;

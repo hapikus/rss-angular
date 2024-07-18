@@ -1,1 +1,63 @@
-<p>header works!</p>
+<div class="container">
+  <div class="content">
+    <button nz-button nzType="primary" nzSize="large">
+      <span nz-icon nzType="play-circle" nzTheme="twotone"></span>
+    </button>
+
+    <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
+      <input type="text" nz-input [(ngModel)]="localSearch"/>
+    </nz-input-group>
+
+    <ng-template #suffixButton>
+      <button nz-button nzType="primary" nzSize="large" nzSearch (click)="setStoreSearch()">Search</button>
+    </ng-template>
+
+    <button nz-button nzType="primary" nzSize="large" (click)="toggleSettingShow()">
+      <span nz-icon nzType="setting" nzTheme="twotone"></span>
+    </button>
+  </div>
+
+  @if (isShow) {
+    <div class="sorting">
+      <p nz-typography>Sorting by:</p>
+      <div class="sorting__types">
+        <nz-radio-group [(ngModel)]="store.sortType">
+          <label nz-radio-button [nzValue]="sortTypeEnum.Date" (click)="setDirection(sortTypeEnum.Date)">
+            {{ sortTypeEnum.Date }}
+            <ng-container *ngIf="store.sortType === sortTypeEnum.Date">
+              <ng-container *ngIf="store.sortDirection === sortDirectionEnum.ASC; else directionDesc">
+                <ng-template [ngTemplateOutlet]="directionAsc"></ng-template>
+              </ng-container>
+            </ng-container>
+          </label>
+          <label nz-radio-button [nzValue]="sortTypeEnum.CountOfViews" (click)="setDirection(sortTypeEnum.CountOfViews)">
+            {{ sortTypeEnum.CountOfViews }}
+            <ng-container *ngIf="store.sortType === sortTypeEnum.CountOfViews">
+              <ng-container *ngIf="store.sortDirection === sortDirectionEnum.ASC; else directionDesc">
+                <ng-template [ngTemplateOutlet]="directionAsc"></ng-template>
+              </ng-container>
+            </ng-container>
+          </label>
+          <label nz-radio-button [nzValue]="sortTypeEnum.ByWordOrSentance" (click)="setDirection(sortTypeEnum.ByWordOrSentance)">
+            {{ sortTypeEnum.ByWordOrSentance }}
+            <ng-container *ngIf="store.sortType === sortTypeEnum.ByWordOrSentance">
+              <ng-container *ngIf="store.sortDirection === sortDirectionEnum.ASC; else directionDesc">
+                <ng-template [ngTemplateOutlet]="directionAsc"></ng-template>
+              </ng-container>
+            </ng-container>
+          </label>
+
+          <ng-template #directionAsc>
+            <span nz-icon nzType="arrow-down" nzTheme="outline"></span>
+          </ng-template>
+
+          <ng-template #directionDesc>
+            <span nz-icon nzType="arrow-up" nzTheme="outline"></span>
+          </ng-template>
+        </nz-radio-group>
+
+        <input nz-input placeholder="Type word or sentance" nzSize="small" [(ngModel)]="store.sortInput"/>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,16 @@
+@if (!!store.searchInput) {
+<div class="container">
+  <div class="items">
+    <app-video-card
+      *ngFor="let item of store.mockData.items 
+        | videoCardSort: store.searchInput:store.sortType:store.sortDirection:store.sortInput; 
+        trackBy: trackById
+      "
+      [title]="item.snippet.title"
+      [statistics]="item.statistics"
+      [previewUrl]="item.snippet.thumbnails['medium'].url"
+      [description]="item.snippet.description"
+      [publishDate]="item.snippet.publishedAt"></app-video-card>
+  </div>
+</div>
+}
