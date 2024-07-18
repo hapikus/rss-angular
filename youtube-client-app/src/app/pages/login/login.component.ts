@@ -20,7 +20,7 @@ export class LoginComponent {
   private loginService = inject(LoginService);
   public store: Store = store;
 
-  validateForm: FormGroup<{
+  public loginForm: FormGroup<{
     userName: FormControl<string>;
     password: FormControl<string>;
   }> = this.fb.group({
@@ -29,8 +29,8 @@ export class LoginComponent {
   });
 
   submitForm(): void {
-    if (!this.validateForm.valid) {
-      Object.values(this.validateForm.controls).forEach((control) => {
+    if (!this.loginForm.valid) {
+      Object.values(this.loginForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -39,8 +39,8 @@ export class LoginComponent {
       return;
     }
     this.loginService.login(
-      this.validateForm.value.userName,
-      this.validateForm.value.password,
+      this.loginForm.value.userName,
+      this.loginForm.value.password,
     );
     this.store.login = true;
     this.router.navigate(['']);

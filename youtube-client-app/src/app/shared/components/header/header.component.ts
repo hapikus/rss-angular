@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { store } from '../../../stores/store';
 import { SortDirection, SortType, Store } from '../../../stores/types';
 import { LoginService } from '../../services/login.service';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,8 @@ import { LoginService } from '../../services/login.service';
     NzIconModule,
     NzRadioModule,
     CommonModule,
+    ReactiveFormsModule, 
+    NzFormModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -33,19 +36,26 @@ export class HeaderComponent {
   private loginService = inject(LoginService);
 
   public store: Store = store;
-  public sortTypeEnum = SortType;
+  public sortTypeButton = [SortType.Date, SortType.CountOfViews, SortType.ByWordOrSentance]
   public sortDirectionEnum = SortDirection;
-  public isShow: boolean = false;
+  public isSettingShow: boolean = false;
   public sortTypeCurrent = store.sortType;
   public localSearch: string = '';
 
-  public toggleSettingShow(): void {
-    this.isShow = !this.isShow;
+  public searchForm: FormGroup<{
+    search: FormControl<string>;
+  }> = this.fb.group({
+    search: ['', [Validators.required]],
+  });
+
+  public toggleIsSettingShow(): void {
+    this.isSettingShow = !this.isSettingShow;
   }
 
   public setDirection(sortType: SortType): void {
     if (this.sortTypeCurrent !== sortType) {
       this.sortTypeCurrent = sortType;
+      store.sortType = sortType;
       store.sortDirection = SortDirection.ASC;
       return;
     }
@@ -57,11 +67,16 @@ export class HeaderComponent {
   }
 
   public setStoreSearch() {
-    store.searchInput = this.localSearch;
+    if (!this.searchForm.value.search) {
+      return;
+    }
+    store.searchInput = this.searchForm.value.search;
   }
 
   public loginHandle() {
     this.loginService.logout();
     this.router.navigate(['/login']);
   }
+
+  constructor(private fb: NonNullableFormBuilder) {}
 }

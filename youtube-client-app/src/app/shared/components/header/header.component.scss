@@ -36,17 +36,18 @@
   flex-wrap: nowrap;
   height: 50px;
 
-  &__types {
-    display: flex;
-    column-gap: 20px;
+}
 
-    > input {
-      width: 200px;
-    }
-  }
+.types {
+  display: flex;
+  column-gap: 20px;
 
-  &__type {
-    cursor: pointer;
-    color: #2F80ED;    
+  > input {
+    width: 200px;
   }
+}
+
+.type {
+  cursor: pointer;
+  color: #2F80ED;    
 }
