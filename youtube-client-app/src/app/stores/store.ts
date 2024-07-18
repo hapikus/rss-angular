@@ -8,4 +8,5 @@ export const store: Store = {
   sortInput: '',
   sortDirection: SortDirection.ASC,
   mockData: searchMock as unknown as SearchResponse,
+  login: !!localStorage.getItem('fakeToken'),
 };

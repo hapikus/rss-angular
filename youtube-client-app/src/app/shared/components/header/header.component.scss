@@ -8,10 +8,25 @@
 
 .content {
   display: flex;
-  align-items: center;
-  column-gap: 15px;
-  flex-wrap: nowrap;
-  height: 80px;
+  position: relative;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+
+  &__search {
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    flex-wrap: nowrap;
+    height: 80px;
+  }
+
+  &__login {
+    position: absolute;
+    display: flex;
+    top: 25%;
+    right: 0%;
+  }
 }
 
 .sorting {

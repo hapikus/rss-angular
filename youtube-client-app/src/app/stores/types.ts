@@ -17,4 +17,5 @@ export interface Store {
   sortInput: string;
   sortDirection: SortDirection;
   mockData: SearchResponse;
+  login: boolean;
 }

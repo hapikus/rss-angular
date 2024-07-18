@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -7,8 +7,10 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { store } from '../../../stores/store';
 import { SortDirection, SortType, Store } from '../../../stores/types';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +29,9 @@ import { SortDirection, SortType, Store } from '../../../stores/types';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  private router = inject(Router);
+  private loginService = inject(LoginService);
+
   public store: Store = store;
   public sortTypeEnum = SortType;
   public sortDirectionEnum = SortDirection;
@@ -53,5 +58,10 @@ export class HeaderComponent {
 
   public setStoreSearch() {
     store.searchInput = this.localSearch;
+  }
+
+  public loginHandle() {
+    this.loginService.logout();
+    this.router.navigate(['/login']);
   }
 }
