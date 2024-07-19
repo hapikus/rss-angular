@@ -8,10 +8,10 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { store } from '../../../stores/store';
 import { SortDirection, SortType, Store } from '../../../stores/types';
-import { LoginService } from '../../services/login.service';
-import { NzFormModule } from 'ng-zorro-antd/form';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +25,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     NzIconModule,
     NzRadioModule,
     CommonModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     NzFormModule,
   ],
   templateUrl: './header.component.html',
@@ -36,7 +36,7 @@ export class HeaderComponent {
   private loginService = inject(LoginService);
 
   public store: Store = store;
-  public sortTypeButton = [SortType.Date, SortType.CountOfViews, SortType.ByWordOrSentance]
+  public sortTypeButton = [SortType.Date, SortType.CountOfViews, SortType.ByWordOrSentance];
   public sortDirectionEnum = SortDirection;
   public isSettingShow: boolean = false;
   public sortTypeCurrent = store.sortType;
@@ -67,10 +67,7 @@ export class HeaderComponent {
   }
 
   public setStoreSearch() {
-    if (!this.searchForm.value.search) {
-      return;
-    }
-    store.searchInput = this.searchForm.value.search;
+    store.searchInput = this.searchForm.value.search ?? '';
   }
 
   public loginHandle() {

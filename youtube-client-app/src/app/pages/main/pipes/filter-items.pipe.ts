@@ -10,6 +10,7 @@ export class FilterItemsPipe implements PipeTransform {
     cards: VideoCard[],
     searchInput: string,
   ): VideoCard[] {
+    console.log('searchInput', searchInput);
     if (!cards || !searchInput) {
       return [];
     }
