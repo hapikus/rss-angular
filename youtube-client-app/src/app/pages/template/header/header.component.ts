@@ -68,6 +68,10 @@ export class HeaderComponent {
 
   public setStoreSearch() {
     store.searchInput = this.searchForm.value.search ?? '';
+    const searchEmpty = !this.searchForm.value.search;
+    if (!searchEmpty) {
+      this.router.navigate(['']);
+    }
   }
 
   public loginHandle() {

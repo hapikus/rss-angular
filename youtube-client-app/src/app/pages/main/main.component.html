@@ -1,13 +1,12 @@
 <div class="items">
-  <app-video-card
-    *ngFor="let item of store.mockData.items 
-      | filterItems: store.searchInput
-      | sortItems: store.sortType:store.sortDirection:store.sortInput; 
-      trackBy: trackById
-    "
-    [title]="item.snippet.title"
-    [statistics]="item.statistics"
-    [previewUrl]="item.snippet.thumbnails['medium'].url"
-    [description]="item.snippet.description"
-    [publishDate]="item.snippet.publishedAt" />
+  @for (item of items; track item.id) {
+    <app-video-card
+      [title]="item.snippet.title"
+      [statistics]="item.statistics"
+      [previewUrl]="item.snippet.thumbnails['medium'].url"
+      [description]="item.snippet.description"
+      [publishDate]="item.snippet.publishedAt" 
+      [id]="item.id"
+    />
+  }
 </div>

@@ -1,13 +1,24 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { SortDirection, SortType } from '../../../stores/types';
-import { VideoCard } from '../../../shared/models/video-card.model';
+import { Injectable } from '@angular/core';
+import { SortDirection, SortType, Store } from '../../stores/types';
+import { store } from '../../stores/store';
+import { VideoCard } from '../models/video-card.model';
 
-@Pipe({
-  name: 'sortItems',
-  standalone: true,
+@Injectable({
+  providedIn: 'root',
 })
-export class SortItemsPipe implements PipeTransform {
-  transform(
+export class ItemsService {
+  private store: Store = store;
+
+  public getFiltredItems(input: string) {
+    const { items } = store.mockData;
+    if (!items.length || !input) {
+      return [];
+    }
+    const sortByInput = items.filter((item) => item.snippet.title.includes(input));
+    return sortByInput;
+  }
+
+  public getSortedItems(
     cards: VideoCard[],
     sortType: SortType,
     sortDirection: SortDirection,
@@ -55,5 +66,10 @@ export class SortItemsPipe implements PipeTransform {
       }
       return sortMap[sortType](cardOne, cardTwo);
     });
+  }
+
+  public getItemById(id: string) {
+    const findItem = store.mockData.items.find((item) => item.id === id);
+    return findItem;
   }
 }

@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { RouterLink } from '@angular/router';
 import { Statistics } from '../../../shared/models/video-card.model';
 import { VideoCardBorderDirective } from '../directives/video-card-border.directive';
-import { NFormatterPipe } from '../pipes/n-formatter.pipe';
+import { NFormatterPipe } from '../../../shared/components/statistics/pipes/n-formatter.pipe';
+import { StatisticsComponent } from '../../../shared/components/statistics/statistics.component';
 
 @Component({
   selector: 'app-video-card',
@@ -13,10 +14,11 @@ import { NFormatterPipe } from '../pipes/n-formatter.pipe';
   imports: [
     NzCardModule,
     NzTypographyModule,
-    NzIconModule,
     NzStatisticModule,
     VideoCardBorderDirective,
     NFormatterPipe,
+    RouterLink,
+    StatisticsComponent,
   ],
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss',
@@ -27,4 +29,5 @@ export class VideoCardComponent {
   @Input() public previewUrl?: string;
   @Input() public description?: string;
   @Input() public publishDate?: Date;
+  @Input() public id?: string;
 }

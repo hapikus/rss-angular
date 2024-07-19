@@ -28,7 +28,7 @@ export class LoginComponent {
     password: ['', [Validators.required]],
   });
 
-  submitForm(): void {
+  public submitForm(): void {
     if (!this.loginForm.valid) {
       Object.values(this.loginForm.controls).forEach((control) => {
         if (control.invalid) {

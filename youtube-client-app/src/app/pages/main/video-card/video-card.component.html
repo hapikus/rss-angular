@@ -3,6 +3,7 @@
     nzHoverable 
     [nzCover]="coverTemplate" 
     nzSize="small"
+    [routerLink]="['/details', id]"
   >
     <nz-card-meta [nzTitle]="title" [nzDescription]="descriptionTemplate" />
   </nz-card>
@@ -19,25 +20,7 @@
         </p>
       </div>
       <div class="card__statistics">
-        <div class="card__stat">
-          <span nz-icon nzType="eye" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.viewCount ?? 0 | nFormatter:1 }}
-        </div>
-
-        <div class="card__stat">
-          <span nz-icon nzType="like" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.likeCount ?? 0 | nFormatter:1 }}
-        </div>
-
-        <div class="card__stat">
-          <span nz-icon nzType="dislike" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.dislikeCount ?? 0 | nFormatter:1 }}
-        </div>
-
-        <div class="card__stat">
-          <span nz-icon nzType="copy" nzTheme="fill" style="font-size: 18px;"></span>
-          {{ statistics?.commentCount ?? 0 | nFormatter:1 }}
-        </div>
+        <app-statistics [statistics]="statistics" />
       </div>
     </div>
   </ng-template>
