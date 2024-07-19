@@ -16,8 +16,6 @@ import { SortItemsPipe } from './pipes/sort-items.pipe';
 })
 export class MainComponent {
   public store: Store = store;
-  public search: string = store.searchInput;
-  public videoCardSort: VideoCard[] = [];
 
   public trackById(index: number, item: VideoCard): string {
     return item.id;
