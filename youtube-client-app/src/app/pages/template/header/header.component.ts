@@ -79,5 +79,13 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
+  public get loginText() {
+    if (this.store.login) {
+      const loginName = localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
+      return loginName;
+    }
+    return 'Login';
+  }
+
   constructor(private fb: NonNullableFormBuilder) {}
 }

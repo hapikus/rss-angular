@@ -24,8 +24,11 @@
   &__login {
     position: absolute;
     display: flex;
+    column-gap: 12px;
     top: 25%;
     right: 0%;
+
+    align-items: center;
   }
 }
 

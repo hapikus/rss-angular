@@ -28,6 +28,7 @@
     </div>
 
     <div class="content__login">
+      <p nz-typography>{{ loginText }}</p>
       <button nz-button nzType="primary" nzSize="large" (click)="loginHandle()">
         <span nz-icon [nzType]="store.login ? 'login' : 'logout'" nzTheme="outline"></span>
       </button>
