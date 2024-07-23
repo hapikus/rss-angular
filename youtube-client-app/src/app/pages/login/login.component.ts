@@ -7,11 +7,21 @@ import { Router } from '@angular/router';
 import { Store } from '../../stores/types';
 import { store } from '../../stores/store';
 import { LoginService } from '../../shared/services/login.service';
+import { passwordValidator } from './helpers';
+import { ErrorsFormatterPipe } from './pipes/errors-formatter.pipe';
+import { UserNameErrorsPipe } from './pipes/username-errors.pipe';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputModule,
+    NzButtonModule,
+    ErrorsFormatterPipe,
+    UserNameErrorsPipe,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -24,18 +34,14 @@ export class LoginComponent {
     userName: FormControl<string>;
     password: FormControl<string>;
   }> = this.fb.group({
-    userName: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    userName: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, passwordValidator()]],
   });
+  public userNameError: string = '';
+  public passwordError: string = '';
 
   public submitForm(): void {
     if (!this.loginForm.valid) {
-      Object.values(this.loginForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
       return;
     }
     this.loginService.login(
