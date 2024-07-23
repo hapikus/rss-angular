@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '../../stores/types';
 import { store } from '../../stores/store';
@@ -30,10 +30,7 @@ export class LoginComponent {
   private loginService = inject(LoginService);
   public store: Store = store;
 
-  public loginForm: FormGroup<{
-    userName: FormControl<string>;
-    password: FormControl<string>;
-  }> = this.fb.group({
+  public loginForm = this.fb.group({
     userName: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, passwordValidator()]],
   });
@@ -41,7 +38,11 @@ export class LoginComponent {
   public passwordError: string = '';
 
   public submitForm(): void {
-    if (!this.loginForm.valid) {
+    if (
+      !this.loginForm.valid ||
+      !this.loginForm.value.userName ||
+      !this.loginForm.value.password
+    ) {
       return;
     }
     this.loginService.login(
@@ -52,5 +53,5 @@ export class LoginComponent {
     this.router.navigate(['']);
   }
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 }
