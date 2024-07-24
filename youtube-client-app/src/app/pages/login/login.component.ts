@@ -8,7 +8,7 @@ import { Store } from '../../stores/types';
 import { store } from '../../stores/store';
 import { LoginService } from '../../shared/services/login.service';
 import { passwordValidator } from './helpers';
-import { ErrorsFormatterPipe } from './pipes/errors-formatter.pipe';
+import { ErrorsFormatterPipe } from '../../shared/pipes/errors-formatter.pipe';
 import { UserNameErrorsPipe } from './pipes/username-errors.pipe';
 
 @Component({

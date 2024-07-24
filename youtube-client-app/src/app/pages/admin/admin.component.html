@@ -1,0 +1,97 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<form nz-form [formGroup]="createCardForm" [nzLayout]="'vertical'" class="login-form" (ngSubmit)="submit()">
+  <nz-form-item>
+    <nz-form-label nzRequired>Title</nz-form-label>
+    <nz-form-control [nzErrorTip]="createCardForm.controls.title.errors | errorsFormatter">
+      <input 
+        nz-input 
+        type="text" 
+        formControlName="title" 
+        placeholder="Title" 
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label>Description</nz-form-label>
+    <nz-form-control [nzErrorTip]="createCardForm.controls.description.errors | errorsFormatter">
+      <nz-textarea-count [nzMaxCharacterCount]="255">
+        <textarea      
+          rows="4" 
+          formControlName="description" 
+          placeholder="Description" 
+          nz-input 
+        ></textarea>
+      </nz-textarea-count>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>Preview image link</nz-form-label>
+    <nz-form-control [nzErrorTip]="createCardForm.controls.previewImage.errors| errorsFormatter">
+      <input 
+        nz-input 
+        type="text" 
+        formControlName="previewImage" 
+        placeholder="Preview image" 
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>Video link</nz-form-label>
+    <nz-form-control [nzErrorTip]="createCardForm.controls.video.errors| errorsFormatter">
+      <input 
+        nz-input 
+        type="text" 
+        formControlName="video" 
+        placeholder="Video" 
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzRequired>DatePicker</nz-form-label>
+    <nz-form-control  [nzErrorTip]="createCardForm.controls.createDate.errors | errorsFormatter">
+      <nz-date-picker [nzDisabledDate]="disabledDates" formControlName="createDate"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  
+  <div formArrayName="tags" *ngFor="let tagGroup of tags.controls; let i = index; trackBy: trackByFn">
+    <nz-form-item [formGroupName]="i" class="tag-container"> 
+      <div class="grid-wrapper">  
+        <nz-form-label nzRequired>Tag {{ i + 1 }}</nz-form-label>
+        <nz-form-control [nzErrorTip]="'Please enter a tag'">
+          <input 
+            nz-input 
+            type="text" 
+            formControlName="tag" 
+            placeholder="Tag" 
+          />
+        </nz-form-control>
+        <span
+          nz-icon
+          nzType="minus-circle-o"
+          class="dynamic-delete-button"
+          (click)="removeTag(i, $event)"
+        ></span>
+      </div>
+    </nz-form-item>
+  </div>
+  @if (tags.controls.length !== MAX_TAGS) {
+    <div nz-row class="add-tag-container">
+      <button 
+        [disabled]="tags.controls.length === MAX_TAGS" 
+        nz-button 
+        class="login-form-button login-form-margin" 
+        [nzType]="'primary'"
+        (click)="addTagSubForm()"
+      >Add Tag</button>
+    </div>  
+  }
+
+  <div nz-row class="create-card-container">
+    <button 
+      [disabled]="!createCardForm.valid" 
+      nz-button 
+      [nzType]="'primary'"
+    >Create Card</button>
+  </div>
+</form>
