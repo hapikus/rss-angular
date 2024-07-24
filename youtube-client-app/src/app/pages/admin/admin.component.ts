@@ -33,24 +33,11 @@ export class AdminComponent {
     previewImage: ['', [Validators.required, previewImageValidator()]],
     video: ['', [Validators.required, videoValidator()]],
     createDate: this.fb.control<Date | null>(null, [Validators.required]),
-    tags: this.fb.array<
-      FormGroup<{ tag: FormControl<string | null> }>
-    >([]),
+    tags: this.fb.array<FormGroup<{ tag: FormControl<string | null> }>>([]),
   });
-
-  public submit() {
-    this.createCardForm.reset();
-  }
 
   public disabledDates(date: Date) {
     return date.getTime() > new Date().getTime();
-  }
-
-  public addTagSubForm() {
-    const tagGroup = this.fb.group({
-      tag: ['', [Validators.required]],
-    });
-    this.tags.push(tagGroup);
   }
 
   get tags() {
@@ -61,6 +48,13 @@ export class AdminComponent {
     >;
   }
 
+  public addTagSubForm() {
+    const tagGroup = this.fb.group({
+      tag: ['', [Validators.required]],
+    });
+    this.tags.push(tagGroup);
+  }
+
   public removeTag(index: number, e: MouseEvent): void {
     e.preventDefault();
     this.tags.removeAt(index);
@@ -68,6 +62,10 @@ export class AdminComponent {
 
   public trackByFn(index: number): string {
     return index.toString();
+  }
+
+  public submit() {
+    this.createCardForm.reset();
   }
 
   constructor(private fb: FormBuilder) {}
