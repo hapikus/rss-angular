@@ -1,5 +1,3 @@
-<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
-<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <form nz-form [formGroup]="createCardForm" [nzLayout]="'vertical'" class="login-form" (ngSubmit)="submit()">
   <nz-form-item>
     <nz-form-label nzRequired>Title</nz-form-label>
@@ -53,43 +51,48 @@
       <nz-date-picker [nzDisabledDate]="disabledDates" formControlName="createDate"></nz-date-picker>
     </nz-form-control>
   </nz-form-item>
-  
-  <div formArrayName="tags" *ngFor="let tagGroup of tags.controls; let i = index; trackBy: trackByFn">
-    <nz-form-item [formGroupName]="i" class="tag-container"> 
-      <div class="grid-wrapper">  
-        <nz-form-label nzRequired>Tag {{ i + 1 }}</nz-form-label>
-        <nz-form-control [nzErrorTip]="'Please enter a tag'">
-          <input 
-            nz-input 
-            type="text" 
-            formControlName="tag" 
-            placeholder="Tag" 
-          />
-        </nz-form-control>
-        <span
-          nz-icon
-          nzType="minus-circle-o"
-          class="dynamic-delete-button"
-          (click)="removeTag(i, $event)"
-        ></span>
-      </div>
-    </nz-form-item>
-  </div>
-  @if (tags.controls.length !== MAX_TAGS) {
-    <div nz-row class="add-tag-container">
-      <button 
-        [disabled]="tags.controls.length === MAX_TAGS" 
-        nz-button 
-        class="login-form-button login-form-margin" 
-        [nzType]="'primary'"
-        (click)="addTagSubForm()"
-      >Add Tag</button>
-    </div>  
-  }
+
+  <form nz-form [formGroup]="validateTags">
+    @for (tagControl of tags; track tagControl; let i = $index) {
+      <nz-form-item>
+        <div class="grid-wrapper">
+          <nz-form-label [nzFor]="tagControl.controlInstance" nzRequired>Tag {{ tagControl.id }}</nz-form-label>
+          <nz-form-control [nzErrorTip]="'Please enter a tag'">
+            <input
+              class="tag-input"
+              nz-input
+              placeholder="Tag"
+              [attr.id]="tagControl.id"
+              [formControlName]="tagControl.controlInstance"
+            />
+          </nz-form-control>
+          <button 
+            class="dynamic-delete-button"
+            nz-button nzType="dashed" 
+            nzShape="circle" 
+            (click)="removeTag(tagControl, $event)"
+          >
+            <span nz-icon nzType="minus-circle-o"></span>
+          </button>
+        </div>
+      </nz-form-item>
+    }
+    @if (tags.length !== MAX_TAGS) {
+      <div nz-row class="add-tag-container">
+        <button 
+          [disabled]="tags.length === MAX_TAGS" 
+          nz-button 
+          class="login-form-button login-form-margin" 
+          [nzType]="'primary'"
+          (click)="addTag()"
+        >Add Tag</button>
+      </div>  
+    }
+  </form>
 
   <div nz-row class="create-card-container">
     <button 
-      [disabled]="!createCardForm.valid" 
+      [disabled]="!createCardForm.valid || !validateTags.valid" 
       nz-button 
       [nzType]="'primary'"
     >Create Card</button>
