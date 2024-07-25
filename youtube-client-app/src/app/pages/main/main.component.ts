@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { store } from '../../stores/store';
 import { Store } from '../../stores/types';
-import { VideoCard } from '../../shared/models/video-card.model';
+import { VideoCard } from '../../models/video-card.model';
 import { VideoCardComponent } from './video-card/video-card.component';
-import { ItemsService } from '../../shared/services/items.service';
+import { ItemsService } from '../../services/items.service';
 
 @Component({
   selector: 'app-main',

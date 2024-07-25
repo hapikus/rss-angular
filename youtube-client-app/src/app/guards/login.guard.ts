@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { store } from '../../stores/store';
+import { store } from '../stores/store';
 
 export const loginGuard: CanActivateFn = () => {
   const router = inject(Router);

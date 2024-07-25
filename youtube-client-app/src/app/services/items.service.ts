@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SortDirection, SortType, Store } from '../../stores/types';
-import { store } from '../../stores/store';
+import { SortDirection, SortType, Store } from '../stores/types';
+import { store } from '../stores/store';
 import { VideoCard } from '../models/video-card.model';
 
 @Injectable({

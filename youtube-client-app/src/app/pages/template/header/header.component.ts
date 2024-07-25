@@ -11,7 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { store } from '../../../stores/store';
 import { SortDirection, SortType, Store } from '../../../stores/types';
-import { LoginService } from '../../../shared/services/login.service';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-header',

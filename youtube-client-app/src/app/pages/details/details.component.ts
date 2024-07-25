@@ -5,8 +5,8 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { Subscription } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { ItemsService } from '../../shared/services/items.service';
-import { VideoCard } from '../../shared/models/video-card.model';
+import { ItemsService } from '../../services/items.service';
+import { VideoCard } from '../../models/video-card.model';
 import { NFormatterPipe } from '../../shared/components/statistics/pipes/n-formatter.pipe';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
 import { StatisticsComponent } from '../../shared/components/statistics/statistics.component';

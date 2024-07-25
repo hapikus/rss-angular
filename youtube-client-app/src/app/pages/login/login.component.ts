@@ -6,7 +6,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '../../stores/types';
 import { store } from '../../stores/store';
-import { LoginService } from '../../shared/services/login.service';
+import { LoginService } from '../../services/login.service';
 import { passwordValidator } from './helpers';
 import { ErrorsFormatterPipe } from '../../shared/pipes/errors-formatter.pipe';
 import { UserNameErrorsPipe } from './pipes/username-errors.pipe';
