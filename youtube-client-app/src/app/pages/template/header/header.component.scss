@@ -20,16 +20,6 @@
     flex-wrap: nowrap;
     height: 80px;
   }
-
-  &__login {
-    position: absolute;
-    display: flex;
-    column-gap: 12px;
-    top: 25%;
-    right: 0%;
-
-    align-items: center;
-  }
 }
 
 .sorting {
@@ -53,4 +43,24 @@
 .type {
   cursor: pointer;
   color: #2F80ED;    
+}
+
+.login {
+  position: absolute;
+  display: flex;
+  column-gap: 12px;
+  top: 25%;
+  right: 0%;
+
+  align-items: center;
+}
+
+.admin {
+  position: absolute;
+  display: flex;
+  column-gap: 12px;
+  top: 25%;
+  left: 0%;
+
+  align-items: center;
 }

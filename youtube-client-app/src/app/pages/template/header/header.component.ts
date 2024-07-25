@@ -7,7 +7,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { store } from '../../../stores/store';
 import { SortDirection, SortType, Store } from '../../../stores/types';
@@ -27,6 +27,7 @@ import { LoginService } from '../../../shared/services/login.service';
     CommonModule,
     ReactiveFormsModule,
     NzFormModule,
+    RouterLink,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
