@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -26,8 +26,6 @@ import { UserNameErrorsPipe } from './pipes/username-errors.pipe';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  private router = inject(Router);
-  private loginService = inject(LoginService);
   public store: Store = store;
 
   public loginForm = this.fb.group({
@@ -37,21 +35,29 @@ export class LoginComponent {
   public userNameError: string = '';
   public passwordError: string = '';
 
-  public submitForm(): void {
-    if (
+  public formIsNotValid(): boolean {
+    return (
       !this.loginForm.valid ||
       !this.loginForm.value.userName ||
       !this.loginForm.value.password
-    ) {
+    );
+  }
+
+  public submitForm(): void {
+    if (this.formIsNotValid()) {
       return;
     }
+
     this.loginService.login(
-      this.loginForm.value.userName,
-      this.loginForm.value.password,
+      this.loginForm.value.userName!,
+      this.loginForm.value.password!,
     );
-    this.store.login = true;
     this.router.navigate(['']);
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private loginService: LoginService,
+  ) {}
 }

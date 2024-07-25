@@ -1,15 +1,20 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { Subscription } from 'rxjs';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { map, Observable } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { CommonModule } from '@angular/common';
 import { ItemsService } from '../../services/items.service';
 import { VideoCard } from '../../models/video-card.model';
 import { NFormatterPipe } from '../../shared/components/statistics/pipes/n-formatter.pipe';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
 import { StatisticsComponent } from '../../shared/components/statistics/statistics.component';
+
+const ROWS = {
+  bigScreen: 14,
+  smallScreen: 99,
+};
 
 @Component({
   selector: 'app-details',
@@ -20,39 +25,29 @@ import { StatisticsComponent } from '../../shared/components/statistics/statisti
     NzTypographyModule,
     DFormatterPipe,
     StatisticsComponent,
+    CommonModule,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
-export class DetailsComponent implements OnInit, OnDestroy {
-  public item?: VideoCard;
-  private itemsService = inject(ItemsService);
-  public isScreenSmall: boolean = false;
-  private breakpointSubscription?: Subscription;
+export class DetailsComponent {
+  public item!: VideoCard;
+  public isScreenSmall: Observable<boolean> = this.breakpointObserver
+    .observe(['(max-width: 1020px)'])
+    .pipe(map((state) => state.matches));
+
+  public rowsConst = ROWS;
 
   constructor(
     private activateRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
+    private itemsService: ItemsService,
   ) {
     const { id } = this.activateRoute.snapshot.params;
-    this.item = this.itemsService.getItemById(id);
+    this.item = this.itemsService.getItemById(id)!;
   }
 
   public get previewImg() {
-    return this?.item?.snippet.thumbnails['maxres']?.url ?? '';
-  }
-
-  ngOnInit() {
-    this.breakpointSubscription = this.breakpointObserver
-      .observe(['(max-width: 1020px)'])
-      .subscribe((state: BreakpointState) => {
-        this.isScreenSmall = state.matches;
-      });
-  }
-
-  ngOnDestroy() {
-    if (this.breakpointSubscription) {
-      this.breakpointSubscription.unsubscribe();
-    }
+    return this.item.snippet.thumbnails['maxres']?.url ?? '';
   }
 }

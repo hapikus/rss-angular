@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -33,11 +33,12 @@ import { LoginService } from '../../../services/login.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  private router = inject(Router);
-  private loginService = inject(LoginService);
-
   public store: Store = store;
-  public sortTypeButton = [SortType.Date, SortType.CountOfViews, SortType.ByWordOrSentance];
+  public sortTypeButton = [
+    SortType.Date,
+    SortType.CountOfViews,
+    SortType.ByWordOrSentance,
+  ];
   public sortDirectionEnum = SortDirection;
   public isSettingShow: boolean = false;
   public sortTypeCurrent = store.sortType;
@@ -82,11 +83,16 @@ export class HeaderComponent {
 
   public get loginText() {
     if (this.store.login) {
-      const loginName = localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
+      const loginName =
+        localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
       return loginName;
     }
     return 'Login';
   }
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private router: Router,
+    private loginService: LoginService,
+  ) {}
 }

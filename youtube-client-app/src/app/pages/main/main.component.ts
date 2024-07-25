@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { store } from '../../stores/store';
 import { Store } from '../../stores/types';
 import { VideoCard } from '../../models/video-card.model';
@@ -14,16 +14,17 @@ import { ItemsService } from '../../services/items.service';
 })
 export class MainComponent {
   public store: Store = store;
-  private itemsService = inject(ItemsService);
 
   public get items(): VideoCard[] {
     const filtredItems = this.itemsService.getFiltredItems(store.searchInput);
-    const sortedItems = this.itemsService.getSortedItems(
-      filtredItems,
-      store.sortType,
-      store.sortDirection,
-      store.sortInput,
-    );
+    const sortedItems = this.itemsService.getSortedItems({
+      cards: filtredItems,
+      sortType: store.sortType,
+      sortDirection: store.sortDirection,
+      sortInput: store.sortInput,
+    });
     return sortedItems;
   }
+
+  constructor(private itemsService: ItemsService) {}
 }

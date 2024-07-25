@@ -1,23 +1,27 @@
-@if (!!item) {
-  <div class="container">
-    <div class="images">
-      <img
-        nz-image
-        [nzSrc]="previewImg"
-        alt=""
-      />
+<div class="container">
+  <div class="images">
+    <img
+      nz-image
+      [nzSrc]="previewImg"
+      alt=""
+    />
+  </div>
+  <div class="additional-info">
+    <div class="header">
+      <div class="publish-date">{{ item.snippet.publishedAt | dFormatter}}</div>
+      <div class="title"><h4 nz-typography>{{ item.snippet.title }}</h4></div>
     </div>
-    <div class="additional-info">
-      <div class="header">
-        <div class="publish-date">{{ item.snippet.publishedAt | dFormatter}}</div>
-        <div class="title"><h4 nz-typography>{{ item.snippet.title }}</h4></div>
-      </div>
-      <div class="description">
-        <p nz-typography nzEllipsis [nzEllipsisRows]="isScreenSmall ? 99 : 14">{{ item.snippet.description }}</p>
-      </div>
-      <div class="statistics">
-          <app-statistics [statistics]="item.statistics" />
-       </div>
+    <div class="description">
+      <p 
+        nz-typography 
+        nzEllipsis 
+        [nzEllipsisRows]="(isScreenSmall | async) ? rowsConst.smallScreen : rowsConst.bigScreen"
+      >
+        {{ item.snippet.description }}
+      </p>
+    </div>
+    <div class="statistics">
+      <app-statistics [statistics]="item.statistics" />
     </div>
   </div>
-}
+</div>
