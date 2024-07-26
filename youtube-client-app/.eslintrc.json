@@ -42,12 +42,15 @@
         "import/prefer-default-export": "off",
         "linebreak-style": "off",
         "@import/no-extraneous-dependencies": "off",
-        "no-param-reassign": ["error", { "props": false }],
         "class-methods-use-this": "off",
         "@typescript-eslint/indent": "off",
         "operator-linebreak": "off",
         "@angular-eslint/template/click-events-have-key-events": "off",
-        "@angular-eslint/template/interactive-supports-focus": "off"
+        "@angular-eslint/template/interactive-supports-focus": "off",
+        "@angular-eslint/template/label-has-associated-control": "off",
+        "no-param-reassign": "off",
+        "object-curly-newline": ["error", { "ImportDeclaration": "never", "ExportDeclaration": "never" }],
+        "implicit-arrow-linebreak": "off"
       }
     },
     {

@@ -1,0 +1,6 @@
+@for (statisticForHtml of statisticsForHtml; track $index) {
+  <div class="card__stat">
+    <span nz-icon [nzType]="statisticForHtml.icon" nzTheme="fill" style="font-size: 18px;"></span>
+    {{ statisticForHtml.value | nFormatter:1 }}
+  </div>
+}

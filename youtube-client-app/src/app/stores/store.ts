@@ -1,6 +1,6 @@
 import { SortDirection, SortType, Store } from './types';
 import * as searchMock from './search-mock.json';
-import { SearchResponse } from '../pages/main/search.model';
+import { SearchResponse } from '../shared/models/search.model';
 
 export const store: Store = {
   searchInput: '',
@@ -8,4 +8,5 @@ export const store: Store = {
   sortInput: '',
   sortDirection: SortDirection.ASC,
   mockData: searchMock as unknown as SearchResponse,
+  login: !!localStorage.getItem('fakeToken'),
 };

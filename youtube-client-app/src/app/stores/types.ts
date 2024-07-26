@@ -1,4 +1,4 @@
-import { SearchResponse } from '../pages/main/search.model';
+import { SearchResponse } from '../shared/models/search.model';
 
 export enum SortDirection {
   ASC = 'ASC',
@@ -17,4 +17,5 @@ export interface Store {
   sortInput: string;
   sortDirection: SortDirection;
   mockData: SearchResponse;
+  login: boolean;
 }

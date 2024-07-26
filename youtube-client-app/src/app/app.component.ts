@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './pages/template/header/header.component';
 import { MainComponent } from './pages/main/main.component';
 
 @Component({
@@ -10,6 +10,4 @@ import { MainComponent } from './pages/main/main.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'youtube-client-app';
-}
+export class AppComponent {}

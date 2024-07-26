@@ -1,24 +1,29 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { store } from '../../stores/store';
 import { Store } from '../../stores/types';
-import { VideoCard } from './video-card/video-card.model';
+import { VideoCard } from '../../shared/models/video-card.model';
 import { VideoCardComponent } from './video-card/video-card.component';
-import { VideoCardSortPipe } from '../../pipes/video-card-sort.pipe';
+import { ItemsService } from '../../shared/services/items.service';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [CommonModule, VideoCardComponent, VideoCardSortPipe],
+  imports: [VideoCardComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
 export class MainComponent {
   public store: Store = store;
-  public search: string = store.searchInput;
-  public videoCardSort: VideoCard[] = [];
+  private itemsService = inject(ItemsService);
 
-  public trackById(index: number, item: VideoCard): string {
-    return item.id;
+  public get items(): VideoCard[] {
+    const filtredItems = this.itemsService.getFiltredItems(store.searchInput);
+    const sortedItems = this.itemsService.getSortedItems(
+      filtredItems,
+      store.sortType,
+      store.sortDirection,
+      store.sortInput,
+    );
+    return sortedItems;
   }
 }
