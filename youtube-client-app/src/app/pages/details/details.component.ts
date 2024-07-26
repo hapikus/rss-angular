@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { map, Observable } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ItemsService } from '../../services/items.service';
 import { VideoCard } from '../../models/video-card.model';
 import { NFormatterPipe } from '../../shared/components/statistics/pipes/n-formatter.pipe';
@@ -26,6 +28,9 @@ const ROWS = {
     DFormatterPipe,
     StatisticsComponent,
     CommonModule,
+    RouterLink,
+    NzButtonModule,
+    NzIconModule,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',

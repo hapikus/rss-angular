@@ -1,6 +1,8 @@
 .container {
   display: flex;
+  position: relative;
   max-height: 460px;
+  margin: 10px;
 
   background-color: #E5E5E5;
   box-shadow: 5px 5px 20px 0px #33333340;
@@ -12,6 +14,12 @@
     row-gap: 20px;
     max-height: fit-content;
   }
+}
+
+.to-main {
+  position: absolute;
+  top: 20px;
+  left: -32px;
 }
 
 .images {
