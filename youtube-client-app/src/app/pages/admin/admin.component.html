@@ -1,4 +1,5 @@
 <form nz-form [formGroup]="createCardForm" [nzLayout]="'vertical'" class="login-form" (ngSubmit)="submit()">
+  
   <nz-form-item>
     <nz-form-label nzRequired>Title</nz-form-label>
     <nz-form-control [nzErrorTip]="createCardForm.controls.title.errors | errorsFormatter">
@@ -10,6 +11,7 @@
       />
     </nz-form-control>
   </nz-form-item>
+
   <nz-form-item>
     <nz-form-label>Description</nz-form-label>
     <nz-form-control [nzErrorTip]="createCardForm.controls.description.errors | errorsFormatter">
@@ -23,6 +25,7 @@
       </nz-textarea-count>
     </nz-form-control>
   </nz-form-item>
+
   <nz-form-item>
     <nz-form-label nzRequired>Preview image link</nz-form-label>
     <nz-form-control [nzErrorTip]="createCardForm.controls.previewImage.errors| errorsFormatter">
@@ -34,6 +37,7 @@
       />
     </nz-form-control>
   </nz-form-item>
+
   <nz-form-item>
     <nz-form-label nzRequired>Video link</nz-form-label>
     <nz-form-control [nzErrorTip]="createCardForm.controls.video.errors| errorsFormatter">
@@ -45,42 +49,68 @@
       />
     </nz-form-control>
   </nz-form-item>
+
   <nz-form-item>
     <nz-form-label nzRequired>DatePicker</nz-form-label>
-    <nz-form-control  [nzErrorTip]="createCardForm.controls.createDate.errors | errorsFormatter">
+    <nz-form-control  nzErrorTip="The date is invalid">
       <nz-date-picker [nzDisabledDate]="disabledDates" formControlName="createDate"></nz-date-picker>
     </nz-form-control>
   </nz-form-item>
 
-  <form nz-form [formGroup]="validateTags">
-    @for (tagControl of tags; track tagControl; let i = $index) {
+  <ng-container *ngTemplateOutlet="tags"></ng-container>
+
+  <ng-container *ngTemplateOutlet="controls"></ng-container>
+
+</form>
+
+<ng-template #controls>
+  <div nz-row class="controls">
+    <button 
+      nz-button 
+      [nzType]="'primary'"
+      (click)="reset()"
+    >
+      Reset
+    </button>
+    <button 
+      [disabled]="!createCardForm.valid" 
+      nz-button 
+      [nzType]="'primary'"
+    >
+      Create Card
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #tags>
+  <form nz-form [formGroup]="createCardForm">
+    @for (tagControl of formArray.controls; track tagControl; let i = $index) {
       <nz-form-item>
         <div class="grid-wrapper">
-          <nz-form-label [nzFor]="tagControl.controlInstance" nzRequired>Tag {{ tagControl.id }}</nz-form-label>
+          <nz-form-label nzRequired>Tag</nz-form-label>
           <nz-form-control [nzErrorTip]="'Please enter a tag'">
             <input
               class="tag-input"
               nz-input
               placeholder="Tag"
-              [attr.id]="tagControl.id"
-              [formControlName]="tagControl.controlInstance"
+              [formControl]="tagControl"
             />
           </nz-form-control>
           <button 
             class="dynamic-delete-button"
             nz-button nzType="dashed" 
             nzShape="circle" 
-            (click)="removeTag(tagControl, $event)"
+            (click)="removeTag(i, $event)"
           >
             <span nz-icon nzType="minus-circle-o"></span>
           </button>
         </div>
       </nz-form-item>
     }
-    @if (tags.length !== MAX_TAGS) {
+    @if (formArray.length !== MAX_TAGS) {
       <div nz-row class="add-tag-container">
         <button 
-          [disabled]="tags.length === MAX_TAGS" 
+          [disabled]="formArray.length === MAX_TAGS" 
           nz-button 
           class="login-form-button login-form-margin" 
           [nzType]="'primary'"
@@ -89,12 +119,4 @@
       </div>  
     }
   </form>
-
-  <div nz-row class="create-card-container">
-    <button 
-      [disabled]="!createCardForm.valid || !validateTags.valid" 
-      nz-button 
-      [nzType]="'primary'"
-    >Create Card</button>
-  </div>
-</form>
+</ng-template>
