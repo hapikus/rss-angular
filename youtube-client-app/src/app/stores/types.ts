@@ -1,4 +1,4 @@
-import { SearchResponse } from '../shared/models/search.model';
+import { SearchResponse } from '../models/search.model';
 
 export enum SortDirection {
   ASC = 'ASC',

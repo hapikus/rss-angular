@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -7,11 +7,11 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { store } from '../../../stores/store';
 import { SortDirection, SortType, Store } from '../../../stores/types';
-import { LoginService } from '../../../shared/services/login.service';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -27,16 +27,18 @@ import { LoginService } from '../../../shared/services/login.service';
     CommonModule,
     ReactiveFormsModule,
     NzFormModule,
+    RouterLink,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  private router = inject(Router);
-  private loginService = inject(LoginService);
-
   public store: Store = store;
-  public sortTypeButton = [SortType.Date, SortType.CountOfViews, SortType.ByWordOrSentance];
+  public sortTypeButton = [
+    SortType.Date,
+    SortType.CountOfViews,
+    SortType.ByWordOrSentance,
+  ];
   public sortDirectionEnum = SortDirection;
   public isSettingShow: boolean = false;
   public sortTypeCurrent = store.sortType;
@@ -81,11 +83,16 @@ export class HeaderComponent {
 
   public get loginText() {
     if (this.store.login) {
-      const loginName = localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
+      const loginName =
+        localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
       return loginName;
     }
     return 'Login';
   }
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private router: Router,
+    private loginService: LoginService,
+  ) {}
 }

@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  background-color: #eee;
+  border-radius: 8px;
+}
+
+.add-tag-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+form {
+  width: 100%;
+}
+
+nz-date-picker,
+nz-textarea-count {
+  width: 100%;
+}
+
+textarea {
+  resize: none;
+}
+
+.tag-container {
+  display: flex;
+  height: 56px;
+}
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr 20px;
+  column-gap: 10px;
+  width: 100%;
+
+  nz-form-label {
+    height: 35px;
+    align-self: center;
+  }
+
+  nz-form-control {
+    align-self: stretch;
+  }
+
+  .dynamic-delete-button {
+    background-color: #eee;
+  }
+}
