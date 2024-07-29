@@ -15,12 +15,11 @@ interface ForSorted {
 })
 export class ItemsService {
   public getFiltredItems(input: string) {
-    const { items } = store.mockData;
-    if (!items.length || !input) {
+    const { items } = store.data;
+    if (!items || !items.length || !input) {
       return [];
     }
-    const sortByInput = items.filter((item) => item.snippet.title.includes(input));
-    return sortByInput;
+    return items;
   }
 
   public getSortedItems(forSorted: ForSorted): VideoCard[] {
@@ -34,7 +33,7 @@ export class ItemsService {
   }
 
   public getItemById(id: string) {
-    const findItem = store.mockData.items.find((item) => item.id === id);
+    const findItem = store.data.items.find((item) => item.id.videoId === id);
     return findItem;
   }
 }

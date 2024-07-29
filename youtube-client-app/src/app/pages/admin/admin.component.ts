@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -8,6 +8,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
 import { descriptionValidator, previewImageValidator, titleValidator, videoValidator } from './helpers';
 import { ErrorsFormatterPipe } from '../../shared/pipes/errors-formatter.pipe';
+import { Page } from '../../stores/types';
+import { store } from '../../stores/store';
 
 @Component({
   selector: 'app-admin',
@@ -25,7 +27,7 @@ import { ErrorsFormatterPipe } from '../../shared/pipes/errors-formatter.pipe';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   public MAX_TAGS = 5;
   public formArray = new FormArray<FormControl<string | null>>([]);
 
@@ -37,6 +39,10 @@ export class AdminComponent {
     createDate: this.fb.control<Date | null>(null, [Validators.required]),
     tags: this.formArray,
   });
+
+  public ngOnInit(): void {
+    store.page = Page.Admin;
+  }
 
   public disabledDates(date: Date) {
     return date.getTime() > new Date().getTime();

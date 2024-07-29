@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -9,9 +9,12 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { debounceTime, filter } from 'rxjs';
 import { store } from '../../../stores/store';
-import { SortDirection, SortType, Store } from '../../../stores/types';
+import { Page, SortDirection, SortType, Store } from '../../../stores/types';
 import { LoginService } from '../../../services/login.service';
+import { ApiService } from '../../../services/api.service';
+import { SearchResponse } from '../../../models/search.model';
 
 @Component({
   selector: 'app-header',
@@ -28,11 +31,13 @@ import { LoginService } from '../../../services/login.service';
     ReactiveFormsModule,
     NzFormModule,
     RouterLink,
+    NzInputModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  private DEBOUNCE_TIME = 500;
   public store: Store = store;
   public sortTypeButton = [
     SortType.Date,
@@ -42,13 +47,44 @@ export class HeaderComponent {
   public sortDirectionEnum = SortDirection;
   public isSettingShow: boolean = false;
   public sortTypeCurrent = store.sortType;
-  public localSearch: string = '';
+  public isLogin = this.loginService.isLogin
+    .pipe((val) => val)
+    .subscribe((val) => val);
 
   public searchForm: FormGroup<{
     search: FormControl<string>;
   }> = this.fb.group({
     search: ['', [Validators.required]],
   });
+
+  public ngOnInit(): void {
+    this.searchForm.controls.search.valueChanges
+      .pipe(filter((val) => val.length >= 3))
+      .pipe(debounceTime(this.DEBOUNCE_TIME))
+      .subscribe(() => this.search());
+  }
+
+  public setStoreSearch() {
+    store.searchInput = this.searchForm.value.search ?? '';
+    if (this.searchForm.value.search) {
+      this.router.navigate(['']);
+    }
+  }
+
+  public getVideos() {
+    this.apiService
+      .searchVideos(store.searchInput)
+      .subscribe((res: SearchResponse) => {
+        if (res) {
+          store.data = res;
+        }
+      });
+  }
+
+  public search() {
+    this.setStoreSearch();
+    this.getVideos();
+  }
 
   public toggleIsSettingShow(): void {
     this.isSettingShow = !this.isSettingShow;
@@ -68,14 +104,6 @@ export class HeaderComponent {
         : SortDirection.ASC;
   }
 
-  public setStoreSearch() {
-    store.searchInput = this.searchForm.value.search ?? '';
-    const searchEmpty = !this.searchForm.value.search;
-    if (!searchEmpty) {
-      this.router.navigate(['']);
-    }
-  }
-
   public loginHandle() {
     this.loginService.logout();
     this.router.navigate(['/login']);
@@ -90,9 +118,14 @@ export class HeaderComponent {
     return 'Login';
   }
 
+  public checkPage() {
+    return store.page !== Page.Main || null;
+  }
+
   constructor(
     private fb: NonNullableFormBuilder,
     private router: Router,
     private loginService: LoginService,
+    private apiService: ApiService,
   ) {}
 }

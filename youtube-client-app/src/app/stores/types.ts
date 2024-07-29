@@ -11,11 +11,20 @@ export enum SortType {
   ByWordOrSentance = 'by word or sentence',
 }
 
+export enum Page {
+  Admin = 'admin',
+  Details = 'details',
+  Login = 'login',
+  Main = 'main',
+  NotFound = 'notFound',
+}
+
 export interface Store {
   searchInput: string;
   sortType: SortType;
   sortInput: string;
   sortDirection: SortDirection;
-  mockData: SearchResponse;
+  data: SearchResponse;
   login: boolean;
+  page: Page;
 }

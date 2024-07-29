@@ -1,8 +1,3 @@
-interface Localized {
-  title: string;
-  description: string;
-}
-
 interface Thumbnails {
   [key: string]: {
     url: string;
@@ -20,23 +15,26 @@ export interface Statistics {
 }
 
 interface Snippet {
-  publishedAt: Date;
   channelId: string;
-  title: string;
-  description: string;
-  thumbnails: Thumbnails;
   channelTitle: string;
-  tags: string[];
-  categoryId: string;
+  description: string;
   liveBroadcastContent: string;
-  localized: Localized;
-  defaultAudioLanguage: string;
+  publishTime: Date;
+  publishedAt: Date;
+  title: string;
+  thumbnails: Thumbnails;
+  tags: string[];
+}
+
+export interface Id {
+  kind: string,
+  videoId: string,
 }
 
 export interface VideoCard {
   kind: string;
   etag: string;
-  id: string;
+  id: Id;
   snippet: Snippet;
   statistics: Statistics;
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
@@ -12,6 +12,8 @@ import { VideoCard } from '../../models/video-card.model';
 import { NFormatterPipe } from '../../shared/components/statistics/pipes/n-formatter.pipe';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
 import { StatisticsComponent } from '../../shared/components/statistics/statistics.component';
+import { store } from '../../stores/store';
+import { Page } from '../../stores/types';
 
 const ROWS = {
   bigScreen: 14,
@@ -35,7 +37,7 @@ const ROWS = {
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
-export class DetailsComponent {
+export class DetailsComponent implements OnInit {
   public item!: VideoCard;
   public isScreenSmall: Observable<boolean> = this.breakpointObserver
     .observe(['(max-width: 1020px)'])
@@ -52,7 +54,22 @@ export class DetailsComponent {
     this.item = this.itemsService.getItemById(id)!;
   }
 
+  public ngOnInit(): void {
+    store.page = Page.Details;
+  }
+
   public get previewImg() {
-    return this.item.snippet.thumbnails['maxres']?.url ?? '';
+    const result = {
+      width: 0,
+      url: '',
+    };
+    Array.from(Object.values(this.item.snippet.thumbnails)).forEach((item) => {
+      const { width, url } = item;
+      if (+width > result.width) {
+        result.width = width;
+        result.url = url;
+      }
+    });
+    return result.url;
   }
 }
