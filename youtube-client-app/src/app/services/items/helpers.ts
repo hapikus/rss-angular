@@ -1,5 +1,5 @@
-import { VideoCard } from '../models/video-card.model';
-import { SortType } from '../stores/types';
+import { VideoCard } from '../../models/video-card.model';
+import { SortType } from '../../stores/types';
 
 const date = (cardOne: VideoCard, cardTwo: VideoCard): number => {
   const dateOne = new Date(cardOne.snippet.publishedAt).getTime();

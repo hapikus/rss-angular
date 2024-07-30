@@ -1,0 +1,25 @@
+<div class="content__search">
+  <button class="youtube-icon" nz-button nzType="primary" nzSize="large" [routerLink]="['']">
+    <span nz-icon nzType="play-circle" nzTheme="twotone"></span>
+  </button>
+
+  <form nz-form nzLayout="inline" [formGroup]="searchForm">
+    <input 
+      formControlName="search" 
+      nz-input 
+      type="text" 
+      placeholder="Search input"
+      [attr.disabled]="checkPage()"
+    />
+  </form>
+
+  <button 
+    nz-button nzType="primary" 
+    nzSize="large" 
+    class="setting-toggle-button" 
+    (click)="toggleIsSettingShow()"
+    [disabled]="checkPage()"
+  >
+    <span nz-icon nzType="setting" nzTheme="twotone"></span>
+  </button>
+</div>

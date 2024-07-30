@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
-import { addKeyInterceptor } from './interceptor/key';
+import { keyInterceptor } from './interceptor/key-interceptor';
 
 registerLocaleData(en);
 
@@ -21,10 +21,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideNzI18n(en_US),
+    provideHttpClient(withInterceptors(
+      [keyInterceptor],
+    )),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors(
-      [addKeyInterceptor],
-    )),
   ],
 };

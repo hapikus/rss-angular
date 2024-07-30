@@ -3,6 +3,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { RouterLink } from '@angular/router';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Statistics } from '../../../models/video-card.model';
 import { VideoCardBorderDirective } from '../directives/video-card-border.directive';
 import { NFormatterPipe } from '../../../shared/components/statistics/pipes/n-formatter.pipe';
@@ -18,8 +19,9 @@ import { StatisticsComponent } from '../../../shared/components/statistics/stati
     VideoCardBorderDirective,
     NFormatterPipe,
     RouterLink,
+    NzButtonModule,
     StatisticsComponent,
-  ],
+],
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss',
 })

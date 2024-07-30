@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { store } from '../../stores/store';
 import { VideoCard } from '../../models/video-card.model';
 import { VideoCardComponent } from './video-card/video-card.component';
-import { ItemsService } from '../../services/items.service';
+import { ItemsService } from '../../services/items/items.service';
 import { Page } from '../../stores/types';
 
 @Component({

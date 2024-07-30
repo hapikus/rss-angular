@@ -1,0 +1,16 @@
+.sorting {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+  flex-wrap: nowrap;
+  height: 50px;
+}
+
+.types {
+  display: flex;
+  column-gap: 20px;
+
+  > input {
+    width: 200px;
+  }
+}

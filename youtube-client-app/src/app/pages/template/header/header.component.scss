@@ -23,37 +23,9 @@
   }
 }
 
-.sorting {
-  display: flex;
-  align-items: center;
-  column-gap: 15px;
-  flex-wrap: nowrap;
-  height: 50px;
-
-}
-
-.types {
-  display: flex;
-  column-gap: 20px;
-
-  > input {
-    width: 200px;
-  }
-}
-
 .type {
   cursor: pointer;
   color: #2F80ED;    
-}
-
-.login {
-  position: absolute;
-  display: flex;
-  column-gap: 12px;
-  top: 25%;
-  right: 0%;
-
-  align-items: center;
 }
 
 .admin {

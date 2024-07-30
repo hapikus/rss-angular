@@ -1,4 +1,4 @@
-import { SearchResponse } from '../models/search.model';
+import { VideoCard } from '../models/video-card.model';
 
 export enum SortDirection {
   ASC = 'ASC',
@@ -24,7 +24,7 @@ export interface Store {
   sortType: SortType;
   sortInput: string;
   sortDirection: SortDirection;
-  data: SearchResponse;
+  data: VideoCard[];
   login: boolean;
   page: Page;
 }

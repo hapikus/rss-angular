@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SortDirection, SortType } from '../stores/types';
-import { store } from '../stores/store';
-import { VideoCard } from '../models/video-card.model';
+import { SortDirection, SortType } from '../../stores/types';
+import { store } from '../../stores/store';
+import { VideoCard } from '../../models/video-card.model';
 import { sortMap } from './helpers';
 
 interface ForSorted {
@@ -15,11 +15,10 @@ interface ForSorted {
 })
 export class ItemsService {
   public getFiltredItems(input: string) {
-    const { items } = store.data;
-    if (!items || !items.length || !input) {
+    if (!store.data || !store.data.length || !input) {
       return [];
     }
-    return items;
+    return store.data;
   }
 
   public getSortedItems(forSorted: ForSorted): VideoCard[] {
@@ -33,7 +32,7 @@ export class ItemsService {
   }
 
   public getItemById(id: string) {
-    const findItem = store.data.items.find((item) => item.id.videoId === id);
+    const findItem = store.data.find((item) => item.id.videoId === id);
     return findItem;
   }
 }
