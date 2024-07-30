@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Router } from '@angular/router';
-import { Store } from '../../../../../stores/types';
-import { store } from '../../../../../stores/store';
-import { LoginService } from '../../../../../services/login/login.service';
+import { Store } from '@stores/types';
+import { store } from '@stores/store';
+import { LoginService } from '@services/login/login.service';
 
 @Component({
   selector: 'app-login-area',

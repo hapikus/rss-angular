@@ -6,9 +6,9 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { store } from '../../../../../stores/store';
-import { SortType, SortDirection, Store } from '../../../../../stores/types';
-import { ApiService } from '../../../../../services/api/api.service';
+import { store } from '@stores/store';
+import { SortType, SortDirection, Store } from '@stores/types';
+import { ApiService } from '@services/api/api.service';
 
 @Component({
   selector: 'app-settings',

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchResponse } from '../../models/search.model';
+import { SearchResponse } from '@models/search.model';
 import { Params, ParamsVideo, Endpoints, ParamsStatistics } from './types';
 
 @Injectable({

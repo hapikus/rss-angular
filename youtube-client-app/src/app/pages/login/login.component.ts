@@ -4,11 +4,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Page } from '../../stores/types';
-import { store } from '../../stores/store';
-import { LoginService } from '../../services/login/login.service';
+import { Page } from '@stores/types';
+import { store } from '@stores/store';
+import { LoginService } from '@services/login/login.service';
+import { ErrorsFormatterPipe } from '@shared/pipes/errors-formatter.pipe';
 import { passwordValidator } from './helpers';
-import { ErrorsFormatterPipe } from '../../shared/pipes/errors-formatter.pipe';
 import { UserNameErrorsPipe } from './pipes/username-errors.pipe';
 
 @Component({

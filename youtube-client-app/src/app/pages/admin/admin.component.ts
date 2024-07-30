@@ -6,10 +6,10 @@ import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } 
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
+import { Page } from '@stores/types';
+import { store } from '@stores/store';
+import { ErrorsFormatterPipe } from '@shared/pipes/errors-formatter.pipe';
 import { descriptionValidator, previewImageValidator, titleValidator, videoValidator } from './helpers';
-import { ErrorsFormatterPipe } from '../../shared/pipes/errors-formatter.pipe';
-import { Page } from '../../stores/types';
-import { store } from '../../stores/store';
 
 @Component({
   selector: 'app-admin',

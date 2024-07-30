@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SortDirection, SortType } from '../../stores/types';
-import { store } from '../../stores/store';
-import { VideoCard } from '../../models/video-card.model';
+import { SortDirection, SortType } from '@stores/types';
+import { store } from '@stores/store';
+import { VideoCard } from '@models/video-card.model';
 import { sortMap } from './helpers';
 
 interface ForSorted {

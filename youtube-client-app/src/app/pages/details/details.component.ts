@@ -7,14 +7,14 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { VideoCard } from '../../models/video-card.model';
-import { NFormatterPipe } from '../../shared/components/statistics/pipes/n-formatter.pipe';
+import { VideoCard } from '@models/video-card.model';
+import { NFormatterPipe } from '@shared/components/statistics/pipes/n-formatter.pipe';
+import { store } from '@stores/store';
+import { Page } from '@stores/types';
+import { StatisticsComponent } from '@shared/components/statistics/statistics.component';
+import { ApiService } from '@services/api/api.service';
+import { ItemsService } from '@services/items/items.service';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
-import { store } from '../../stores/store';
-import { Page } from '../../stores/types';
-import { StatisticsComponent } from '../../shared/components/statistics/statistics.component';
-import { ApiService } from '../../services/api/api.service';
-import { ItemsService } from '../../services/items/items.service';
 
 const ROWS = {
   bigScreen: 14,

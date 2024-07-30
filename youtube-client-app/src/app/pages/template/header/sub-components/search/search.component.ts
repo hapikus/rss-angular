@@ -7,10 +7,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormGroup, FormControl, Validators, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { filter, debounceTime } from 'rxjs';
-import { Page, Store } from '../../../../../stores/types';
-import { store } from '../../../../../stores/store';
-import { ApiService } from '../../../../../services/api/api.service';
-import { SearchResponse } from '../../../../../models/search.model';
+import { Page, Store } from '@stores/types';
+import { store } from '@stores/store';
+import { ApiService } from '@services/api/api.service';
+import { SearchResponse } from '@models/search.model';
 
 @Component({
   selector: 'app-search',

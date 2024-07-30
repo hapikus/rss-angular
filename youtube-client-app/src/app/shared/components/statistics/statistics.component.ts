@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { Statistics } from '@models/video-card.model';
 import { NFormatterPipe } from './pipes/n-formatter.pipe';
-import { Statistics } from '../../../models/video-card.model';
 
 @Component({
   selector: 'app-statistics',
