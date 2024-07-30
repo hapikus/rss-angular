@@ -4,13 +4,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { FormGroup, FormControl, Validators, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NonNullableFormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { filter, debounceTime } from 'rxjs';
 import { Page, Store } from '@stores/types';
 import { store } from '@stores/store';
 import { ApiService } from '@services/api/api.service';
 import { SearchResponse } from '@models/search.model';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'app-search',
@@ -23,6 +24,8 @@ import { SearchResponse } from '@models/search.model';
     NzFormModule,
     ReactiveFormsModule,
     RouterLink,
+    NzSelectModule,
+    FormsModule,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
@@ -33,6 +36,7 @@ export class SearchComponent implements OnInit {
   private DEBOUNCE_TIME = 500;
   public isSettingShow: boolean = false;
   public store: Store = store;
+  public maxResult: string = '8';
 
   public searchForm: FormGroup<{
     search: FormControl<string>;
@@ -64,8 +68,11 @@ export class SearchComponent implements OnInit {
   }
 
   private getVideos(): void {
+    if (!this.searchForm.value.search) {
+      return;
+    }
     this.apiService
-      .getVideos(store.searchInput)
+      .getVideos(store.searchInput, this.maxResult)
       .subscribe((res: SearchResponse) => {
         if (res) {
           store.data = res.items;

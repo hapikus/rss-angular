@@ -12,6 +12,11 @@
       [attr.disabled]="checkPage()"
     />
   </form>
+  <nz-select [(ngModel)]="maxResult" (ngModelChange)="search()">
+    <nz-option nzValue="8" nzLabel="8" />
+    <nz-option nzValue="12" nzLabel="12" />
+    <nz-option nzValue="16" nzLabel="16" />
+  </nz-select>
 
   <button 
     nz-button nzType="primary" 
