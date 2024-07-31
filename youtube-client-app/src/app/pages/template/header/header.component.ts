@@ -31,10 +31,9 @@ export class HeaderComponent implements OnInit {
   public isLogin: boolean = false;
 
   public ngOnInit(): void {
-    this.loginService.isLogin$
-      .subscribe((val) => {
-        this.isLogin = val;
-      });
+    this.loginService.isLogin$.subscribe((status) => {
+      this.isLogin = status;
+    });
   }
 
   public isSettingShowEmit($event: boolean): void {
