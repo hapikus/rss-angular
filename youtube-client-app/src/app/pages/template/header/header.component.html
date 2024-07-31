@@ -1,7 +1,7 @@
 <div class="container">
   <div class="content">
     
-    @if (isLogin) {
+    @if (isLogin | async) {
       <div class="admin">
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/admin']">
           <span nz-icon nzType="bank" nzTheme="outline"></span>
