@@ -54,9 +54,10 @@ export class DetailsComponent implements OnInit {
   ) {
     const { id } = this.activateRoute.snapshot.params;
     const item = this.itemService.getItemById(id);
-    if (!item?.statistics) {
+    this.item = item;
+    if (!!this.item && !item?.statistics) {
       this.apiService.getVideo(id).subscribe((data) => {
-        [this.item] = data.items;
+        this.item!.statistics = data.items[0].statistics;
       });
     }
   }

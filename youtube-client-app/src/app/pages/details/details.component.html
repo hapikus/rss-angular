@@ -23,8 +23,10 @@
         {{ item.snippet.description }}
       </p>
     </div>
-    <div class="statistics">
-      <app-statistics [statistics]="item.statistics" />
-    </div>
+    @if (item.statistics) {
+      <div class="statistics">
+        <app-statistics [statistics]="item.statistics" />
+      </div>
+    }
   </div>
 </div>

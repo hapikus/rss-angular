@@ -20,7 +20,7 @@ export class ApiService {
     params = params.set(Params.Q, q);
 
     return this.http.get<SearchResponse>(
-      `${this.apiUrl}/${Endpoints.Search}`,
+      `/${Endpoints.Search}`,
       { params },
     );
   }
@@ -31,7 +31,7 @@ export class ApiService {
     params = params.set('id', id);
 
     return this.http.get<SearchResponse>(
-      `${this.apiUrl}/${Endpoints.Videos}`,
+      `/${Endpoints.Videos}`,
       { params },
     );
   }
