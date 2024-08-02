@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { store } from '@stores/store';
 import { SortType, SortDirection, Store } from '@stores/types';
 import { ApiService } from '@services/api/api.service';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -49,38 +50,48 @@ export class SettingsComponent {
 
   public checkStatistics() {
     const ids: string[] = this.getIds();
-    if (!ids.length) {
-      return;
-    }
-    ids.forEach((id) => {
-      this.apiService.getVideo(id).subscribe((data) => {
+
+    const observables = ids.map((id) =>
+      this.apiService.getVideo(id).pipe(
+        map((data) => ({
+          id,
+          statistics: data.items[0].statistics,
+        })),
+      ));
+
+    return forkJoin(observables).subscribe((results) => {
+      results.forEach(({ id, statistics }) => {
         store.data.forEach((item) => {
           if (item.id.videoId === id) {
-            item.statistics = data.items[0].statistics;
+            item.statistics = statistics;
           }
         });
       });
     });
   }
 
-  public setDirection(sortType: SortType): void {
-    if (sortType === SortType.CountOfViews) {
-      this.checkStatistics();
-    }
+  private updateSortTypeAndDirection(sortType: SortType) {
     if (this.sortTypeCurrent !== sortType) {
       this.sortTypeCurrent = sortType;
       store.sortType = sortType;
       store.sortDirection = SortDirection.ASC;
-      return;
+    } else {
+      store.sortDirection =
+        store.sortDirection === SortDirection.ASC
+          ? SortDirection.DESC
+          : SortDirection.ASC;
     }
-
-    store.sortDirection =
-      store.sortDirection === SortDirection.ASC
-        ? SortDirection.DESC
-        : SortDirection.ASC;
   }
 
-  constructor(
-    private apiService: ApiService,
-  ) {}
+  public setDirection(sortType: SortType): void {
+    if (sortType === SortType.CountOfViews) {
+      this.checkStatistics()?.add(() => {
+        this.updateSortTypeAndDirection(sortType);
+      });
+    } else {
+      this.updateSortTypeAndDirection(sortType);
+    }
+  }
+
+  constructor(private apiService: ApiService) {}
 }
