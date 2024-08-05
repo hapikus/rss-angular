@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="item">
   <button nz-button nzType="primary" class="to-main" [routerLink]="['']">
     <span nz-icon nzType="caret-left" nzTheme="outline"></span>
   </button>
@@ -23,8 +23,10 @@
         {{ item.snippet.description }}
       </p>
     </div>
-    <div class="statistics">
-      <app-statistics [statistics]="item.statistics" />
-    </div>
+    @if (item.statistics) {
+      <div class="statistics">
+        <app-statistics [statistics]="item.statistics" />
+      </div>
+    }
   </div>
 </div>

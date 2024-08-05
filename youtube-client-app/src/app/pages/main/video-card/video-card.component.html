@@ -19,9 +19,15 @@
           {{ description }}
         </p>
       </div>
-      <div class="card__statistics">
-        <app-statistics [statistics]="statistics" />
-      </div>
+      @if (statistics) {
+        <div class="card__statistics">
+          <app-statistics [statistics]="statistics" />
+        </div>
+      } @else {
+        <div class="more-container">
+          <button class="more-button" nz-button nzType="primary">More...</button> 
+        </div>
+      }
     </div>
   </ng-template>
 </div>

@@ -1,12 +1,11 @@
-import { SortDirection, SortType, Store } from './types';
-import * as searchMock from './search-mock.json';
-import { SearchResponse } from '../models/search.model';
+import { Page, SortDirection, SortType, Store } from './types';
 
 export const store: Store = {
   searchInput: '',
   sortType: SortType.Date,
   sortInput: '',
   sortDirection: SortDirection.ASC,
-  mockData: searchMock as unknown as SearchResponse,
+  data: [],
   login: !!localStorage.getItem('fakeToken'),
+  page: Page.Main,
 };
