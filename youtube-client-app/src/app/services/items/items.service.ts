@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SortDirection, SortType } from '@stores/types';
-import { store } from '@stores/store';
 import { VideoCard } from '@models/video-card.model';
+import { SortDirection, SortType } from 'src/app/redux/state.model';
 import { sortMap } from './helpers';
 
 interface ForSorted {
@@ -14,13 +13,6 @@ interface ForSorted {
   providedIn: 'root',
 })
 export class ItemsService {
-  public getFiltredItems(input: string) {
-    if (!store.data || !store.data.length || !input) {
-      return [];
-    }
-    return store.data;
-  }
-
   public getSortedItems(forSorted: ForSorted): VideoCard[] {
     const { cards, sortType, sortDirection, sortInput } = forSorted;
     return cards.toSorted((cardOne, cardTwo) => {
@@ -31,8 +23,8 @@ export class ItemsService {
     });
   }
 
-  public getItemById(id: string) {
-    const findItem = store.data.find((item) => item.id.videoId === id);
+  public getItemById(id: string, data: VideoCard[]) {
+    const findItem = data.find((item) => item.id.videoId === id);
     return findItem;
   }
 }

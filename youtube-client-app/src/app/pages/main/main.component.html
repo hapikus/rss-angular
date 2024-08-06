@@ -1,5 +1,5 @@
 <div class="items">
-  @for (item of items; track item.id) {
+  @for (item of items; track item.id.videoId) {
     <app-video-card
       [title]="item.snippet.title"
       [statistics]="item.statistics"

@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { VideoCard } from '@models/video-card.model';
 import { NFormatterPipe } from '@shared/components/statistics/pipes/n-formatter.pipe';
-import { store } from '@stores/store';
-import { Page } from '@stores/types';
 import { StatisticsComponent } from '@shared/components/statistics/statistics.component';
 import { ApiService } from '@services/api/api.service';
-import { ItemsService } from '@services/items/items.service';
+import { Store } from '@ngrx/store';
+import { selectData } from 'src/app/redux/selectors/data.selector';
+import { pageChange } from 'src/app/redux/actions/page.actions';
+import { Page } from 'src/app/redux/state.model';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
 
 const ROWS = {
@@ -39,6 +40,10 @@ const ROWS = {
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent implements OnInit {
+  public dataSubs?: Subscription;
+  public data$ = this.store.select(selectData);
+  public dataCurrent: VideoCard[] = [];
+
   public item?: VideoCard;
   public isScreenSmall: Observable<boolean> = this.breakpointObserver
     .observe(['(max-width: 1020px)'])
@@ -50,20 +55,23 @@ export class DetailsComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
     private apiService: ApiService,
-    private itemService: ItemsService,
-  ) {
+    private store: Store,
+  ) {}
+
+  public ngOnInit(): void {
+    this.store.dispatch(pageChange({ page: Page.Details }));
+    this.dataSubs = this.data$.subscribe((data) => {
+      this.dataCurrent = data;
+    });
+
     const { id } = this.activateRoute.snapshot.params;
-    const item = this.itemService.getItemById(id);
-    this.item = item;
-    if (!!this.item && !item?.statistics) {
+    const item = this.dataCurrent.filter((videoCard) => videoCard.id.videoId === id);
+    [this.item] = item;
+    if (!!this.item && !this.item?.statistics) {
       this.apiService.getVideo(id).subscribe((data) => {
         this.item!.statistics = data.items[0].statistics;
       });
     }
-  }
-
-  public ngOnInit(): void {
-    store.page = Page.Details;
   }
 
   public get previewImg(): string {

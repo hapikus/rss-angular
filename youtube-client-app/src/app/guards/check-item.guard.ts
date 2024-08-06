@@ -1,13 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ItemsService } from '../services/items/items.service';
 
-export const checkItemGuard: CanActivateFn = (route) => {
-  const itemsService = inject(ItemsService);
+export const checkItemGuard: CanActivateFn = () => {
   const router = inject(Router);
 
-  const { id } = route.params;
-  const itemExists = itemsService.getItemById(id);
+  const itemExists = true;
 
   if (!itemExists) {
     router.navigate(['/not-found']);

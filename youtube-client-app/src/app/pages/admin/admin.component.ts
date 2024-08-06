@@ -6,9 +6,10 @@ import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } 
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
-import { Page } from '@stores/types';
-import { store } from '@stores/store';
 import { ErrorsFormatterPipe } from '@shared/pipes/errors-formatter.pipe';
+import { Store } from '@ngrx/store';
+import { pageChange } from 'src/app/redux/actions/page.actions';
+import { Page } from 'src/app/redux/state.model';
 import { descriptionValidator, previewImageValidator, titleValidator, videoValidator } from './helpers';
 
 @Component({
@@ -41,7 +42,7 @@ export class AdminComponent implements OnInit {
   });
 
   public ngOnInit(): void {
-    store.page = Page.Admin;
+    this.store.dispatch(pageChange({ page: Page.Admin }));
   }
 
   public disabledDates(date: Date) {
@@ -71,5 +72,5 @@ export class AdminComponent implements OnInit {
     this.createCardForm.reset();
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 }

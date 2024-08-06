@@ -9,9 +9,10 @@
       nz-input 
       type="text" 
       placeholder="Search input"
-      [attr.disabled]="checkPage()"
+      [attr.disabled]="(page$ | async) !== pageEnum.Main || null"
     />
   </form>
+  {{ (page$ | async) }}
   <nz-select [(ngModel)]="maxResult" (ngModelChange)="search()">
     <nz-option nzValue="8" nzLabel="8" />
     <nz-option nzValue="12" nzLabel="12" />
@@ -23,7 +24,7 @@
     nzSize="large" 
     class="setting-toggle-button" 
     (click)="toggleIsSettingShow()"
-    [disabled]="checkPage()"
+    [disabled]="(page$ | async) !== pageEnum.Main"
   >
     <span nz-icon nzType="setting" nzTheme="twotone"></span>
   </button>

@@ -1,5 +1,5 @@
 import { VideoCard } from '@models/video-card.model';
-import { SortType } from '@stores/types';
+import { SortType } from 'src/app/redux/state.model';
 
 const date = (cardOne: VideoCard, cardTwo: VideoCard): number => {
   const dateOne = new Date(cardOne.snippet.publishedAt).getTime();
@@ -8,8 +8,8 @@ const date = (cardOne: VideoCard, cardTwo: VideoCard): number => {
 };
 
 const countOfViews = (cardOne: VideoCard, cardTwo: VideoCard): number => {
-  const viewCountOne = cardOne.statistics.viewCount;
-  const viewCountTwo = cardTwo.statistics.viewCount;
+  const viewCountOne = cardOne?.statistics?.viewCount ?? 0;
+  const viewCountTwo = cardTwo?.statistics?.viewCount ?? 0;
   return viewCountTwo - viewCountOne;
 };
 
