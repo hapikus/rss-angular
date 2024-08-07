@@ -7,4 +7,5 @@ export const initialStore: AppStore = {
   sortDirection: SortDirection.ASC,
   data: [],
   page: Page.Main,
+  favorites: [],
 };

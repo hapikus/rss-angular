@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { map, Observable, Subscription } from 'rxjs';
@@ -15,6 +15,8 @@ import { Store } from '@ngrx/store';
 import { selectData } from 'src/app/redux/selectors/data.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { Page } from 'src/app/redux/state.model';
+import { selectIsFavorite } from 'src/app/redux/selectors/favorites.selector';
+import { addFavorite, removeFavorite } from 'src/app/redux/actions/favorites.actions';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
 
 const ROWS = {
@@ -40,9 +42,16 @@ const ROWS = {
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent implements OnInit {
+  public id: string = '';
   public dataSubs?: Subscription;
   public data$ = this.store.select(selectData);
   public dataCurrent: VideoCard[] = [];
+
+  public isFavoriteSubs?: Subscription;
+  public isFavorite$ = this.store.select(
+    selectIsFavorite(this.item?.id.videoId ?? ''),
+  );
+  public isFavoriteLast = false;
 
   public item?: VideoCard;
   public isScreenSmall: Observable<boolean> = this.breakpointObserver
@@ -56,20 +65,40 @@ export class DetailsComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private apiService: ApiService,
     private store: Store,
+    private router: Router,
   ) {}
 
   public ngOnInit(): void {
     this.store.dispatch(pageChange({ page: Page.Details }));
+    const { id } = this.activateRoute.snapshot.params;
+
     this.dataSubs = this.data$.subscribe((data) => {
       this.dataCurrent = data;
     });
 
-    const { id } = this.activateRoute.snapshot.params;
-    const item = this.dataCurrent.filter((videoCard) => videoCard.id.videoId === id);
-    [this.item] = item;
-    if (!!this.item && !this.item?.statistics) {
+    const item = this.dataCurrent.find(
+      (videoCard) => videoCard.id.videoId === id,
+    );
+
+    if (!item) {
+      this.router.navigate(['/not-found']);
+      return;
+    }
+
+    this.item = item;
+    this.isFavorite$ = this.store.select(
+      selectIsFavorite(this.item.id.videoId),
+    );
+    this.isFavoriteSubs = this.isFavorite$.subscribe((flag) => {
+      this.isFavoriteLast = flag;
+    });
+
+    if (!this.item.statistics) {
       this.apiService.getVideo(id).subscribe((data) => {
-        this.item!.statistics = data.items[0].statistics;
+        this.item = {
+          ...this.item,
+          statistics: data.items[0].statistics,
+        } as VideoCard;
       });
     }
   }
@@ -90,5 +119,17 @@ export class DetailsComponent implements OnInit {
       }
     });
     return result.url;
+  }
+
+  public addFavorite() {
+    if (this.item?.id.videoId) {
+      this.store.dispatch(addFavorite({ id: this.item.id.videoId }));
+    }
+  }
+
+  public removeFavorite() {
+    if (this.item?.id.videoId) {
+      this.store.dispatch(removeFavorite({ id: this.item?.id.videoId }));
+    }
   }
 }

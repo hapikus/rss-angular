@@ -6,7 +6,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { AdminComponent } from './pages/admin/admin.component';
-import { checkItemGuard } from './guards/check-item.guard';
+import { FavoritesComponent } from './pages/favorites/favorites.component';
 
 export const routes: Routes = [
   {
@@ -25,13 +25,19 @@ export const routes: Routes = [
     path: 'details/:id',
     component: DetailsComponent,
     title: 'Details Page',
-    canActivate: [authGuard, checkItemGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
     title: 'Login page',
     canActivate: [loginGuard],
+  },
+  {
+    path: 'favorites',
+    component: FavoritesComponent,
+    title: 'Favorites Page',
+    canActivate: [authGuard],
   },
   {
     path: '**',

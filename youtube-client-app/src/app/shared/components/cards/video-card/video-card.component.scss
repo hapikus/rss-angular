@@ -3,6 +3,7 @@
 }
 
 .card {
+  position: relative;
   width: 263px;
   height: 327px;
   border-radius: 8px;
@@ -28,6 +29,13 @@
     column-gap: 3px;
     font-size: 16px;
   }
+}
+
+.favorite {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
 }
 
 .more-container {

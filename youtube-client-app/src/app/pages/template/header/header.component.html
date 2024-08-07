@@ -6,6 +6,11 @@
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/admin']">
           <span nz-icon nzType="bank" nzTheme="outline"></span>
         </button>
+        <nz-badge [nzCount]="(favoritesLength$ | async) || 0">
+          <button nz-button nzType="primary" nzSize="large" [routerLink]="['/favorites']">
+            <span nz-icon nzType="heart" nzTheme="outline"></span>
+          </button>
+        </nz-badge>
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/not-found']">
           <span nz-icon nzType="heat-map" nzTheme="outline"></span>
         </button>
@@ -13,7 +18,6 @@
     }
 
     <app-search (isSettingShowEmit)="isSettingShowEmit($event)" />
-
     <app-login-area />
   </div>
 

@@ -1,4 +1,12 @@
 <div class="card" [appVideoCardBorder]="publishDate"> 
+  <button 
+    class="favorite" 
+    nz-button nzType="primary" 
+    (click)="isFavoriteLast ? removeFavorite() : addFavorite()"
+  >
+    <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
+  </button>
+
   <nz-card 
     nzHoverable 
     [nzCover]="coverTemplate" 

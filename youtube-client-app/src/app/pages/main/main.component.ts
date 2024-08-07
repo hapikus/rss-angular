@@ -10,12 +10,12 @@ import { Page, SortDirection, SortType } from 'src/app/redux/state.model';
 import { selectSortInput } from 'src/app/redux/selectors/sort-input.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { CommonModule } from '@angular/common';
-import { VideoCardComponent } from './video-card/video-card.component';
+import { CardsComponent } from '@shared/components/cards/cards.component';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [VideoCardComponent, CommonModule],
+  imports: [CardsComponent, CommonModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })

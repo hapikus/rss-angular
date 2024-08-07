@@ -2,6 +2,13 @@
   <button nz-button nzType="primary" class="to-main" [routerLink]="['']">
     <span nz-icon nzType="caret-left" nzTheme="outline"></span>
   </button>
+  <button 
+    class="favorite" 
+    nz-button nzType="primary" 
+    (click)="isFavoriteLast ? removeFavorite() : addFavorite()"
+  >
+    <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
+  </button>
   <div class="images">
     <img
       nz-image
@@ -30,3 +37,4 @@
     }
   </div>
 </div>
+{{ isFavorite$ | async }}

@@ -1,0 +1,19 @@
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin: 0 auto;
+  width: 1127px;
+
+  @media (max-width: 1150px) {
+    width: 839px;    
+  }
+
+  @media (max-width: 860px) {
+    width: 551px;
+  }
+  
+  @media (max-width: 570px) {
+    width: 263px;
+  }
+}

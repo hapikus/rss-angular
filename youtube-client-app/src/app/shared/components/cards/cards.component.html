@@ -1,0 +1,12 @@
+<div class="items">
+  @for (item of items; track item.id.videoId) {
+    <app-video-card
+      [title]="item.snippet.title"
+      [statistics]="item.statistics"
+      [previewUrl]="item.snippet.thumbnails['medium'].url"
+      [description]="item.snippet.description"
+      [publishDate]="item.snippet.publishedAt" 
+      [id]="item.id.videoId"
+    />
+  }
+</div>

@@ -17,6 +17,7 @@ export enum Page {
   Login = 'login',
   Main = 'main',
   NotFound = 'notFound',
+  Favorites = 'favorites',
 }
 
 export interface AppStore {
@@ -26,4 +27,5 @@ export interface AppStore {
   sortDirection: SortDirection;
   data: VideoCard[];
   page: Page;
+  favorites: string[];
 }

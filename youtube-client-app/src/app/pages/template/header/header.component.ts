@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { selectPage } from 'src/app/redux/selectors/page.selector';
 import { Store } from '@ngrx/store';
 import { Page } from 'src/app/redux/state.model';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { selectFavoriteCount } from 'src/app/redux/selectors/favorites.selector';
 import { SettingsComponent } from './sub-components/settings/settings.component';
 import { LoginAreaComponent } from './sub-components/login-area/login-area.component';
 import { SearchComponent } from './sub-components/search/search.component';
@@ -23,6 +25,7 @@ import { SearchComponent } from './sub-components/search/search.component';
     SettingsComponent,
     LoginAreaComponent,
     SearchComponent,
+    NzBadgeModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -33,6 +36,9 @@ export class HeaderComponent {
 
   public isSettingShow: boolean = false;
   public isLogin$: Observable<boolean> = this.loginService.isLogin$;
+
+  public favoritesLength$ = this.store.select(selectFavoriteCount);
+  public favoritesLength = 0;
 
   public isSettingShowEmit($event: boolean): void {
     this.isSettingShow = $event;

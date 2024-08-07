@@ -1,5 +1,6 @@
 :host {
   width: 100%;
+  padding: 0 30px;
 }
 
 .container {
@@ -24,6 +25,12 @@
   position: absolute;
   top: 20px;
   left: -32px;
+}
+
+.favorite {
+  position: absolute;
+  top: 20px;
+  right: -32px;
 }
 
 .images {

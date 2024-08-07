@@ -23,6 +23,7 @@ import { searchInputReducer } from './redux/reducers/search-input.reducer';
 import { sortInputReducer } from './redux/reducers/sort-input.reducer';
 import { pageReducer } from './redux/reducers/page.reducer';
 import { dataReducer } from './redux/reducers/data.reducer';
+import { favoritesReducer } from './redux/reducers/favorites.reducer';
 
 registerLocaleData(en);
 
@@ -41,6 +42,7 @@ export const appConfig: ApplicationConfig = {
       page: pageReducer,
       searchInput: searchInputReducer,
       data: dataReducer,
+      favorites: favoritesReducer,
     }),
     provideEffects(),
     provideRouterStore(),
