@@ -13,3 +13,9 @@ export const selectCustomCardsCount = createSelector(
   selectCustomCards,
   (cusomtCards: CustomCard[]) => cusomtCards.length,
 );
+
+export const selectCustomCard = (index: number) =>
+  createSelector(
+    selectCustomCards,
+    (customCards: CustomCard[]) => customCards[index],
+  );

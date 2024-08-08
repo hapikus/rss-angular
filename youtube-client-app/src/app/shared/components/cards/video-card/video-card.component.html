@@ -27,7 +27,7 @@
     nzHoverable 
     [nzCover]="coverTemplate" 
     nzSize="small"
-    [routerLink]="cardType === cardTypeEnum.YouTube ? ['/details', id] : []"
+    [routerLink]="['/details', id]"
   >
     <nz-card-meta [nzTitle]="title" [nzDescription]="descriptionTemplate" />
   </nz-card>

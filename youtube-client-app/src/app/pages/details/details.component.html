@@ -1,40 +1,61 @@
-<div class="container" *ngIf="item">
+<div class="container">
   <button nz-button nzType="primary" class="to-main" [routerLink]="['']">
     <span nz-icon nzType="caret-left" nzTheme="outline"></span>
   </button>
-  <button 
-    class="favorite" 
-    nz-button nzType="primary" 
-    (click)="isFavoriteLast ? removeFavorite() : addFavorite()"
-  >
-    <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
-  </button>
+  @switch (cardType) {
+    @case (cardTypeEnum.YouTube) {
+      <button 
+      class="favorite" 
+      nz-button nzType="primary" 
+      (click)="isFavoriteCurrent ? removeFavorite() : addFavorite()"
+    >
+      <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
+    </button>
+    }
+    @case (cardTypeEnum.CustomCard) {
+      <button 
+        class="delete-custom-card" 
+        nz-button 
+        nzType="primary" 
+        nzDanger
+        (click)="deleteCustomCard()"
+      >
+        <span nz-icon nzType="delete" nzTheme="outline"></span>
+      </button>
+    }
+  }
   <div class="images">
     <img
       nz-image
       [nzSrc]="previewImg"
       alt=""
+      [nzFallback]="fallback"
+      nzDisablePreview
     />
   </div>
   <div class="additional-info">
     <div class="header">
-      <div class="publish-date">{{ item.snippet.publishedAt | dFormatter}}</div>
-      <div class="title"><h4 nz-typography>{{ item.snippet.title }}</h4></div>
+      <div class="publish-date">
+        {{ publishDate | dFormatter }}</div>
+      <div class="title">
+        <h4 nz-typography>
+          {{ title }}
+        </h4>
+      </div>
     </div>
     <div class="description">
       <p 
         nz-typography 
         nzEllipsis 
-        [nzEllipsisRows]="(isScreenSmall | async) ? rowsConst.smallScreen : rowsConst.bigScreen"
+        [nzEllipsisRows]="(isScreenSmall$ | async) ? rowsConst.smallScreen : rowsConst.bigScreen"
       >
-        {{ item.snippet.description }}
+        {{ description }}
       </p>
     </div>
-    @if (item.statistics) {
+    @if (item && item.statistics) {
       <div class="statistics">
         <app-statistics [statistics]="item.statistics" />
       </div>
     }
   </div>
 </div>
-{{ isFavorite$ | async }}
