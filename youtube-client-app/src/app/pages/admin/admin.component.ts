@@ -10,6 +10,7 @@ import { ErrorsFormatterPipe } from '@shared/pipes/errors-formatter.pipe';
 import { Store } from '@ngrx/store';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { Page } from 'src/app/redux/state.model';
+import { addCustomCard } from 'src/app/redux/actions/custom-card.actions';
 import { descriptionValidator, previewImageValidator, titleValidator, videoValidator } from './helpers';
 
 @Component({
@@ -69,6 +70,15 @@ export class AdminComponent implements OnInit {
   }
 
   public submit() {
+    const customCard = {
+      title: this.createCardForm.get(['title'])?.value ?? '',
+      description: this.createCardForm.get(['description'])?.value ?? '',
+      previewImage: this.createCardForm.get(['previewImage'])?.value ?? '',
+      video: this.createCardForm.get(['video'])?.value ?? '',
+      createDate: this.createCardForm.get(['createDate'])?.value ?? new Date(),
+      tags: this.createCardForm.get(['tags'])?.value ?? [],
+    };
+    this.store.dispatch(addCustomCard({ customCard }));
     this.createCardForm.reset();
   }
 

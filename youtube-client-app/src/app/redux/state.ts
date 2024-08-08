@@ -8,4 +8,5 @@ export const initialStore: AppStore = {
   data: [],
   page: Page.Main,
   favorites: [],
+  customCards: [],
 };

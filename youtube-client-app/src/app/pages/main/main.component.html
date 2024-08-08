@@ -1,1 +1,4 @@
-<app-cards [items]="items">
+<app-cards 
+  [items]="items"
+  [customCards]="(customCards$ | async) ?? []"
+/>

@@ -28,4 +28,14 @@ export interface AppStore {
   data: VideoCard[];
   page: Page;
   favorites: string[];
+  customCards: CustomCard[]
+}
+
+export interface CustomCard {
+  title: string,
+  description: string,
+  previewImage: string,
+  video: string,
+  createDate: Date,
+  tags: string[],
 }

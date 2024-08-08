@@ -6,11 +6,12 @@ import { Subscription } from 'rxjs';
 import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
 import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
 import { selectData } from 'src/app/redux/selectors/data.selector';
-import { Page, SortDirection, SortType } from 'src/app/redux/state.model';
+import { CustomCard, Page, SortDirection, SortType } from 'src/app/redux/state.model';
 import { selectSortInput } from 'src/app/redux/selectors/sort-input.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { CommonModule } from '@angular/common';
 import { CardsComponent } from '@shared/components/cards/cards.component';
+import { selectCustomCards } from 'src/app/redux/selectors/custom-card.selector';
 
 @Component({
   selector: 'app-main',
@@ -23,6 +24,10 @@ export class MainComponent implements OnInit, OnDestroy {
   public dataSubs?: Subscription;
   public data$ = this.store.select(selectData);
   public dataCurrent: VideoCard[] = [];
+
+  public customCardsSubs?: Subscription;
+  public customCards$ = this.store.select(selectCustomCards);
+  public customCardsCurrent: CustomCard[] = [];
 
   public sortTypeSubs?: Subscription;
   public sortType$ = this.store.select(selectSortType);
@@ -60,6 +65,9 @@ export class MainComponent implements OnInit, OnDestroy {
     this.sortInputSubs = this.sortInput$.subscribe((input) => {
       this.sortInputCurrent = input;
     });
+    this.customCardsSubs = this.customCards$.subscribe((cards) => {
+      this.customCardsCurrent = cards;
+    });
   }
 
   public ngOnDestroy(): void {
@@ -67,6 +75,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.sortTypeSubs?.unsubscribe();
     this.sortDirectionSubs?.unsubscribe();
     this.sortInputSubs?.unsubscribe();
+    this.customCardsSubs?.unsubscribe();
   }
 
   constructor(private itemsService: ItemsService, private store: Store) {}

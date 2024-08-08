@@ -5,11 +5,13 @@ import { selectFavoritesData } from 'src/app/redux/selectors/data.selector';
 import { CardsComponent } from '@shared/components/cards/cards.component';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { Page } from 'src/app/redux/state.model';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, CardsComponent],
+  imports: [CommonModule, CardsComponent, NzImageModule, NzTypographyModule],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.scss',
 })

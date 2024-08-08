@@ -1,23 +1,46 @@
 <div class="card" [appVideoCardBorder]="publishDate"> 
-  <button 
-    class="favorite" 
-    nz-button nzType="primary" 
-    (click)="isFavoriteLast ? removeFavorite() : addFavorite()"
-  >
-    <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
-  </button>
+  @switch (cardType) {
+    @case (cardTypeEnum.CustomCard) {
+      <button 
+        class="delete-custom-card" 
+        nz-button 
+        nzType="primary" 
+        nzDanger
+        (click)="deleteCustomCard()"
+      >
+        <span nz-icon nzType="delete" nzTheme="outline"></span>
+      </button>
+    }
+
+    @case (cardTypeEnum.YouTube) {
+      <button 
+        class="favorite" 
+        nz-button nzType="primary" 
+        (click)="isFavoriteLast ? removeFavorite() : addFavorite()"
+      >
+        <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
+      </button>
+    }
+  }
 
   <nz-card 
     nzHoverable 
     [nzCover]="coverTemplate" 
     nzSize="small"
-    [routerLink]="['/details', id]"
+    [routerLink]="cardType === cardTypeEnum.YouTube ? ['/details', id] : []"
   >
     <nz-card-meta [nzTitle]="title" [nzDescription]="descriptionTemplate" />
   </nz-card>
 
   <ng-template #coverTemplate>
-    <img class="card__img" alt="preview" [src]="previewUrl" />
+    <img 
+      nz-image 
+      class="card__img" 
+      alt="preview" 
+      [nzSrc]="previewUrl ?? ''" 
+      [nzFallback]="fallback"
+      nzDisablePreview
+    />
   </ng-template>
 
   <ng-template #descriptionTemplate>
