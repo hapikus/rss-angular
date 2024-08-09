@@ -7,6 +7,7 @@ export enum Params {
  Type = 'type',
  Part = 'part',
  MaxResults = 'maxResults',
+ PageToken = 'pageToken',
  Q = 'q',
 }
 

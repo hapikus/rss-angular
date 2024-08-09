@@ -15,8 +15,9 @@ import { searchInputChange } from 'src/app/redux/actions/search-input.actions';
 import { selectSearchInput } from 'src/app/redux/selectors/search-input.selector';
 import { CommonModule } from '@angular/common';
 import { selectPage } from 'src/app/redux/selectors/page.selector';
-import { Page } from 'src/app/redux/state.model';
-import { dataFetch } from 'src/app/redux/actions/data.actions';
+import { Page, PageTokenKey } from 'src/app/redux/state.model';
+import { dataFetch, dataUpdate } from 'src/app/redux/actions/data.actions';
+import { addPageToken } from 'src/app/redux/actions/page-token.actions';
 
 @Component({
   selector: 'app-search',
@@ -88,6 +89,32 @@ export class SearchComponent implements OnInit {
       .subscribe((res: SearchResponse) => {
         if (res) {
           this.store.dispatch(dataFetch({ videoCards: res.items }));
+        }
+
+        res.items.forEach((video) => {
+          this.apiService.getVideo(video.id.videoId).subscribe((detailsRes: SearchResponse) => {
+            if (detailsRes && detailsRes.items.length > 0) {
+              const videoDetail = detailsRes.items[0];
+              this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
+            }
+          });
+        });
+
+        if (res.nextPageToken) {
+          this.store.dispatch(
+            addPageToken({
+              pageTokenKey: PageTokenKey.Next,
+              token: res.nextPageToken,
+            }),
+          );
+        }
+        if (res.prevPageToken) {
+          this.store.dispatch(
+            addPageToken({
+              pageTokenKey: PageTokenKey.Prev,
+              token: res.prevPageToken,
+            }),
+          );
         }
       });
   }

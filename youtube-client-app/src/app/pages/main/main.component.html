@@ -1,4 +1,26 @@
 <app-cards 
   [items]="items"
-  [customCards]="(customCards$ | async) ?? []"
+  [customCards]="(pageNumber$ | async) === 1 ? (customCards$ | async) ?? [] : []"
 />
+
+@if (!!dataCurrent.length) {
+  <div class="pagination">
+    <button 
+      nz-button 
+      nzType="primary"
+      [disabled]="!pageTokensCurrent[pageTokenKeyEnum.Prev] || (pageNumber$ | async) === 1"
+      (click)="pageLoad(pageTokenKeyEnum.Prev)"
+    >
+      Prev
+    </button>
+    {{ pageNumber$ | async }}
+    <button 
+      nz-button 
+      nzType="primary"
+      [disabled]="!pageTokensCurrent[pageTokenKeyEnum.Next]"
+      (click)="pageLoad(pageTokenKeyEnum.Next)"
+    >
+      Next
+    </button>
+  </div>
+}

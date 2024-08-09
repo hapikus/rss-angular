@@ -7,16 +7,16 @@ export const favoritesReducer = createReducer(
   initialStore,
   on(
     addFavorite,
-    (store, { id }): AppStore => ({
+    (store, { favoriteCard }): AppStore => ({
       ...store,
-      favorites: [...store.favorites, id],
+      favorites: [...store.favorites, favoriteCard],
     }),
   ),
   on(
     removeFavorite,
     (store, { id }): AppStore => ({
       ...store,
-      favorites: [...store.favorites.filter((item) => item !== id)],
+      favorites: [...store.favorites.filter((item) => item.id !== id)],
     }),
   ),
 );

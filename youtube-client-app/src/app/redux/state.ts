@@ -1,4 +1,4 @@
-import { AppStore, Page, SortDirection, SortType } from './state.model';
+import { AppStore, Page, PageTokenKey, SortDirection, SortType } from './state.model';
 
 export const initialStore: AppStore = {
   searchInput: '',
@@ -9,4 +9,9 @@ export const initialStore: AppStore = {
   page: Page.Main,
   favorites: [],
   customCards: [],
+  pageTokens: {
+    [PageTokenKey.Prev]: '',
+    [PageTokenKey.Next]: '',
+  },
+  pageNumber: 1,
 };

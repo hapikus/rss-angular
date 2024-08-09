@@ -1,8 +1,9 @@
 import { createAction, props } from '@ngrx/store';
+import { FavoriteCard } from '../state.model';
 
 export const addFavorite = createAction(
   '[Favorite] Add',
-  props<{ id: string }>(),
+  props<{ favoriteCard: FavoriteCard }>(),
 );
 
 export const removeFavorite = createAction(

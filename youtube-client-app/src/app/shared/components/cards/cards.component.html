@@ -1,4 +1,14 @@
 <div class="items">
+  @for (favoriteCard of favoriteCards; track $index) {
+    <app-video-card
+      [title]="favoriteCard.title"
+      [previewUrl]="favoriteCard.previewImage"
+      [description]="favoriteCard.description"
+      [publishDate]="favoriteCard.createDate" 
+      [id]="favoriteCard.id"
+      [cardType]="cardTypeEnum.FavoriteCard"
+    />
+  }
   @for (customCard of customCards; track $index) {
     <app-video-card
       [title]="customCard.title"

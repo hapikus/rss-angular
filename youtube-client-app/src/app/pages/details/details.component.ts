@@ -183,7 +183,18 @@ export class DetailsComponent implements OnInit {
 
   public addFavorite() {
     if (this.item?.id.videoId) {
-      this.store.dispatch(addFavorite({ id: this.item.id.videoId }));
+      this.store.dispatch(addFavorite({
+        favoriteCard:
+          {
+            id: this.id,
+            title: this.title ?? '',
+            video: '',
+            description: this.description ?? '',
+            previewImage: this.previewImg ?? '',
+            createDate: this.publishDate!,
+            statistics: this.statistics,
+          },
+        }));
     }
   }
 

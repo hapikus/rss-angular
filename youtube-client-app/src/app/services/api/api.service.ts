@@ -8,15 +8,18 @@ import { Params, ParamsVideo, Endpoints, ParamsStatistics } from './types';
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'https://www.googleapis.com/youtube/v3';
-
   constructor(private http: HttpClient) {}
 
-  public getVideos(q: string, maxResult: string): Observable<SearchResponse> {
+  public getVideos(q: string, maxResult?: string, pageToken?: string): Observable<SearchResponse> {
     let params = new HttpParams();
     params = params.set(Params.Type, ParamsVideo.Type);
     params = params.set(Params.Part, ParamsVideo.Part);
-    params = params.set(Params.MaxResults, maxResult);
+    if (maxResult) {
+      params = params.set(Params.MaxResults, maxResult);
+    }
+    if (pageToken) {
+      params = params.set(Params.PageToken, pageToken);
+    }
     params = params.set(Params.Q, q);
 
     return this.http.get<SearchResponse>(

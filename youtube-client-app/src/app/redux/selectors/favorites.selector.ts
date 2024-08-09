@@ -11,10 +11,10 @@ export const selectFavorites = createSelector(
 export const selectIsFavorite = (videoId: string) =>
   createSelector(
     selectFavoriteFeature,
-    (state: AppStore) => (!!state.favorites.filter((item) => item === videoId).length),
+    (state: AppStore) => (!!state.favorites.filter((item) => item.id === videoId).length),
   );
 
 export const selectFavoriteCount = createSelector(
   selectFavorites,
-  (favorites: string[]) => favorites.length,
+  (favorites) => favorites.length,
 );

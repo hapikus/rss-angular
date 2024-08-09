@@ -1,4 +1,4 @@
-import { VideoCard } from '@models/video-card.model';
+import { Statistics, VideoCard } from '@models/video-card.model';
 
 export enum SortDirection {
   ASC = 'ASC',
@@ -20,15 +20,14 @@ export enum Page {
   Favorites = 'favorites',
 }
 
-export interface AppStore {
-  searchInput: string;
-  sortType: SortType;
-  sortInput: string;
-  sortDirection: SortDirection;
-  data: VideoCard[];
-  page: Page;
-  favorites: string[];
-  customCards: CustomCard[]
+export enum PageTokenKey {
+  Prev = 'prev',
+  Next = 'next',
+}
+
+export interface PageTokens {
+  [PageTokenKey.Prev]: string,
+  [PageTokenKey.Next]: string,
 }
 
 export interface CustomCard {
@@ -37,5 +36,23 @@ export interface CustomCard {
   previewImage: string,
   video: string,
   createDate: Date,
-  tags: string[],
+  tags?: string[],
+}
+
+export interface FavoriteCard extends CustomCard {
+  id: string;
+  statistics?: Statistics;
+}
+
+export interface AppStore {
+  searchInput: string;
+  sortType: SortType;
+  sortInput: string;
+  sortDirection: SortDirection;
+  data: VideoCard[];
+  page: Page;
+  favorites: FavoriteCard[];
+  customCards: CustomCard[],
+  pageTokens: PageTokens,
+  pageNumber: number,
 }

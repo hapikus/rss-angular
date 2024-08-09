@@ -76,7 +76,17 @@ export class VideoCardComponent implements OnInit, OnDestroy {
 
   public addFavorite() {
     if (this.id) {
-      this.store.dispatch(addFavorite({ id: this.id }));
+      this.store.dispatch(addFavorite({ favoriteCard:
+        {
+          id: this.id,
+          title: this.title ?? '',
+          video: '',
+          description: this.description ?? '',
+          previewImage: this.previewUrl ?? '',
+          createDate: this.publishDate!,
+          statistics: this.statistics,
+        },
+      }));
     }
   }
 

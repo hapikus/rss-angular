@@ -10,6 +10,7 @@ export interface SearchResponse {
   etag: string;
   pageInfo: PageInfo;
   items: VideoCard[];
-  nextPageToken: string,
+  nextPageToken?: string,
+  prevPageToken?: string,
   regionCode: string,
 }

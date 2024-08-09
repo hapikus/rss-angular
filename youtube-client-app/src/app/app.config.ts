@@ -25,6 +25,8 @@ import { pageReducer } from './redux/reducers/page.reducer';
 import { dataReducer } from './redux/reducers/data.reducer';
 import { favoritesReducer } from './redux/reducers/favorites.reducer';
 import { customCardsReducer } from './redux/reducers/custom-card.reducer';
+import { pageTokenReducer } from './redux/reducers/page-token.reducer';
+import { pageNumberReducer } from './redux/reducers/page-number.reducer';
 
 registerLocaleData(en);
 
@@ -45,6 +47,8 @@ export const appConfig: ApplicationConfig = {
       data: dataReducer,
       favorites: favoritesReducer,
       customCards: customCardsReducer,
+      pageToken: pageTokenReducer,
+      pageNumber: pageNumberReducer,
     }),
     provideEffects(),
     provideRouterStore(),
