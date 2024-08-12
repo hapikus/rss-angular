@@ -1,40 +1,7 @@
-<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
-<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
-<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div class="container">
   <div class="content">
-
-    <div class="content__search">
-      <button class="youtube-icon" nz-button nzType="primary" nzSize="large">
-        <span nz-icon nzType="play-circle" nzTheme="twotone"></span>
-      </button>
-
-      <form nz-form nzLayout="inline" [formGroup]="searchForm" (ngSubmit)="setStoreSearch()">
-        <nz-form-item>
-          <nz-input-group>
-            <input formControlName="search" nz-input type="text" placeholder="Search input" />
-          </nz-input-group>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-control>
-            <button nz-button nzType="primary">Search</button>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-
-      <button class="setting-toggle-button" nz-button nzType="primary" nzSize="large" (click)="toggleIsSettingShow()">
-        <span nz-icon nzType="setting" nzTheme="twotone"></span>
-      </button>
-    </div>
-
-    <div class="login">
-      <p nz-typography>{{ loginText }}</p>
-      <button nz-button nzType="primary" nzSize="large" (click)="loginHandle()">
-        <span nz-icon [nzType]="store.login ? 'login' : 'logout'" nzTheme="outline"></span>
-      </button>
-    </div>
-
-    @if (store.login) {
+    
+    @if (isLogin | async) {
       <div class="admin">
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/admin']">
           <span nz-icon nzType="bank" nzTheme="outline"></span>
@@ -44,25 +11,13 @@
         </button>
       </div>
     }
+
+    <app-search (isSettingShowEmit)="isSettingShowEmit($event)" />
+
+    <app-login-area />
   </div>
 
-  @if (isSettingShow) {
-    <div class="sorting">
-      <p nz-typography>Sorting by:</p>
-      <div class="types">
-        @for (sortTypeFor of sortTypeButton; track $index) {
-          <label nz-radio-button [nzValue]="sortTypeFor" (click)="setDirection(sortTypeFor)">
-            {{ sortTypeFor }}
-            <span 
-              *ngIf="store.sortType === sortTypeFor"
-              nz-icon 
-              [nzType]="store.sortDirection === sortDirectionEnum.ASC ? 'arrow-down' : 'arrow-up'" 
-              nzTheme="outline"
-            ></span>
-          </label>
-        }
-        <input nz-input placeholder="Type word or sentance" nzSize="small" [(ngModel)]="store.sortInput"/>
-      </div>
-    </div>
+  @if (isSettingShow && !checkPage()) {
+     <app-settings />
   }
 </div>

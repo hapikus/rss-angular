@@ -22,7 +22,16 @@
     "lib": [
       "ES2023",
       "dom"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@guards/*": ["src/app/guards/*"],
+      "@interceptor/*": ["src/app/interceptor/*"],
+      "@models/*": ["src/app/models/*"],
+      "@services/*": ["src/app/services/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@stores/*": ["src/app/stores/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,98 +1,45 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { NzAnchorModule } from 'ng-zorro-antd/anchor';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { store } from '../../../stores/store';
-import { SortDirection, SortType, Store } from '../../../stores/types';
-import { LoginService } from '../../../services/login.service';
+import { RouterLink } from '@angular/router';
+import { store } from '@stores/store';
+import { Page, Store } from '@stores/types';
+import { LoginService } from '@services/login/login.service';
+import { Observable } from 'rxjs';
+import { SettingsComponent } from './sub-components/settings/settings.component';
+import { LoginAreaComponent } from './sub-components/login-area/login-area.component';
+import { SearchComponent } from './sub-components/search/search.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    FormsModule,
-    NzTypographyModule,
-    NzAnchorModule,
     NzButtonModule,
-    NzInputModule,
     NzIconModule,
-    NzRadioModule,
     CommonModule,
-    ReactiveFormsModule,
-    NzFormModule,
     RouterLink,
+    SettingsComponent,
+    LoginAreaComponent,
+    SearchComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   public store: Store = store;
-  public sortTypeButton = [
-    SortType.Date,
-    SortType.CountOfViews,
-    SortType.ByWordOrSentance,
-  ];
-  public sortDirectionEnum = SortDirection;
   public isSettingShow: boolean = false;
-  public sortTypeCurrent = store.sortType;
-  public localSearch: string = '';
+  public isLogin: Observable<boolean> = this.loginService.isLogin$;
 
-  public searchForm: FormGroup<{
-    search: FormControl<string>;
-  }> = this.fb.group({
-    search: ['', [Validators.required]],
-  });
-
-  public toggleIsSettingShow(): void {
-    this.isSettingShow = !this.isSettingShow;
+  public isSettingShowEmit($event: boolean): void {
+    this.isSettingShow = $event;
   }
 
-  public setDirection(sortType: SortType): void {
-    if (this.sortTypeCurrent !== sortType) {
-      this.sortTypeCurrent = sortType;
-      store.sortType = sortType;
-      store.sortDirection = SortDirection.ASC;
-      return;
-    }
-
-    store.sortDirection =
-      store.sortDirection === SortDirection.ASC
-        ? SortDirection.DESC
-        : SortDirection.ASC;
-  }
-
-  public setStoreSearch() {
-    store.searchInput = this.searchForm.value.search ?? '';
-    const searchEmpty = !this.searchForm.value.search;
-    if (!searchEmpty) {
-      this.router.navigate(['']);
-    }
-  }
-
-  public loginHandle() {
-    this.loginService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  public get loginText() {
-    if (this.store.login) {
-      const loginName =
-        localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
-      return loginName;
-    }
-    return 'Login';
+  public checkPage() {
+    return store.page !== Page.Main || null;
   }
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private router: Router,
     private loginService: LoginService,
   ) {}
 }

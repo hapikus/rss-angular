@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ItemsService } from '../services/items.service';
+import { ItemsService } from '../services/items/items.service';
 
 export const checkItemGuard: CanActivateFn = (route) => {
   const itemsService = inject(ItemsService);
