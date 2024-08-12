@@ -22,12 +22,12 @@ import { sortDirectionReducer } from './redux/reducers/sort-direction.reducer';
 import { searchInputReducer } from './redux/reducers/search-input.reducer';
 import { sortInputReducer } from './redux/reducers/sort-input.reducer';
 import { pageReducer } from './redux/reducers/page.reducer';
-import { dataReducer } from './redux/reducers/data.reducer';
+import { videosReducer } from './redux/reducers/videos.reducer';
 import { favoritesReducer } from './redux/reducers/favorites.reducer';
 import { customCardsReducer } from './redux/reducers/custom-card.reducer';
 import { pageTokenReducer } from './redux/reducers/page-token.reducer';
 import { pageNumberReducer } from './redux/reducers/page-number.reducer';
-import { DataEffects } from './redux/effects/data.effects';
+import { DataEffects } from './redux/effects/videos.effects';
 
 registerLocaleData(en);
 
@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       sortInput: sortInputReducer,
       page: pageReducer,
       searchInput: searchInputReducer,
-      data: dataReducer,
+      data: videosReducer,
       favorites: favoritesReducer,
       customCards: customCardsReducer,
       pageToken: pageTokenReducer,

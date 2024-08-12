@@ -1,27 +1,24 @@
 <div class="card" [appVideoCardBorder]="publishDate"> 
-  @switch (cardType) {
-    @case (cardTypeEnum.CustomCard) {
-      <button 
-        class="delete-custom-card" 
-        nz-button 
-        nzType="primary" 
-        nzDanger
-        (click)="deleteCustomCard()"
-      >
-        <span nz-icon nzType="delete" nzTheme="outline"></span>
-      </button>
-    }
-
-    @case (cardTypeEnum.YouTube || cardTypeEnum.FavoriteCard) {
-      <button 
-        class="favorite" 
-        nz-button nzType="primary" 
-        (click)="isFavoriteLast ? removeFavorite() : addFavorite()"
-      >
-        <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
-      </button>
-    }
-  }
+  <button 
+    nz-button 
+    nzType="primary" 
+    nzDanger
+    [class]="cardType === cardTypeEnum.CustomCard ? 'delete-custom-card' : 'favorite'"
+    (click)="clickHandle()"
+  >
+    <span 
+      *ngIf="cardType === cardTypeEnum.CustomCard" 
+      nz-icon 
+      nzType="delete" 
+      nzTheme="outline"
+    ></span>
+    <span 
+      *ngIf="cardType === cardTypeEnum.FavoriteCard || cardType === cardTypeEnum.YouTube" 
+      nz-icon 
+      nzType="heart" 
+      [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"
+    ></span>
+  </button>
 
   <nz-card 
     nzHoverable 

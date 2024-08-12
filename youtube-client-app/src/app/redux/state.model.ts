@@ -49,7 +49,7 @@ export interface AppStore {
   sortType: SortType;
   sortInput: string;
   sortDirection: SortDirection;
-  data: VideoCard[];
+  videos: VideoCard[];
   page: Page;
   favorites: FavoriteCard[];
   customCards: CustomCard[],

@@ -5,7 +5,7 @@ export const initialStore: AppStore = {
   sortType: SortType.Date,
   sortInput: '',
   sortDirection: SortDirection.ASC,
-  data: [],
+  videos: [],
   page: Page.Main,
   favorites: [],
   customCards: [],

@@ -10,13 +10,13 @@ import { SearchResponse } from '@models/search.model';
 import { selectSearchInput } from '../selectors/search-input.selector';
 import { selectPageTokenByType } from '../selectors/page-token.selector';
 import { PageTokenKey } from '../state.model';
-import { dataFetchSuccess, dataUpdateError, dataUpdateSuccess } from '../actions/data.actions';
 import { addPageToken } from '../actions/page-token.actions';
+import { videosFetchSuccess, videoWithDetailsError, videoWithDetailsSuccess } from '../actions/videos.actions';
 
 enum DataActions {
-  DataFetch = '[Data] Fetch',
-  DataFetchNext = '[Data] Fetch Next',
-  DataFetchPrev = '[Data] Fetch Prev',
+  VideosFetch = '[Videos] Fetch',
+  VideosFetchNext = '[Videos] Fetch Next',
+  VideosFetchPrev = '[Videos] Fetch Prev',
 }
 
 @Injectable()
@@ -30,9 +30,9 @@ export class DataEffects {
   loadVideos$ = createEffect(() => {
     return this.actions.pipe(
       ofType(
-        DataActions.DataFetch,
-        DataActions.DataFetchNext,
-        DataActions.DataFetchPrev,
+        DataActions.VideosFetch,
+        DataActions.VideosFetchNext,
+        DataActions.VideosFetchPrev,
       ),
       concatLatestFrom(() => [
         this.store.select(selectSearchInput),
@@ -42,10 +42,10 @@ export class DataEffects {
       switchMap(([{ type }, input, tokenNext, tokenPrev]) => {
         let token = '';
         switch (type) {
-          case DataActions.DataFetchNext:
+          case DataActions.VideosFetchNext:
             token = tokenNext;
             break;
-          case DataActions.DataFetchPrev:
+          case DataActions.VideosFetchPrev:
             token = tokenPrev;
             break;
           default:
@@ -55,16 +55,16 @@ export class DataEffects {
           mergeMap((res: SearchResponse) => {
             const actions = [];
 
-            actions.push(dataFetchSuccess({ videoCards: res.items }));
+            actions.push(videosFetchSuccess({ videoCards: res.items }));
 
             const videoDetailsActions$ = res.items.map((video) =>
               this.apiService.getVideoWithDetails(video.id.videoId).pipe(
                 map((detailsRes: SearchResponse) => {
                   if (detailsRes && detailsRes.items.length > 0) {
                     const videoDetail = detailsRes.items[0];
-                    return dataUpdateSuccess({ videoCard: videoDetail });
+                    return videoWithDetailsSuccess({ videoCard: videoDetail });
                   }
-                  return dataUpdateError();
+                  return videoWithDetailsError();
                 }),
               ));
 

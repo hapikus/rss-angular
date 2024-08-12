@@ -1,23 +1,23 @@
 import { createReducer, on } from '@ngrx/store';
-import { dataFetchSuccess, dataUpdateSuccess } from '../actions/data.actions';
 import { initialStore } from '../state';
 import { AppStore } from '../state.model';
+import { videosFetchSuccess, videoWithDetailsSuccess } from '../actions/videos.actions';
 
-export const dataReducer = createReducer(
+export const videosReducer = createReducer(
   initialStore,
   on(
-    dataFetchSuccess,
+    videosFetchSuccess,
     (store, { videoCards }): AppStore => ({
       ...store,
-      data: [...videoCards],
+      videos: [...videoCards],
     }),
   ),
   on(
-    dataUpdateSuccess,
+    videoWithDetailsSuccess,
     (store, { videoCard }): AppStore => ({
       ...store,
-      data: [
-        ...store.data.map((item) => {
+      videos: [
+        ...store.videos.map((item) => {
           const itemNew = { ...item };
           if (item.id.videoId === (videoCard.id as unknown as string)) {
             itemNew.statistics = videoCard.statistics;

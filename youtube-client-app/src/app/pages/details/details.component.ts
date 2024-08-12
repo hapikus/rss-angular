@@ -12,7 +12,7 @@ import { NFormatterPipe } from '@shared/components/statistics/pipes/n-formatter.
 import { StatisticsComponent } from '@shared/components/statistics/statistics.component';
 import { ApiService } from '@services/api/api.service';
 import { Store } from '@ngrx/store';
-import { selectData } from 'src/app/redux/selectors/data.selector';
+import { selectData } from 'src/app/redux/selectors/videos.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { CustomCard, Page } from 'src/app/redux/state.model';
 import { selectIsFavorite } from 'src/app/redux/selectors/favorites.selector';

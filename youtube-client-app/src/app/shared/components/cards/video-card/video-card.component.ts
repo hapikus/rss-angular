@@ -55,7 +55,7 @@ export class VideoCardComponent implements OnInit, OnDestroy {
   public isFavorite$ = this.store.select(
     selectIsFavorite(this.id ?? ''),
   );
-  public isFavoriteLast = false;
+  public isFavoriteCurrent = false;
 
   public ngOnInit(): void {
     if (!this.id) {
@@ -66,7 +66,7 @@ export class VideoCardComponent implements OnInit, OnDestroy {
       selectIsFavorite(this.id),
     );
     this.isFavoriteSubs = this.isFavorite$.subscribe((flag) => {
-      this.isFavoriteLast = flag;
+      this.isFavoriteCurrent = flag;
     });
   }
 
@@ -98,6 +98,24 @@ export class VideoCardComponent implements OnInit, OnDestroy {
 
   public deleteCustomCard() {
     this.store.dispatch(removeCustomCard({ index: +(this.id ?? 0) }));
+  }
+
+  public clickHandle() {
+    switch (this.cardType) {
+      case CardType.CustomCard:
+        this.deleteCustomCard();
+        break;
+      case CardType.FavoriteCard:
+      case CardType.YouTube:
+        if (this.isFavoriteCurrent) {
+          this.removeFavorite();
+          break;
+        }
+        this.addFavorite();
+        break;
+      default:
+        break;
+    }
   }
 
   constructor(

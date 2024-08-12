@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
 import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
-import { selectData } from 'src/app/redux/selectors/data.selector';
+import { selectData } from 'src/app/redux/selectors/videos.selector';
 import { CustomCard, Page, PageTokenKey, PageTokens, SortDirection, SortType } from 'src/app/redux/state.model';
 import { selectSortInput } from 'src/app/redux/selectors/sort-input.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
@@ -15,9 +15,9 @@ import { selectCustomCards } from 'src/app/redux/selectors/custom-card.selector'
 import { selectPageTokens } from 'src/app/redux/selectors/page-token.selector';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { selectSearchInput } from 'src/app/redux/selectors/search-input.selector';
-import { dataFetchNext, dataFetchPrev } from 'src/app/redux/actions/data.actions';
 import { selectPageNumber } from 'src/app/redux/selectors/page-number.selector';
 import { decreasePageNumber, increasePageNumber } from 'src/app/redux/actions/page-number.actions';
+import { videosFetchNext, videosFetchPrev } from 'src/app/redux/actions/videos.actions';
 
 @Component({
   selector: 'app-main',
@@ -116,11 +116,11 @@ export class MainComponent implements OnInit, OnDestroy {
     switch (pageTokenKey) {
       case PageTokenKey.Next:
         this.store.dispatch(increasePageNumber());
-        this.store.dispatch(dataFetchNext());
+        this.store.dispatch(videosFetchNext());
         break;
       default:
         this.store.dispatch(decreasePageNumber());
-        this.store.dispatch(dataFetchPrev());
+        this.store.dispatch(videosFetchPrev());
         break;
     }
   }

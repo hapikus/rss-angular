@@ -15,7 +15,7 @@ import { selectSearchInput } from 'src/app/redux/selectors/search-input.selector
 import { CommonModule } from '@angular/common';
 import { selectPage } from 'src/app/redux/selectors/page.selector';
 import { Page } from 'src/app/redux/state.model';
-import { dataFetch } from 'src/app/redux/actions/data.actions';
+import { videosFetch } from 'src/app/redux/actions/videos.actions';
 
 @Component({
   selector: 'app-search',
@@ -75,7 +75,7 @@ export class SearchComponent implements OnInit {
   }
 
   private setStoreData(): void {
-    this.store.dispatch(dataFetch());
+    this.store.dispatch(videosFetch());
   }
 
   public search() {
