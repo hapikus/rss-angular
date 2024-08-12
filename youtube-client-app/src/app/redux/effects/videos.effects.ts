@@ -92,7 +92,6 @@ export class DataEffects {
 
             return from(videoDetailsActions$).pipe(
               mergeMap((detailAction$) => detailAction$),
-              map((actionMap) => actionMap),
               startWith(...actions),
             );
           }),
