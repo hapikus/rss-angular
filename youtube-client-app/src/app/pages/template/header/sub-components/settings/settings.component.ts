@@ -7,7 +7,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '@services/api/api.service';
-import { forkJoin, map, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { sortTypeChange } from 'src/app/redux/actions/sort-type.actions';
 import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
@@ -16,9 +16,7 @@ import { sortDirectionAsc, sortDirectionDesc } from 'src/app/redux/actions/sort-
 import { SortType, SortDirection } from 'src/app/redux/state.model';
 import { selectData } from 'src/app/redux/selectors/data.selector';
 import { VideoCard } from '@models/video-card.model';
-import { dataUpdate } from 'src/app/redux/actions/data.actions';
 import { sortInputChange } from 'src/app/redux/actions/sort-input.actions';
-import { getIds } from './helpers';
 
 @Component({
   selector: 'app-settings',
@@ -75,23 +73,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.sortDirectionSubs?.unsubscribe();
   }
 
-  public checkStatistics() {
-    const ids: string[] = getIds(this.dataCurrent);
-
-    const observables = ids.map((id) =>
-      this.apiService.getVideoWithDetails(id).pipe(
-        map((data) => ({
-          item: data.items[0],
-        })),
-      ));
-
-    return forkJoin(observables).subscribe((results) => {
-      results.forEach(({ item }) => {
-        this.store.dispatch(dataUpdate({ videoCard: item }));
-      });
-    });
-  }
-
   private updateDirection(sortType: SortType) {
     if (this.sortTypeCurrent !== sortType) {
       this.store.dispatch(sortDirectionAsc());
@@ -113,10 +94,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.store.dispatch(sortTypeChange({ sortType }));
         break;
       case SortType.CountOfViews:
-        this.checkStatistics()?.add(() => {
-          this.updateDirection(sortType);
-          this.store.dispatch(sortTypeChange({ sortType }));
-        });
+        this.updateDirection(sortType);
+        this.store.dispatch(sortTypeChange({ sortType }));
         break;
       case SortType.ByWordOrSentance:
         this.store.dispatch(sortInputChange({ input: this.sortInput }));

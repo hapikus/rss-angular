@@ -14,11 +14,8 @@ import { CardsComponent } from '@shared/components/cards/cards.component';
 import { selectCustomCards } from 'src/app/redux/selectors/custom-card.selector';
 import { selectPageTokens } from 'src/app/redux/selectors/page-token.selector';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { ApiService } from '@services/api/api.service';
 import { selectSearchInput } from 'src/app/redux/selectors/search-input.selector';
-import { SearchResponse } from '@models/search.model';
-import { dataFetch, dataUpdate } from 'src/app/redux/actions/data.actions';
-import { addPageToken } from 'src/app/redux/actions/page-token.actions';
+import { dataFetchNext, dataFetchPrev } from 'src/app/redux/actions/data.actions';
 import { selectPageNumber } from 'src/app/redux/selectors/page-number.selector';
 import { decreasePageNumber, increasePageNumber } from 'src/app/redux/actions/page-number.actions';
 
@@ -119,51 +116,17 @@ export class MainComponent implements OnInit, OnDestroy {
     switch (pageTokenKey) {
       case PageTokenKey.Next:
         this.store.dispatch(increasePageNumber());
+        this.store.dispatch(dataFetchNext());
         break;
       default:
         this.store.dispatch(decreasePageNumber());
+        this.store.dispatch(dataFetchPrev());
         break;
     }
-    this.apiService
-      .getVideos(this.searchInputCurrent, '8', this.pageTokensCurrent[pageTokenKey])
-      .subscribe((res: SearchResponse) => {
-        if (res) {
-          this.store.dispatch(dataFetch({ videoCards: res.items }));
-        }
-
-        res.items.forEach((video) => {
-          this.apiService
-            .getVideoWithDetails(video.id.videoId)
-            .subscribe((detailsRes: SearchResponse) => {
-              if (detailsRes && detailsRes.items.length > 0) {
-                const videoDetail = detailsRes.items[0];
-                this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
-              }
-            });
-        });
-
-        if (res.nextPageToken) {
-          this.store.dispatch(
-            addPageToken({
-              pageTokenKey: PageTokenKey.Next,
-              token: res.nextPageToken,
-            }),
-          );
-        }
-        if (res.prevPageToken) {
-          this.store.dispatch(
-            addPageToken({
-              pageTokenKey: PageTokenKey.Prev,
-              token: res.prevPageToken,
-            }),
-          );
-        }
-      });
   }
 
   constructor(
     private itemsService: ItemsService,
     private store: Store,
-    private apiService: ApiService,
   ) {}
 }

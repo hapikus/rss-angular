@@ -1,19 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
-import { dataFetch, dataUpdate } from '../actions/data.actions';
+import { dataFetchSuccess, dataUpdateSuccess } from '../actions/data.actions';
 import { initialStore } from '../state';
 import { AppStore } from '../state.model';
 
 export const dataReducer = createReducer(
   initialStore,
   on(
-    dataFetch,
+    dataFetchSuccess,
     (store, { videoCards }): AppStore => ({
       ...store,
       data: [...videoCards],
     }),
   ),
   on(
-    dataUpdate,
+    dataUpdateSuccess,
     (store, { videoCard }): AppStore => ({
       ...store,
       data: [

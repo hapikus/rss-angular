@@ -8,16 +8,14 @@ import { FormGroup, FormControl, Validators, NonNullableFormBuilder, ReactiveFor
 import { Router, RouterLink } from '@angular/router';
 import { filter, debounceTime, Subscription } from 'rxjs';
 import { ApiService } from '@services/api/api.service';
-import { SearchResponse } from '@models/search.model';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Store } from '@ngrx/store';
 import { searchInputChange } from 'src/app/redux/actions/search-input.actions';
 import { selectSearchInput } from 'src/app/redux/selectors/search-input.selector';
 import { CommonModule } from '@angular/common';
 import { selectPage } from 'src/app/redux/selectors/page.selector';
-import { Page, PageTokenKey } from 'src/app/redux/state.model';
-import { dataFetch, dataUpdate } from 'src/app/redux/actions/data.actions';
-import { addPageToken } from 'src/app/redux/actions/page-token.actions';
+import { Page } from 'src/app/redux/state.model';
+import { dataFetch } from 'src/app/redux/actions/data.actions';
 
 @Component({
   selector: 'app-search',
@@ -76,49 +74,15 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  private setStoreData(searchInput: string): void {
-    this.apiService
-      .getVideos(searchInput, this.maxResult)
-      .subscribe((res: SearchResponse) => {
-        if (res) {
-          this.store.dispatch(dataFetch({ videoCards: res.items }));
-        }
-
-        res.items.forEach((video) => {
-          this.apiService
-            .getVideoWithDetails(video.id.videoId)
-            .subscribe((detailsRes: SearchResponse) => {
-              if (detailsRes && detailsRes.items.length > 0) {
-                const videoDetail = detailsRes.items[0];
-                this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
-              }
-            });
-        });
-
-        if (res.nextPageToken) {
-          this.store.dispatch(
-            addPageToken({
-              pageTokenKey: PageTokenKey.Next,
-              token: res.nextPageToken,
-            }),
-          );
-        }
-        if (res.prevPageToken) {
-          this.store.dispatch(
-            addPageToken({
-              pageTokenKey: PageTokenKey.Prev,
-              token: res.prevPageToken,
-            }),
-          );
-        }
-      });
+  private setStoreData(): void {
+    this.store.dispatch(dataFetch());
   }
 
   public search() {
     const searchInput = this.searchForm.value.search ?? '';
     this.setStoreInputSearch(searchInput);
     if (searchInput) {
-      this.setStoreData(searchInput);
+      this.setStoreData();
     }
   }
 
