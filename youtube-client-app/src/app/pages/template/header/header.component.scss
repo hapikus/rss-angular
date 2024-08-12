@@ -23,6 +23,12 @@
   }
 }
 
+.middle {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
 .type {
   cursor: pointer;
   color: #2F80ED;    

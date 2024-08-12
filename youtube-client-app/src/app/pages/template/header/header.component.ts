@@ -13,6 +13,7 @@ import { selectFavoriteCount } from 'src/app/redux/selectors/favorites.selector'
 import { SettingsComponent } from './sub-components/settings/settings.component';
 import { LoginAreaComponent } from './sub-components/login-area/login-area.component';
 import { SearchComponent } from './sub-components/search/search.component';
+import { SettingsButtonComponent } from './sub-components/settings-button/settings-button.component';
 
 @Component({
   selector: 'app-header',
@@ -26,6 +27,7 @@ import { SearchComponent } from './sub-components/search/search.component';
     LoginAreaComponent,
     SearchComponent,
     NzBadgeModule,
+    SettingsButtonComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

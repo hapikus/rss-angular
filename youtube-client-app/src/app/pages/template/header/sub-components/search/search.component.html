@@ -12,14 +12,4 @@
       [attr.disabled]="(page$ | async) !== pageEnum.Main || null"
     />
   </form>
-
-  <button 
-    nz-button nzType="primary" 
-    nzSize="large" 
-    class="setting-toggle-button" 
-    (click)="toggleIsSettingShow()"
-    [disabled]="(page$ | async) !== pageEnum.Main"
-  >
-    <span nz-icon nzType="setting" nzTheme="twotone"></span>
-  </button>
 </div>

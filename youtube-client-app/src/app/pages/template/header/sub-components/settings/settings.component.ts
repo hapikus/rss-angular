@@ -79,7 +79,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     const ids: string[] = getIds(this.dataCurrent);
 
     const observables = ids.map((id) =>
-      this.apiService.getVideo(id).pipe(
+      this.apiService.getVideoWithDetails(id).pipe(
         map((data) => ({
           item: data.items[0],
         })),

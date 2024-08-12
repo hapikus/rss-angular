@@ -132,12 +132,14 @@ export class MainComponent implements OnInit, OnDestroy {
         }
 
         res.items.forEach((video) => {
-          this.apiService.getVideo(video.id.videoId).subscribe((detailsRes: SearchResponse) => {
-            if (detailsRes && detailsRes.items.length > 0) {
-              const videoDetail = detailsRes.items[0];
-              this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
-            }
-          });
+          this.apiService
+            .getVideoWithDetails(video.id.videoId)
+            .subscribe((detailsRes: SearchResponse) => {
+              if (detailsRes && detailsRes.items.length > 0) {
+                const videoDetail = detailsRes.items[0];
+                this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
+              }
+            });
         });
 
         if (res.nextPageToken) {

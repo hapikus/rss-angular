@@ -23,18 +23,18 @@ export class ApiService {
     params = params.set(Params.Q, q);
 
     return this.http.get<SearchResponse>(
-      `/${Endpoints.Search}`,
+      Endpoints.Search,
       { params },
     );
   }
 
-  public getVideo(id: string): Observable<SearchResponse> {
+  public getVideoWithDetails(id: string): Observable<SearchResponse> {
     let params = new HttpParams();
     params = params.set(Params.Part, ParamsStatistics.Part);
     params = params.set('id', id);
 
     return this.http.get<SearchResponse>(
-      `/${Endpoints.Videos}`,
+      Endpoints.Videos,
       { params },
     );
   }

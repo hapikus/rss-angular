@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -38,7 +38,6 @@ import { addPageToken } from 'src/app/redux/actions/page-token.actions';
   styleUrl: './search.component.scss',
 })
 export class SearchComponent implements OnInit {
-  @Output() isSettingShowEmit = new EventEmitter<boolean>();
   public page$ = this.store.select(selectPage);
   public pageEnum = Page;
 
@@ -58,46 +57,42 @@ export class SearchComponent implements OnInit {
 
   public ngOnInit(): void {
     this.searchForm.controls.search.valueChanges
-      .pipe(filter((val) => val.length >= 3))
-      .pipe(debounceTime(this.DEBOUNCE_TIME))
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        filter((val) => val.length >= 3),
+      )
       .subscribe(() => this.search());
     this.searchInputSubs = this.searchInput$.subscribe((input) => {
       this.searchInputCurrent = input;
     });
 }
 
-  public toggleIsSettingShow(): void {
-    this.isSettingShow = !this.isSettingShow;
-    this.isSettingShowEmit.emit(this.isSettingShow);
-  }
-
-  public setStoreInputSearch(): void {
+  public setStoreInputSearch(searchInput: string): void {
     this.store.dispatch(
-      searchInputChange({ input: this.searchForm.value.search ?? '' }),
+      searchInputChange({ input: searchInput }),
     );
-    if (this.searchForm.value.search) {
+    if (searchInput) {
       this.router.navigate(['']);
     }
   }
 
-  private setStoreData(): void {
-    if (!this.searchForm.value.search) {
-      return;
-    }
+  private setStoreData(searchInput: string): void {
     this.apiService
-      .getVideos(this.searchInputCurrent, this.maxResult)
+      .getVideos(searchInput, this.maxResult)
       .subscribe((res: SearchResponse) => {
         if (res) {
           this.store.dispatch(dataFetch({ videoCards: res.items }));
         }
 
         res.items.forEach((video) => {
-          this.apiService.getVideo(video.id.videoId).subscribe((detailsRes: SearchResponse) => {
-            if (detailsRes && detailsRes.items.length > 0) {
-              const videoDetail = detailsRes.items[0];
-              this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
-            }
-          });
+          this.apiService
+            .getVideoWithDetails(video.id.videoId)
+            .subscribe((detailsRes: SearchResponse) => {
+              if (detailsRes && detailsRes.items.length > 0) {
+                const videoDetail = detailsRes.items[0];
+                this.store.dispatch(dataUpdate({ videoCard: videoDetail }));
+              }
+            });
         });
 
         if (res.nextPageToken) {
@@ -120,8 +115,11 @@ export class SearchComponent implements OnInit {
   }
 
   public search() {
-    this.setStoreInputSearch();
-    this.setStoreData();
+    const searchInput = this.searchForm.value.search ?? '';
+    this.setStoreInputSearch(searchInput);
+    if (searchInput) {
+      this.setStoreData(searchInput);
+    }
   }
 
   constructor(

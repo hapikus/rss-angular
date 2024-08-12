@@ -17,7 +17,10 @@
       </div>
     }
 
-    <app-search (isSettingShowEmit)="isSettingShowEmit($event)" />
+    <div class="middle">
+      <app-search />
+      <app-settings-button (isSettingShowEmit)="isSettingShowEmit($event)" />
+    </div>
     <app-login-area />
   </div>
 

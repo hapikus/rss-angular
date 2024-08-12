@@ -13,6 +13,8 @@ import { Page } from 'src/app/redux/state.model';
 import { addCustomCard } from 'src/app/redux/actions/custom-card.actions';
 import { descriptionValidator, previewImageValidator, titleValidator, videoValidator } from './helpers';
 
+const MAX_TAGS = 5;
+
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -30,8 +32,10 @@ import { descriptionValidator, previewImageValidator, titleValidator, videoValid
   styleUrl: './admin.component.scss',
 })
 export class AdminComponent implements OnInit {
-  public MAX_TAGS = 5;
+  public maxTags = MAX_TAGS;
   public formArray = new FormArray<FormControl<string | null>>([]);
+
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   public createCardForm = this.fb.group({
     title: ['', [Validators.required, titleValidator()]],
@@ -81,6 +85,4 @@ export class AdminComponent implements OnInit {
     this.store.dispatch(addCustomCard({ customCard }));
     this.createCardForm.reset();
   }
-
-  constructor(private fb: FormBuilder, private store: Store) {}
 }
