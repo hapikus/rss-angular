@@ -1,5 +1,5 @@
 <app-cards 
-  [items]="items"
+  [videoCards]="items"
   [customCards]="(pageNumber$ | async) === 1 ? (customCards$ | async) ?? [] : []"
 />
 

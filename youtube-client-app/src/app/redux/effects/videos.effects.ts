@@ -12,6 +12,7 @@ import { selectPageTokenByType } from '../selectors/page-token.selector';
 import { PageTokenKey } from '../state.model';
 import { addPageToken } from '../actions/page-token.actions';
 import { videosFetchSuccess, videoWithDetailsError, videoWithDetailsSuccess } from '../actions/videos.actions';
+import { resetPageNumber } from '../actions/page-number.actions';
 
 enum DataActions {
   VideosFetch = '[Videos] Fetch',
@@ -54,6 +55,10 @@ export class DataEffects {
         return this.apiService.getVideos(input, '8', token).pipe(
           mergeMap((res: SearchResponse) => {
             const actions = [];
+
+            if (!token) {
+              actions.push(resetPageNumber());
+            }
 
             actions.push(videosFetchSuccess({ videoCards: res.items }));
 

@@ -1,8 +1,18 @@
 import { Component, Input } from '@angular/core';
-import { VideoCard } from '@models/video-card.model';
+import { Statistics, VideoCard } from '@models/video-card.model';
 import { CustomCard, FavoriteCard } from 'src/app/redux/state.model';
 import { VideoCardComponent } from './video-card/video-card.component';
 import { CardType } from './types';
+
+export interface Card {
+  title: string,
+  statistics?: Statistics,
+  previewUrl: string,
+  description: string,
+  publishDate: Date,
+  id: string,
+  cardType: CardType,
+}
 
 @Component({
   selector: 'app-cards',
@@ -12,9 +22,46 @@ import { CardType } from './types';
   styleUrl: './cards.component.scss',
 })
 export class CardsComponent {
-  @Input() public items?: VideoCard[] = [];
+  @Input() public videoCards?: VideoCard[] = [];
   @Input() public favoriteCards?: FavoriteCard[];
   @Input() public customCards?: CustomCard[] = [];
 
   public cardTypeEnum = CardType;
+
+  public getItems(): Card[] {
+    const cards: Card[] = [];
+    (this.videoCards ?? []).map((videoCard) => (
+      cards.push({
+        title: videoCard.snippet.title,
+        statistics: videoCard.statistics,
+        previewUrl: videoCard.snippet.thumbnails['medium'].url,
+        description: videoCard.snippet.description,
+        publishDate: videoCard.snippet.publishedAt,
+        id: videoCard.id.videoId,
+        cardType: CardType.YouTube,
+      })
+    ));
+    (this.favoriteCards ?? []).map((favoriteCard) => (
+      cards.push({
+        title: favoriteCard.title,
+        statistics: favoriteCard.statistics,
+        previewUrl: favoriteCard.previewImage,
+        description: favoriteCard.description,
+        publishDate: favoriteCard.createDate,
+        id: favoriteCard.id,
+        cardType: CardType.FavoriteCard,
+      })
+    ));
+    (this.customCards ?? []).map((customCards, index) => (
+      cards.push({
+        title: customCards.title,
+        previewUrl: customCards.previewImage,
+        description: customCards.description,
+        publishDate: customCards.createDate,
+        id: `${index}`,
+        cardType: CardType.CustomCard,
+      })
+    ));
+    return cards;
+  }
 }
