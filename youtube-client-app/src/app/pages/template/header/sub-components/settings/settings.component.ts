@@ -6,7 +6,6 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '@services/api/api.service';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { sortTypeChange } from 'src/app/redux/actions/sort-type.actions';
@@ -14,8 +13,6 @@ import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
 import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
 import { sortDirectionAsc, sortDirectionDesc } from 'src/app/redux/actions/sort-direction.actions';
 import { SortType, SortDirection } from 'src/app/redux/state.model';
-import { selectVideos } from 'src/app/redux/selectors/videos.selector';
-import { VideoCard } from '@models/video-card.model';
 import { sortInputChange } from 'src/app/redux/actions/sort-input.actions';
 
 @Component({
@@ -34,10 +31,6 @@ import { sortInputChange } from 'src/app/redux/actions/sort-input.actions';
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent implements OnInit, OnDestroy {
-  public dataSubs?: Subscription;
-  public data$ = this.store.select(selectVideos);
-  public dataCurrent: VideoCard[] = [];
-
   public sortTypeSubs?: Subscription;
   public sortType$ = this.store.select(selectSortType);
   public sortTypeCurrent: SortType = SortType.Date;
@@ -56,9 +49,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ];
 
   public ngOnInit(): void {
-    this.dataSubs = this.data$.subscribe((data) => {
-      this.dataCurrent = data;
-    });
     this.sortTypeSubs = this.sortType$.subscribe((type) => {
       this.sortTypeCurrent = type;
     });
@@ -68,7 +58,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.dataSubs?.unsubscribe();
     this.sortTypeSubs?.unsubscribe();
     this.sortDirectionSubs?.unsubscribe();
   }
@@ -107,5 +96,5 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(private store: Store) {}
 }

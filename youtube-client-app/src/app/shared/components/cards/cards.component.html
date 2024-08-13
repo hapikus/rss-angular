@@ -1,5 +1,5 @@
 <div class="items">
-  @for (item of getItems(); track $index) {
+  @for (item of items; track $index) {
     <div [ngClass]="{
       'youtube': item.cardType === cardTypeEnum.YouTube,
       'favorite': item.cardType === cardTypeEnum.FavoriteCard,

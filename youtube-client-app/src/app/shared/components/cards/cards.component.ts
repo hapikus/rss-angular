@@ -19,7 +19,7 @@ export class CardsComponent {
 
   public cardTypeEnum = CardType;
 
-  public getItems(): Card[] {
+  public get items(): Card[] {
     const cards: Card[] = [];
     (this.videoCards ?? []).map((videoCard) => (
       cards.push({
