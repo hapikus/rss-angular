@@ -2,10 +2,12 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CardType } from '@shared/components/cards/types';
 import { previewImg } from '@shared/utilities/preview-img';
 import { AppStore } from '../state.model';
+import { selectFavorites } from './favorites.selector';
+import { selectCustomCards } from './custom-card.selector';
 
 export const selectVideosFeature = createFeatureSelector<AppStore>('videos');
 
-export const selectVideo = createSelector(
+export const selectVideos = createSelector(
   selectVideosFeature,
   (state: AppStore) => state.videos,
 );
@@ -16,10 +18,12 @@ export const selectVideoById = (videoId: string) => createSelector(
 );
 
 export const selectItemForDetails = (videoId: string) => createSelector(
-  selectVideosFeature,
-  (state: AppStore) => {
+  selectVideos,
+  selectFavorites,
+  selectCustomCards,
+  (stateVideos, stateFavorites, stateCustom) => {
     if (Number.isFinite(+videoId)) {
-      const item = state.customCards[+videoId];
+      const item = stateCustom[+videoId];
       return {
         title: item.title,
         previewUrl: item.previewImage,
@@ -30,7 +34,7 @@ export const selectItemForDetails = (videoId: string) => createSelector(
       };
     }
 
-    const filtredVideo = state.videos.filter((videoCard) => videoCard.id.videoId === videoId);
+    const filtredVideo = stateVideos.filter((videoCard) => videoCard.id.videoId === videoId);
     if (filtredVideo.length) {
       return {
         title: filtredVideo[0].snippet.title,
@@ -43,7 +47,7 @@ export const selectItemForDetails = (videoId: string) => createSelector(
       };
     }
 
-    const filtredFavorites = state.favorites.filter(
+    const filtredFavorites = stateFavorites.filter(
       (favoriteVideo) => favoriteVideo.id === videoId,
     );
     if (filtredFavorites.length) {

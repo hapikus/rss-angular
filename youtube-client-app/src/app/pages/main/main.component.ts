@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
 import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
-import { selectVideo } from 'src/app/redux/selectors/videos.selector';
+import { selectVideos } from 'src/app/redux/selectors/videos.selector';
 import { CustomCard, Page, PageTokenKey, PageTokens, SortDirection, SortType } from 'src/app/redux/state.model';
 import { selectSortInput } from 'src/app/redux/selectors/sort-input.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
@@ -32,7 +32,7 @@ import { videosFetchNext, videosFetchPrev } from 'src/app/redux/actions/videos.a
 })
 export class MainComponent implements OnInit, OnDestroy {
   public dataSubs?: Subscription;
-  public data$ = this.store.select(selectVideo);
+  public data$ = this.store.select(selectVideos);
   public dataCurrent: VideoCard[] = [];
 
   public searchInputSubs?: Subscription;
