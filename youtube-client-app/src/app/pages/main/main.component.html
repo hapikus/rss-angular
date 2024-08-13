@@ -1,14 +1,14 @@
 <app-cards 
-  [videoCards]="items"
+  [videoCards]="(items$ | async) || []"
   [customCards]="(pageNumber$ | async) === 1 ? (customCards$ | async) ?? [] : []"
 />
 
-@if (!!dataCurrent.length) {
+@if (!!((items$ | async) || []).length) {
   <div class="pagination">
     <button 
       nz-button 
       nzType="primary"
-      [disabled]="!pageTokensCurrent[pageTokenKeyEnum.Prev] || (pageNumber$ | async) === 1"
+      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Prev] || (pageNumber$ | async) === 1"
       (click)="pageLoad(pageTokenKeyEnum.Prev)"
     >
       Prev
@@ -17,7 +17,7 @@
     <button 
       nz-button 
       nzType="primary"
-      [disabled]="!pageTokensCurrent[pageTokenKeyEnum.Next]"
+      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Next]"
       (click)="pageLoad(pageTokenKeyEnum.Next)"
     >
       Next

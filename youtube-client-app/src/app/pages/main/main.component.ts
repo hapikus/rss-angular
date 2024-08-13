@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { VideoCard } from '@models/video-card.model';
 import { ItemsService } from '@services/items/items.service';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
 import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
 import { selectVideos } from 'src/app/redux/selectors/videos.selector';
-import { CustomCard, Page, PageTokenKey, PageTokens, SortDirection, SortType } from 'src/app/redux/state.model';
+import { Page, PageTokenKey } from 'src/app/redux/state.model';
 import { selectSortInput } from 'src/app/redux/selectors/sort-input.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { CommonModule } from '@angular/common';
@@ -30,86 +30,38 @@ import { videosFetchNext, videosFetchPrev } from 'src/app/redux/actions/videos.a
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
-export class MainComponent implements OnInit, OnDestroy {
-  public dataSubs?: Subscription;
+export class MainComponent implements OnInit {
   public data$ = this.store.select(selectVideos);
-  public dataCurrent: VideoCard[] = [];
-
-  public searchInputSubs?: Subscription;
-  public searchInput$ = this.store.select(selectSearchInput);
-  public searchInputCurrent = '';
-
-  public customCardsSubs?: Subscription;
   public customCards$ = this.store.select(selectCustomCards);
-  public customCardsCurrent: CustomCard[] = [];
-
-  public sortTypeSubs?: Subscription;
   public sortType$ = this.store.select(selectSortType);
-  public sortTypeCurrent: SortType = SortType.Date;
-
-  public sortDirectionSubs?: Subscription;
   public sortDirection$ = this.store.select(selectSortDirection);
-  public sortDirectionCurrent = SortDirection.ASC;
-
-  public sortInputSubs?: Subscription;
   public sortInput$ = this.store.select(selectSortInput);
-  public sortInputCurrent = '';
-
-  public pageTokensSubs?: Subscription;
   public pageTokens$ = this.store.select(selectPageTokens);
-  public pageTokensCurrent = {} as PageTokens;
+  public pageNumber$ = this.store.select(selectPageNumber);
+  public searchInput$ = this.store.select(selectSearchInput);
+
   public pageTokenKeyEnum = PageTokenKey;
 
-  public pageNumberSubs?: Subscription;
-  public pageNumber$ = this.store.select(selectPageNumber);
-  public pageNumberCurrent = 1;
-
-  public get items(): VideoCard[] {
-    const sortedItems = this.itemsService.getSortedItems({
-      cards: this.dataCurrent,
-      sortType: this.sortTypeCurrent,
-      sortDirection: this.sortDirectionCurrent,
-      sortInput: this.sortInputCurrent,
-    });
-    return sortedItems;
+  public get items$(): Observable<VideoCard[]> {
+    return combineLatest([
+      this.data$,
+      this.sortType$,
+      this.sortDirection$,
+      this.sortInput$,
+    ]).pipe(
+      map(([data, sortType, sortDirection, sortInput]) => (
+        this.itemsService.getSortedItems({
+          cards: data,
+          sortType,
+          sortDirection,
+          sortInput,
+        })
+      )),
+    );
   }
 
   public ngOnInit(): void {
     this.store.dispatch(pageChange({ page: Page.Main }));
-    this.dataSubs = this.data$.subscribe((data) => {
-      this.dataCurrent = data;
-    });
-    this.sortTypeSubs = this.sortType$.subscribe((type) => {
-      this.sortTypeCurrent = type;
-    });
-    this.sortDirectionSubs = this.sortDirection$.subscribe((direction) => {
-      this.sortDirectionCurrent = direction;
-    });
-    this.sortInputSubs = this.sortInput$.subscribe((input) => {
-      this.sortInputCurrent = input;
-    });
-    this.customCardsSubs = this.customCards$.subscribe((cards) => {
-      this.customCardsCurrent = cards;
-    });
-    this.pageTokensSubs = this.pageTokens$.subscribe((tokens) => {
-      this.pageTokensCurrent = tokens;
-    });
-    this.searchInputSubs = this.searchInput$.subscribe((input) => {
-      this.searchInputCurrent = input;
-    });
-    this.pageNumberSubs = this.pageNumber$.subscribe((pageNumber) => {
-      this.pageNumberCurrent = pageNumber;
-    });
-  }
-
-  public ngOnDestroy(): void {
-    this.dataSubs?.unsubscribe();
-    this.sortTypeSubs?.unsubscribe();
-    this.sortDirectionSubs?.unsubscribe();
-    this.sortInputSubs?.unsubscribe();
-    this.customCardsSubs?.unsubscribe();
-    this.pageTokensSubs?.unsubscribe();
-    this.searchInputSubs?.unsubscribe();
   }
 
   public pageLoad(pageTokenKey: PageTokenKey): void {
