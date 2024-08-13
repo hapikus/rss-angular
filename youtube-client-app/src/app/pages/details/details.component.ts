@@ -2,22 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription, take } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { Statistics, VideoCard } from '@models/video-card.model';
+import { Card } from '@models/video-card.model';
 import { NFormatterPipe } from '@shared/components/statistics/pipes/n-formatter.pipe';
 import { StatisticsComponent } from '@shared/components/statistics/statistics.component';
-import { ApiService } from '@services/api/api.service';
 import { Store } from '@ngrx/store';
-import { selectData } from 'src/app/redux/selectors/videos.selector';
+import { selectItemForDetails } from 'src/app/redux/selectors/videos.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
-import { CustomCard, Page } from 'src/app/redux/state.model';
+import { Page } from 'src/app/redux/state.model';
 import { selectIsFavorite } from 'src/app/redux/selectors/favorites.selector';
 import { addFavorite, removeFavorite } from 'src/app/redux/actions/favorites.actions';
-import { selectCustomCard } from 'src/app/redux/selectors/custom-card.selector';
 import { CardType } from '@shared/components/cards/types';
 import { removeCustomCard } from 'src/app/redux/actions/custom-card.actions';
 import { environment } from 'src/environments/environment';
@@ -46,38 +44,26 @@ const ROWS = {
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent implements OnInit {
-  public dataSubs?: Subscription;
   public isFavoriteSubs?: Subscription;
-  public customCardSub?: Subscription;
-
-  public data$ = this.store.select(selectData);
-  public dataCurrent: VideoCard[] = [];
-
   public isFavorite$ = this.store.select(
-    selectIsFavorite(this.item?.id.videoId ?? ''),
+    selectIsFavorite(this.card?.id ?? ''),
   );
   public isFavoriteCurrent = false;
 
-  public item?: VideoCard;
-
-  public customCardCurrent?: CustomCard;
+  public cardSub?: Subscription;
+  public card?: Card | null;
 
   public isScreenSmall$: Observable<boolean> = this.breakpointObserver
     .observe(['(max-width: 1020px)'])
     .pipe(map((state) => state.matches));
 
-  public id: string = '';
-  public statistics?: Statistics = this.item?.statistics;
-
   public cardTypeEnum = CardType;
   public cardType = CardType.YouTube;
-
   public rowsConst = ROWS;
 
   constructor(
     private activateRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
-    private apiService: ApiService,
     private store: Store,
     private router: Router,
   ) {}
@@ -85,118 +71,77 @@ export class DetailsComponent implements OnInit {
   public ngOnInit(): void {
     this.store.dispatch(pageChange({ page: Page.Details }));
     const { id } = this.activateRoute.snapshot.params;
-    this.id = id;
 
-    this.dataSubs = this.data$.subscribe((data) => {
-      this.dataCurrent = data;
-    });
-
-    const item = this.dataCurrent.find(
-      (videoCard) => videoCard.id.videoId === id,
-    );
-
-    const customCard = Number.isFinite(+id)
-      ? this.store.select(selectCustomCard(+id))
-      : null;
-
-    if (!item && !customCard) {
+    if (id === undefined) {
       this.router.navigate(['/not-found']);
       return;
     }
 
-    if (item) {
-      this.cardType = CardType.YouTube;
-      this.item = item;
+    const card$: Observable<Card | null> = this.store.select(selectItemForDetails(id));
+
+    this.cardSub = card$.pipe(
+      take(1),
+    ).subscribe((card) => {
+      this.card = card;
+    });
+
+    if (
+      this.card?.cardType === CardType.YouTube ||
+      this.card?.cardType === CardType.FavoriteCard
+    ) {
+      this.cardType = this.card?.cardType;
       this.isFavorite$ = this.store.select(
-        selectIsFavorite(this.item.id.videoId),
+        selectIsFavorite(this.card?.id),
       );
       this.isFavoriteSubs = this.isFavorite$.subscribe((flag) => {
         this.isFavoriteCurrent = flag;
       });
     }
-
-    if (customCard) {
-      this.cardType = CardType.CustomCard;
-      this.customCardSub = customCard.subscribe((card) => {
-        this.customCardCurrent = card;
-      });
-    }
-
-    if (!this.item && !this.customCardCurrent) {
-      this.router.navigate(['/not-found']);
-    }
   }
 
   public get title(): string {
-    return this.item?.snippet?.title ?? this.customCardCurrent?.title ?? '';
+    return this.card?.title ?? '';
   }
 
   public get description(): string {
-    return this.item?.snippet.description ?? this.customCardCurrent?.description ?? '';
+    return this.card?.description ?? '';
   }
 
   public get publishDate(): Date {
-    return (
-      this.item?.snippet.publishedAt ??
-      this.customCardCurrent?.createDate ??
-      new Date()
-    );
+    return this.card?.publishDate ?? new Date();
   }
 
   public get previewImg(): string {
-    const result = {
-      width: 0,
-      url: '',
-    };
-
-    switch (this.cardType) {
-      case CardType.YouTube:
-        if (!this.item) {
-          return '';
-        }
-        Array.from(Object.values(this.item.snippet.thumbnails)).forEach((item) => {
-          const { width, url } = item;
-          if (+width > result.width) {
-            result.width = width;
-            result.url = url;
-          }
-        });
-        return result.url;
-      default:
-        if (!this.customCardCurrent?.previewImage) {
-          return '';
-        }
-        return this.customCardCurrent?.previewImage;
-    }
+    return this.card?.previewUrl ?? '';
   }
 
   public fallback = environment.fallbackImage;
 
   public addFavorite() {
-    if (this.item?.id.videoId) {
+    if (this.card?.id) {
       this.store.dispatch(addFavorite({
         favoriteCard:
           {
-            id: this.id,
-            title: this.title ?? '',
+            id: this.card.id,
+            title: this.card.title ?? '',
             video: '',
-            description: this.description ?? '',
-            previewImage: this.previewImg ?? '',
-            createDate: this.publishDate!,
-            statistics: this.statistics,
+            description: this.card.description ?? '',
+            previewImage: this.card.previewUrl ?? '',
+            createDate: this.card.publishDate!,
+            statistics: this.card.statistics,
           },
         }));
     }
   }
 
   public removeFavorite() {
-    if (this.item?.id.videoId) {
-      this.store.dispatch(removeFavorite({ id: this.item?.id.videoId }));
+    if (this.card?.id) {
+      this.store.dispatch(removeFavorite({ id: this.card?.id }));
     }
   }
 
   public deleteCustomCard() {
-    this.store.dispatch(removeCustomCard({ index: +(this.id ?? 0) }));
+    this.store.dispatch(removeCustomCard({ index: +(this.card?.id ?? 0) }));
     this.router.navigate(['/']);
   }
 }

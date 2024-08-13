@@ -1,3 +1,5 @@
+import { CardType } from '@shared/components/cards/types';
+
 interface Thumbnails {
   [key: string]: {
     url: string;
@@ -26,8 +28,8 @@ interface Snippet {
 }
 
 export interface Id {
-  kind: string,
-  videoId: string,
+  kind: string;
+  videoId: string;
 }
 
 export interface VideoCard {
@@ -36,4 +38,14 @@ export interface VideoCard {
   id: Id;
   snippet: Snippet;
   statistics: Statistics;
+}
+
+export interface Card {
+  title: string;
+  statistics?: Statistics;
+  previewUrl: string;
+  description: string;
+  publishDate: Date;
+  id: string;
+  cardType: CardType;
 }

@@ -1,23 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { Statistics, VideoCard } from '@models/video-card.model';
+import { Card, VideoCard } from '@models/video-card.model';
 import { CustomCard, FavoriteCard } from 'src/app/redux/state.model';
+import { CommonModule } from '@angular/common';
 import { VideoCardComponent } from './video-card/video-card.component';
 import { CardType } from './types';
-
-export interface Card {
-  title: string,
-  statistics?: Statistics,
-  previewUrl: string,
-  description: string,
-  publishDate: Date,
-  id: string,
-  cardType: CardType,
-}
 
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [VideoCardComponent],
+  imports: [VideoCardComponent, CommonModule],
   templateUrl: './cards.component.html',
   styleUrl: './cards.component.scss',
 })

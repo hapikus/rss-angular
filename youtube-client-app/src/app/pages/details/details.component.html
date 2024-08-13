@@ -52,9 +52,9 @@
         {{ description }}
       </p>
     </div>
-    @if (item && item.statistics) {
+    @if (card && card.statistics) {
       <div class="statistics">
-        <app-statistics [statistics]="item.statistics" />
+        <app-statistics [statistics]="card.statistics" />
       </div>
     }
   </div>

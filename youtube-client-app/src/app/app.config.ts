@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       sortInput: sortInputReducer,
       page: pageReducer,
       searchInput: searchInputReducer,
-      data: videosReducer,
+      videos: videosReducer,
       favorites: favoritesReducer,
       customCards: customCardsReducer,
       pageToken: pageTokenReducer,

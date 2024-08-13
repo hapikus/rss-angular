@@ -14,7 +14,7 @@ import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
 import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
 import { sortDirectionAsc, sortDirectionDesc } from 'src/app/redux/actions/sort-direction.actions';
 import { SortType, SortDirection } from 'src/app/redux/state.model';
-import { selectData } from 'src/app/redux/selectors/videos.selector';
+import { selectVideo } from 'src/app/redux/selectors/videos.selector';
 import { VideoCard } from '@models/video-card.model';
 import { sortInputChange } from 'src/app/redux/actions/sort-input.actions';
 
@@ -35,7 +35,7 @@ import { sortInputChange } from 'src/app/redux/actions/sort-input.actions';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   public dataSubs?: Subscription;
-  public data$ = this.store.select(selectData);
+  public data$ = this.store.select(selectVideo);
   public dataCurrent: VideoCard[] = [];
 
   public sortTypeSubs?: Subscription;
