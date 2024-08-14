@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { CardType } from '@shared/components/cards/types';
-import { previewImg } from '@shared/utilities/preview-img';
-import { sortMap } from '@shared/utilities/sort-items';
+import { sortMapItems } from '@shared/utilities/sort-map-items';
+import { getItemById } from '@shared/utilities/get-card-by-id';
 import { AppStore, SortDirection } from '../state.model';
 import { selectFavorites } from './favorites.selector';
 import { selectCustomCards } from './custom-card.selector';
@@ -25,49 +24,9 @@ export const selectItemForDetails = (videoId: string) => createSelector(
   selectVideos,
   selectFavorites,
   selectCustomCards,
-  (stateVideos, stateFavorites, stateCustom) => {
-    if (Number.isFinite(+videoId)) {
-      const item = stateCustom[+videoId];
-      return {
-        title: item.title,
-        previewUrl: item.previewImage,
-        description: item.description,
-        publishDate: item.createDate,
-        id: `${videoId}`,
-        cardType: CardType.CustomCard,
-      };
-    }
-
-    const filtredVideo = stateVideos.filter((videoCard) => videoCard.id === videoId);
-    if (filtredVideo.length) {
-      return {
-        title: filtredVideo[0].snippet.title,
-        statistics: filtredVideo[0].statistics,
-        previewUrl: previewImg(filtredVideo[0]),
-        description: filtredVideo[0].snippet.description,
-        publishDate: filtredVideo[0].snippet.publishedAt,
-        id: filtredVideo[0].id,
-        cardType: CardType.YouTube,
-      };
-    }
-
-    const filtredFavorites = stateFavorites.filter(
-      (favoriteVideo) => favoriteVideo.id === videoId,
-    );
-    if (filtredFavorites.length) {
-      return {
-        title: filtredFavorites[0].title,
-        statistics: filtredFavorites[0].statistics,
-        previewUrl: filtredFavorites[0].previewImage,
-        description: filtredFavorites[0].description,
-        publishDate: filtredFavorites[0].createDate,
-        id: filtredFavorites[0].id,
-        cardType: CardType.FavoriteCard,
-      };
-    }
-
-    return null;
-  },
+  (stateVideos, stateFavorites, stateCustom) => (
+    getItemById({ videoId, stateVideos, stateFavorites, stateCustom })
+  ),
 );
 
 export const selectSortedItems = createSelector(
@@ -80,7 +39,7 @@ export const selectSortedItems = createSelector(
       if (sortDirection === SortDirection.DESC) {
         [cardOne, cardTwo] = [cardTwo, cardOne];
       }
-      return sortMap[sortType](cardOne, cardTwo, sortInput);
+      return sortMapItems[sortType](cardOne, cardTwo, sortInput);
     })
   ),
 );

@@ -10,13 +10,7 @@ import { selectSearchInput } from '../selectors/search-input.selector';
 import { getActions } from './helpers';
 import { PageTokenKey } from '../state.model';
 import { selectPageTokenByType } from '../selectors/page-token.selector';
-import { PageType } from './types';
-
-enum DataActions {
-  VideosFetchFirst = '[Videos] Fetch First',
-  VideosFetchNext = '[Videos] Fetch Next',
-  VideosFetchPrev = '[Videos] Fetch Prev',
-}
+import { DataActions, PageType } from './types';
 
 @Injectable()
 export class DataEffects {

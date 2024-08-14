@@ -32,7 +32,7 @@ const bycountOccurrences = (
   return countTwo - countOne;
 };
 
-export const sortMap: Record<
+export const sortMapItems: Record<
   SortType,
   (cardOne: VideoCardWithDetails, cardTwo: VideoCardWithDetails, sortInput?: string) => number
 > = {

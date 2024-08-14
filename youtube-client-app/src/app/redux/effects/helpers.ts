@@ -3,12 +3,7 @@ import { addPageToken } from '../actions/page-token.actions';
 import { PageTokenKey } from '../state.model';
 import { decreasePageNumber, increasePageNumber, resetPageNumber } from '../actions/page-number.actions';
 import { videosFetchSuccess } from '../actions/videos.actions';
-import { PageType } from './types';
-
-interface TokenActions {
-  nextPageToken?: string;
-  prevPageToken?: string;
-}
+import { PageType, TokenActions } from './types';
 
 const tokenActions = ({
   nextPageToken,
