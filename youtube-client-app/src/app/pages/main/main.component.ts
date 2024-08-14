@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VideoCard } from '@models/video-card.model';
+import { VideoCardWithDetails } from '@models/video-card.model';
 import { ItemsService } from '@services/items/items.service';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -42,7 +42,7 @@ export class MainComponent implements OnInit {
 
   public pageTokenKeyEnum = PageTokenKey;
 
-  public get items$(): Observable<VideoCard[]> {
+  public get items$(): Observable<VideoCardWithDetails[]> {
     return combineLatest([
       this.data$,
       this.sortType$,

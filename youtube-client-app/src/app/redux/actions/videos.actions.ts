@@ -1,8 +1,12 @@
-import { VideoCard } from '@models/video-card.model';
+import { VideoCard, VideoCardWithDetails } from '@models/video-card.model';
 import { createAction, props } from '@ngrx/store';
 
 export const videosFetch = createAction(
   '[Videos] Fetch',
+);
+
+export const videosFetchFirst = createAction(
+  '[Videos] Fetch First',
 );
 
 export const videosFetchNext = createAction(
@@ -15,7 +19,7 @@ export const videosFetchPrev = createAction(
 
 export const videosFetchSuccess = createAction(
   '[Videos] Fetch Success',
-  props<{ videoCards: VideoCard[] }>(),
+  props<{ videoCards: VideoCardWithDetails[] }>(),
 );
 
 export const videosFetchError = createAction(

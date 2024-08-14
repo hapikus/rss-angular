@@ -14,7 +14,7 @@ export const selectVideos = createSelector(
 
 export const selectVideoById = (videoId: string) => createSelector(
   selectVideosFeature,
-  (state: AppStore) => state.videos.filter((item) => item.id.videoId === videoId)[0],
+  (state: AppStore) => state.videos.filter((item) => item.id === videoId)[0],
 );
 
 export const selectItemForDetails = (videoId: string) => createSelector(
@@ -34,7 +34,7 @@ export const selectItemForDetails = (videoId: string) => createSelector(
       };
     }
 
-    const filtredVideo = stateVideos.filter((videoCard) => videoCard.id.videoId === videoId);
+    const filtredVideo = stateVideos.filter((videoCard) => videoCard.id === videoId);
     if (filtredVideo.length) {
       return {
         title: filtredVideo[0].snippet.title,
@@ -42,7 +42,7 @@ export const selectItemForDetails = (videoId: string) => createSelector(
         previewUrl: previewImg(filtredVideo[0]),
         description: filtredVideo[0].snippet.description,
         publishDate: filtredVideo[0].snippet.publishedAt,
-        id: filtredVideo[0].id.videoId,
+        id: filtredVideo[0].id,
         cardType: CardType.YouTube,
       };
     }

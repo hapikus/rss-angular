@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { VideoCard } from '@models/video-card.model';
+import { VideoCard, VideoCardWithDetails } from '@models/video-card.model';
 import { SortDirection, SortType } from 'src/app/redux/state.model';
 import { sortMap } from './helpers';
 
 interface ForSorted {
-  cards: VideoCard[],
+  cards: VideoCardWithDetails[],
   sortType: SortType,
   sortDirection: SortDirection,
   sortInput: string,
@@ -13,7 +13,7 @@ interface ForSorted {
   providedIn: 'root',
 })
 export class ItemsService {
-  public getSortedItems(forSorted: ForSorted): VideoCard[] {
+  public getSortedItems(forSorted: ForSorted): VideoCardWithDetails[] {
     const { cards, sortType, sortDirection, sortInput } = forSorted;
     return cards.toSorted((cardOne, cardTwo) => {
       if (sortDirection === SortDirection.DESC) {

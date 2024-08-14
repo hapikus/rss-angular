@@ -1,4 +1,4 @@
-import { Statistics, VideoCard } from '@models/video-card.model';
+import { Statistics, VideoCardWithDetails } from '@models/video-card.model';
 
 export enum SortDirection {
   ASC = 'ASC',
@@ -49,7 +49,7 @@ export interface AppStore {
   sortType: SortType;
   sortInput: string;
   sortDirection: SortDirection;
-  videos: VideoCard[];
+  videos: VideoCardWithDetails[];
   page: Page;
   favorites: FavoriteCard[];
   customCards: CustomCard[],

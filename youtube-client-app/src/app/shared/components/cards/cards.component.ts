@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Card, VideoCard } from '@models/video-card.model';
+import { Card, VideoCardWithDetails } from '@models/video-card.model';
 import { CustomCard, FavoriteCard } from 'src/app/redux/state.model';
 import { CommonModule } from '@angular/common';
 import { VideoCardComponent } from './video-card/video-card.component';
@@ -13,7 +13,7 @@ import { CardType } from './types';
   styleUrl: './cards.component.scss',
 })
 export class CardsComponent {
-  @Input() public videoCards?: VideoCard[] = [];
+  @Input() public videoCards?: VideoCardWithDetails[] = [];
   @Input() public favoriteCards?: FavoriteCard[];
   @Input() public customCards?: CustomCard[] = [];
 
@@ -28,7 +28,7 @@ export class CardsComponent {
         previewUrl: videoCard.snippet.thumbnails['medium'].url,
         description: videoCard.snippet.description,
         publishDate: videoCard.snippet.publishedAt,
-        id: videoCard.id.videoId,
+        id: videoCard.id,
         cardType: CardType.YouTube,
       })
     ));

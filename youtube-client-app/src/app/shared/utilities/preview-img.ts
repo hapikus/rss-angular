@@ -1,6 +1,6 @@
-import { VideoCard } from '@models/video-card.model';
+import { VideoCardWithDetails } from '@models/video-card.model';
 
-export const previewImg = (videoCard: VideoCard): string => {
+export const previewImg = (videoCard: VideoCardWithDetails): string => {
   const result = {
     width: 0,
     url: '',
