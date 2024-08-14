@@ -2,32 +2,23 @@
   <button nz-button nzType="primary" class="to-main" [routerLink]="['']">
     <span nz-icon nzType="caret-left" nzTheme="outline"></span>
   </button>
-  @switch (cardType) {
-    @case (cardTypeEnum.YouTube) {
-      <button 
-      class="favorite" 
-      nz-button nzType="primary" 
-      (click)="isFavoriteCurrent ? removeFavorite() : addFavorite()"
-    >
-      <span nz-icon nzType="heart" [nzTheme]="(isFavorite$ | async) ? 'outline' : 'fill'"></span>
-    </button>
-    }
-    @case (cardTypeEnum.CustomCard) {
-      <button 
-        class="delete-custom-card" 
-        nz-button 
-        nzType="primary" 
-        nzDanger
-        (click)="deleteCustomCard()"
-      >
-        <span nz-icon nzType="delete" nzTheme="outline"></span>
-      </button>
-    }
-  }
+  <app-card-action
+    class="action"
+    [card]="{
+      id: this.card?.id ?? '',
+      title: this.card?.title ?? '',
+      description: this.card?.description ?? '',
+      previewUrl: this.previewUrl,
+      publishDate: this.publishDate,
+      statistics: this.card?.statistics,
+      cardType: this.card?.cardType ?? cardTypeEnum.YouTube,
+    }"
+    [isFavorite]="(isFavorite$ | async)"
+  />
   <div class="images">
     <img
       nz-image
-      [nzSrc]="previewImg"
+      [nzSrc]="previewUrl"
       alt=""
       [nzFallback]="fallback"
       nzDisablePreview

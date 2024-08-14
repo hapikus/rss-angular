@@ -10,6 +10,7 @@ import { selectSearchInput } from '../selectors/search-input.selector';
 import { getActions } from './helpers';
 import { PageTokenKey } from '../state.model';
 import { selectPageTokenByType } from '../selectors/page-token.selector';
+import { PageType } from './types';
 
 enum DataActions {
   VideosFetchFirst = '[Videos] Fetch First',
@@ -25,8 +26,8 @@ export class DataEffects {
     private store: Store,
   ) {}
 
-  private handleResponse = (response: PageResponse, isFirst: boolean = false) => {
-    const actions = getActions(response, isFirst);
+  private handleResponse = (response: PageResponse, pageType: PageType) => {
+    const actions = getActions(response, pageType);
     return from(actions);
   };
 
@@ -35,7 +36,7 @@ export class DataEffects {
       ofType(DataActions.VideosFetchFirst),
       switchMap(() => this.store.select(selectSearchInput)),
       switchMap((input) => this.apiService.getPage(input)),
-      mergeMap((response) => this.handleResponse(response, true)),
+      mergeMap((response) => this.handleResponse(response, PageType.First)),
     );
   });
 
@@ -47,7 +48,7 @@ export class DataEffects {
         this.store.select(selectPageTokenByType(PageTokenKey.Next)),
       ]),
       switchMap(([, input, token]) => this.apiService.getPage(input, token)),
-      mergeMap((response) => this.handleResponse(response, false)),
+      mergeMap((response) => this.handleResponse(response, PageType.Next)),
     );
   });
 
@@ -59,7 +60,7 @@ export class DataEffects {
         this.store.select(selectPageTokenByType(PageTokenKey.Prev)),
       ]),
       switchMap(([, input, token]) => this.apiService.getPage(input, token)),
-      mergeMap((response) => this.handleResponse(response, false)),
+      mergeMap((response) => this.handleResponse(response, PageType.Prev)),
     );
   });
 }

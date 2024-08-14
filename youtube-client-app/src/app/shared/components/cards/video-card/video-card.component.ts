@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { removeCustomCard } from 'src/app/redux/actions/custom-card.actions';
 import { environment } from 'src/environments/environment';
+import { CardActionComponent } from '@shared/components/card-action/card-action.component';
 import { VideoCardBorderDirective } from './directives/video-card-border.directive';
 import { CardType } from '../types';
 
@@ -34,6 +35,7 @@ import { CardType } from '../types';
     NzIconModule,
     CommonModule,
     NzImageModule,
+    CardActionComponent,
   ],
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss',
@@ -41,11 +43,11 @@ import { CardType } from '../types';
 export class VideoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public title: string = '';
   @Input() public statistics?: Statistics;
-  @Input() public previewUrl?: string;
-  @Input() public description?: string;
-  @Input() public publishDate?: Date;
+  @Input() public previewUrl?: string = '';
+  @Input() public description?: string = '';
+  @Input() public publishDate: Date = new Date();
   @Input() public id?: string;
-  @Input() public cardType?: string;
+  @Input() public cardType?: CardType;
 
   public cardTypeEnum = CardType;
 

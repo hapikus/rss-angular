@@ -15,10 +15,9 @@ import { selectItemForDetails } from 'src/app/redux/selectors/videos.selector';
 import { pageChange } from 'src/app/redux/actions/page.actions';
 import { Page } from 'src/app/redux/state.model';
 import { selectIsFavorite } from 'src/app/redux/selectors/favorites.selector';
-import { addFavorite, removeFavorite } from 'src/app/redux/actions/favorites.actions';
 import { CardType } from '@shared/components/cards/types';
-import { removeCustomCard } from 'src/app/redux/actions/custom-card.actions';
 import { environment } from 'src/environments/environment';
+import { CardActionComponent } from '@shared/components/card-action/card-action.component';
 import { DFormatterPipe } from './pipes/d-formatter.pipe';
 
 const ROWS = {
@@ -39,6 +38,7 @@ const ROWS = {
     RouterLink,
     NzButtonModule,
     NzIconModule,
+    CardActionComponent,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
@@ -89,7 +89,6 @@ export class DetailsComponent implements OnInit {
       this.card?.cardType === CardType.YouTube ||
       this.card?.cardType === CardType.FavoriteCard
     ) {
-      this.cardType = this.card?.cardType;
       this.isFavorite$ = this.store.select(
         selectIsFavorite(this.card?.id),
       );
@@ -111,37 +110,9 @@ export class DetailsComponent implements OnInit {
     return this.card?.publishDate ?? new Date();
   }
 
-  public get previewImg(): string {
+  public get previewUrl(): string {
     return this.card?.previewUrl ?? '';
   }
 
   public fallback = environment.fallbackImage;
-
-  public addFavorite() {
-    if (this.card?.id) {
-      this.store.dispatch(addFavorite({
-        favoriteCard:
-          {
-            id: this.card.id,
-            title: this.card.title ?? '',
-            video: '',
-            description: this.card.description ?? '',
-            previewImage: this.card.previewUrl ?? '',
-            createDate: this.card.publishDate!,
-            statistics: this.card.statistics,
-          },
-        }));
-    }
-  }
-
-  public removeFavorite() {
-    if (this.card?.id) {
-      this.store.dispatch(removeFavorite({ id: this.card?.id }));
-    }
-  }
-
-  public deleteCustomCard() {
-    this.store.dispatch(removeCustomCard({ index: +(this.card?.id ?? 0) }));
-    this.router.navigate(['/']);
-  }
 }

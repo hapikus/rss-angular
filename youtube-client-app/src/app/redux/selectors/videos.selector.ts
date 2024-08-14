@@ -1,9 +1,13 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CardType } from '@shared/components/cards/types';
 import { previewImg } from '@shared/utilities/preview-img';
-import { AppStore } from '../state.model';
+import { sortMap } from '@shared/utilities/sort-items';
+import { AppStore, SortDirection } from '../state.model';
 import { selectFavorites } from './favorites.selector';
 import { selectCustomCards } from './custom-card.selector';
+import { selectSortDirection } from './sort-direction.selector';
+import { selectSortType } from './sort-type.selector';
+import { selectSortInput } from './sort-input.selector';
 
 export const selectVideosFeature = createFeatureSelector<AppStore>('videos');
 
@@ -64,4 +68,19 @@ export const selectItemForDetails = (videoId: string) => createSelector(
 
     return null;
   },
+);
+
+export const selectSortedItems = createSelector(
+  selectVideos,
+  selectSortType,
+  selectSortDirection,
+  selectSortInput,
+  (cards, sortType, sortDirection, sortInput) => (
+    cards.toSorted((cardOne, cardTwo) => {
+      if (sortDirection === SortDirection.DESC) {
+        [cardOne, cardTwo] = [cardTwo, cardOne];
+      }
+      return sortMap[sortType](cardOne, cardTwo, sortInput);
+    })
+  ),
 );

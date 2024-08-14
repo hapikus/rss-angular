@@ -1,9 +1,9 @@
 <app-cards 
-  [videoCards]="(items$ | async) || []"
+  [videoCards]="(sortedItems$ | async) || []"
   [customCards]="(pageNumber$ | async) === 1 ? (customCards$ | async) ?? [] : []"
 />
 
-@if (!!((items$ | async) || []).length) {
+@if (((sortedItems$ | async) || []).length) {
   <div class="pagination">
     <button 
       nz-button 
