@@ -1,20 +1,18 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private isLogin = new BehaviorSubject<boolean>(!!localStorage?.getItem('fakeToken'));
-  public isLogin$: Observable<boolean> = this.isLogin.asObservable();
+  public isLoginSignal = signal(!!localStorage?.getItem('fakeToken'));
 
   public login(user?: string, password?: string) {
     localStorage.setItem('fakeToken', `${user}-${password}`);
-    this.isLogin.next(true);
+    this.isLoginSignal.set(true);
   }
 
   public logout() {
     localStorage.removeItem('fakeToken');
-    this.isLogin.next(false);
+    this.isLoginSignal.set(false);
   }
 }

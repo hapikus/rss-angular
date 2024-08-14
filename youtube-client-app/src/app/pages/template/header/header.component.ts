@@ -4,7 +4,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LoginService } from '@services/login/login.service';
-import { Observable } from 'rxjs';
 import { selectPage } from 'src/app/redux/selectors/page.selector';
 import { Store } from '@ngrx/store';
 import { Page } from 'src/app/redux/state.model';
@@ -37,7 +36,7 @@ export class HeaderComponent {
   public pageEnum = Page;
 
   public isSettingShow: boolean = false;
-  public isLogin$: Observable<boolean> = this.loginService.isLogin$;
+  public isLoginSignal = this.loginService.isLoginSignal;
 
   public favoritesLength$ = this.store.select(selectFavoriteCount);
   public favoritesLength = 0;

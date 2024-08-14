@@ -8,7 +8,7 @@
     <button 
       nz-button 
       nzType="primary"
-      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Prev] || (pageNumber$ | async) === 1"
+      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Prev] || (pageNumber$ | async) === 1 || isLoadingSignal()"
       (click)="pageLoad(pageTokenKeyEnum.Prev)"
     >
       Prev
@@ -17,7 +17,7 @@
     <button 
       nz-button 
       nzType="primary"
-      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Next]"
+      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Next] || isLoadingSignal()"
       (click)="pageLoad(pageTokenKeyEnum.Next)"
     >
       Next

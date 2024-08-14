@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Router } from '@angular/router';
 import { LoginService } from '@services/login/login.service';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,18 +12,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login-area.component.html',
   styleUrl: './login-area.component.scss',
 })
-export class LoginAreaComponent implements OnInit {
-  public isLogin$: Observable<boolean> = this.loginService.isLogin$;
-  public isLoginCurrent = false;
-
-  public ngOnInit(): void {
-    this.isLogin$.subscribe((flag) => {
-      this.isLoginCurrent = flag;
-    });
-  }
+export class LoginAreaComponent {
+  public isLoginSignal = this.loginService.isLoginSignal;
 
   public get loginText() {
-    if (this.isLoginCurrent) {
+    if (this.isLoginSignal()) {
       const loginName =
         localStorage?.getItem('fakeToken')?.split('-')?.[0] ?? '';
       return loginName;
