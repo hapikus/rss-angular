@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { Page } from 'src/app/redux/state.model';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { selectFavoriteCount } from 'src/app/redux/selectors/favorites.selector';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { SettingsComponent } from './sub-components/settings/settings.component';
 import { LoginAreaComponent } from './sub-components/login-area/login-area.component';
 import { SearchComponent } from './sub-components/search/search.component';
@@ -32,7 +33,7 @@ import { SettingsButtonComponent } from './sub-components/settings-button/settin
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  public page$ = this.store.select(selectPage);
+  public pageSignal = toSignal(this.store.select(selectPage));
   public pageEnum = Page;
 
   public isSettingShow: boolean = false;

@@ -24,7 +24,7 @@
     <app-login-area />
   </div>
 
-  @if (isSettingShow && !((page$ | async) !== pageEnum.Main)) {
+  @if (isSettingShow && !(pageSignal() !== pageEnum.Main)) {
      <app-settings />
   }
 </div>
