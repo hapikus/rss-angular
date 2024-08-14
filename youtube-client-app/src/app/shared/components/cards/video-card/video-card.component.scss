@@ -3,6 +3,7 @@
 }
 
 .card {
+  position: relative;
   width: 263px;
   height: 327px;
   border-radius: 8px;
@@ -10,6 +11,7 @@
   &__img {
     object-fit: contain;
     padding: 10px;
+    height: 157px;
   }
 
   &__details {
@@ -28,6 +30,13 @@
     column-gap: 3px;
     font-size: 16px;
   }
+}
+
+.action {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
 }
 
 .more-container {

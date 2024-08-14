@@ -1,4 +1,18 @@
 <div class="card" [appVideoCardBorder]="publishDate"> 
+  <app-card-action
+    class="action"
+    [card]="{
+      title,
+      statistics,
+      previewUrl: previewUrl ?? '',
+      description: description ?? '',
+      publishDate,
+      id: id ?? '',
+      cardType: cardType ?? cardTypeEnum.YouTube,
+    }"
+    [isFavorite]="(isFavorite$ | async)"
+  />
+
   <nz-card 
     nzHoverable 
     [nzCover]="coverTemplate" 
@@ -9,7 +23,14 @@
   </nz-card>
 
   <ng-template #coverTemplate>
-    <img class="card__img" alt="preview" [src]="previewUrl" />
+    <img 
+      nz-image 
+      class="card__img" 
+      alt="preview" 
+      [nzSrc]="previewUrl ?? ''" 
+      [nzFallback]="fallback"
+      nzDisablePreview
+    />
   </ng-template>
 
   <ng-template #descriptionTemplate>

@@ -5,16 +5,16 @@
   <p nz-typography>Sorting by:</p>
   <div class="types">
     @for (sortTypeFor of sortTypeButton; track $index) {
-      <label nz-radio-button [nzValue]="sortTypeFor" (click)="setDirection(sortTypeFor)">
+      <label nz-radio-button [nzValue]="sortTypeFor" (click)="setSortType(sortTypeFor)">
         {{ sortTypeFor }}
         <span 
-          *ngIf="store.sortType === sortTypeFor"
+          *ngIf="(sortType$ | async) === sortTypeFor"
           nz-icon 
-          [nzType]="store.sortDirection === sortDirectionEnum.ASC ? 'arrow-down' : 'arrow-up'" 
+          [nzType]="(sortDirection$ | async)  === sortDirectionEnum.ASC ? 'arrow-down' : 'arrow-up'" 
           nzTheme="outline"
         ></span>
       </label>
     }
-    <input nz-input placeholder="Type word or sentance" nzSize="small" [(ngModel)]="store.sortInput"/>
+    <input nz-input placeholder="Type word or sentance" nzSize="small" [(ngModel)]="sortInput"/>
   </div>
 </div>

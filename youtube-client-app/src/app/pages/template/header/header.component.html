@@ -1,23 +1,30 @@
 <div class="container">
   <div class="content">
     
-    @if (isLogin | async) {
+    @if (isLogin$ | async) {
       <div class="admin">
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/admin']">
           <span nz-icon nzType="bank" nzTheme="outline"></span>
         </button>
+        <nz-badge [nzCount]="(favoritesLength$ | async) || 0">
+          <button nz-button nzType="primary" nzSize="large" [routerLink]="['/favorites']">
+            <span nz-icon nzType="heart" nzTheme="outline"></span>
+          </button>
+        </nz-badge>
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/not-found']">
           <span nz-icon nzType="heat-map" nzTheme="outline"></span>
         </button>
       </div>
     }
 
-    <app-search (isSettingShowEmit)="isSettingShowEmit($event)" />
-
+    <div class="middle">
+      <app-search />
+      <app-settings-button (isSettingShowEmit)="isSettingShowEmit($event)" />
+    </div>
     <app-login-area />
   </div>
 
-  @if (isSettingShow && !checkPage()) {
+  @if (isSettingShow && !((page$ | async) !== pageEnum.Main)) {
      <app-settings />
   }
 </div>

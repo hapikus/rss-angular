@@ -1,0 +1,19 @@
+<button 
+  nz-button 
+  nzType="primary" 
+  nzDanger
+  (click)="clickHandle()"
+  >
+  <span 
+    *ngIf="card?.cardType === cardTypeEnum.CustomCard" 
+    nz-icon 
+    nzType="delete" 
+    nzTheme="outline"
+  ></span>
+  <span 
+    *ngIf="card?.cardType === cardTypeEnum.FavoriteCard || card?.cardType === cardTypeEnum.YouTube" 
+    nz-icon 
+    nzType="heart" 
+    [nzTheme]="(isFavorite) ? 'outline' : 'fill'"
+  ></span>
+</button>

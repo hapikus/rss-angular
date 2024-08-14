@@ -4,10 +4,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Page } from '@stores/types';
-import { store } from '@stores/store';
 import { LoginService } from '@services/login/login.service';
 import { ErrorsFormatterPipe } from '@shared/pipes/errors-formatter.pipe';
+import { Store } from '@ngrx/store';
+import { pageChange } from 'src/app/redux/actions/page.actions';
+import { Page } from 'src/app/redux/state.model';
 import { passwordValidator } from './helpers';
 import { UserNameErrorsPipe } from './pipes/username-errors.pipe';
 
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit {
   public passwordError: string = '';
 
   public ngOnInit(): void {
-    store.page = Page.Login;
+    this.store.dispatch(pageChange({ page: Page.Main }));
   }
 
   public formIsNotValid(): boolean {
@@ -61,5 +62,6 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private loginService: LoginService,
+    private store: Store,
   ) {}
 }

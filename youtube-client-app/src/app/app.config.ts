@@ -11,8 +11,23 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideRouterStore } from '@ngrx/router-store';
 import { routes } from './app.routes';
 import { keyInterceptor } from './interceptor/key-interceptor';
+
+import { sortTypeReducer } from './redux/reducers/sort-type.reducer';
+import { sortDirectionReducer } from './redux/reducers/sort-direction.reducer';
+import { searchInputReducer } from './redux/reducers/search-input.reducer';
+import { sortInputReducer } from './redux/reducers/sort-input.reducer';
+import { pageReducer } from './redux/reducers/page.reducer';
+import { videosReducer } from './redux/reducers/videos.reducer';
+import { favoritesReducer } from './redux/reducers/favorites.reducer';
+import { customCardsReducer } from './redux/reducers/custom-card.reducer';
+import { pageTokenReducer } from './redux/reducers/page-token.reducer';
+import { pageNumberReducer } from './redux/reducers/page-number.reducer';
+import { DataEffects } from './redux/effects/videos.effects';
 
 registerLocaleData(en);
 
@@ -21,10 +36,22 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideNzI18n(en_US),
-    provideHttpClient(withInterceptors(
-      [keyInterceptor],
-    )),
+    provideHttpClient(withInterceptors([keyInterceptor])),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
-  ],
+    provideStore({
+      sortType: sortTypeReducer,
+      sortDirection: sortDirectionReducer,
+      sortInput: sortInputReducer,
+      page: pageReducer,
+      searchInput: searchInputReducer,
+      videos: videosReducer,
+      favorites: favoritesReducer,
+      customCards: customCardsReducer,
+      pageToken: pageTokenReducer,
+      pageNumber: pageNumberReducer,
+    }),
+    provideEffects([DataEffects]),
+    provideRouterStore(),
+],
 };

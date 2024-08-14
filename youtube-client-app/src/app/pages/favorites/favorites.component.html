@@ -1,0 +1,17 @@
+@if (!((favoritesData$ | async) || []).length) {
+  <div class="placeholder">
+    <img
+      nz-image
+      nzDisablePreview
+      width="400px"
+      height="266px"
+      nzSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT56LiEGvtvZrXPUx2Suzglx3Xfd7E3yijPxg&s"
+      alt=""
+    />
+    <p nz-typography>
+      Collect and view your favorites videos!
+    </p>
+  </div>
+}
+
+<app-cards [favoriteCards]="(favoritesData$ | async) || []" />

@@ -1,19 +1,23 @@
-import { VideoCard } from '@models/video-card.model';
-import { SortType } from '@stores/types';
+import { VideoCardWithDetails } from '@models/video-card.model';
+import { SortType } from 'src/app/redux/state.model';
 
-const date = (cardOne: VideoCard, cardTwo: VideoCard): number => {
+const date = (cardOne: VideoCardWithDetails, cardTwo: VideoCardWithDetails): number => {
   const dateOne = new Date(cardOne.snippet.publishedAt).getTime();
   const dateTwo = new Date(cardTwo.snippet.publishedAt).getTime();
   return dateTwo - dateOne;
 };
 
-const countOfViews = (cardOne: VideoCard, cardTwo: VideoCard): number => {
-  const viewCountOne = cardOne.statistics.viewCount;
-  const viewCountTwo = cardTwo.statistics.viewCount;
+const countOfViews = (cardOne: VideoCardWithDetails, cardTwo: VideoCardWithDetails): number => {
+  const viewCountOne = cardOne?.statistics?.viewCount ?? 0;
+  const viewCountTwo = cardTwo?.statistics?.viewCount ?? 0;
   return viewCountTwo - viewCountOne;
 };
 
-const bycountOccurrences = (cardOne: VideoCard, cardTwo: VideoCard, sortInput?: string): number => {
+const bycountOccurrences = (
+  cardOne: VideoCardWithDetails,
+  cardTwo: VideoCardWithDetails,
+  sortInput?: string,
+): number => {
   if (!sortInput) {
     return 0;
   }
@@ -28,9 +32,9 @@ const bycountOccurrences = (cardOne: VideoCard, cardTwo: VideoCard, sortInput?: 
   return countTwo - countOne;
 };
 
-export const sortMap: Record<
+export const sortMapItems: Record<
   SortType,
-  (cardOne: VideoCard, cardTwo: VideoCard, sortInput?: string) => number
+  (cardOne: VideoCardWithDetails, cardTwo: VideoCardWithDetails, sortInput?: string) => number
 > = {
   [SortType.Date]: date,
   [SortType.CountOfViews]: countOfViews,

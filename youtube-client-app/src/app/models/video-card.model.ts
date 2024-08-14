@@ -1,3 +1,5 @@
+import { CardType } from '@shared/components/cards/types';
+
 interface Thumbnails {
   [key: string]: {
     url: string;
@@ -13,27 +15,57 @@ export interface Statistics {
   commentCount: number;
 }
 
+interface Localized {
+  title: string;
+  description: string;
+}
+
 interface Snippet {
   channelId: string;
   channelTitle: string;
   description: string;
   liveBroadcastContent: string;
-  publishTime: Date;
   publishedAt: Date;
   title: string;
   thumbnails: Thumbnails;
   tags: string[];
 }
 
-export interface Id {
-  kind: string,
-  videoId: string,
+interface SnippetVideo extends Snippet {
+  publishTime: Date;
 }
 
-export interface VideoCard {
+interface SnippetDetails extends Snippet {
+  localized: Localized;
+}
+
+export interface Id {
+  kind: string;
+  videoId: string;
+}
+
+export interface Card {
+  title: string;
+  statistics?: Statistics;
+  previewUrl: string;
+  description: string;
+  publishDate: Date;
+  id: string;
+  cardType: CardType;
+}
+
+export interface VideoCardBase {
   kind: string;
   etag: string;
+}
+
+export interface VideoCard extends VideoCardBase {
   id: Id;
-  snippet: Snippet;
+  snippet: SnippetVideo;
+}
+
+export interface VideoCardWithDetails extends VideoCardBase {
+  id: string,
+  snippet: SnippetDetails;
   statistics: Statistics;
 }

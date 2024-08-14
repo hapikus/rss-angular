@@ -1,12 +1,26 @@
-<div class="items">
-  @for (item of items; track item.id) {
-    <app-video-card
-      [title]="item.snippet.title"
-      [statistics]="item.statistics"
-      [previewUrl]="item.snippet.thumbnails['medium'].url"
-      [description]="item.snippet.description"
-      [publishDate]="item.snippet.publishedAt" 
-      [id]="item.id.videoId"
-    />
-  }
-</div>
+<app-cards 
+  [videoCards]="(sortedItems$ | async) || []"
+  [customCards]="(pageNumber$ | async) === 1 ? (customCards$ | async) ?? [] : []"
+/>
+
+@if (((sortedItems$ | async) || []).length) {
+  <div class="pagination">
+    <button 
+      nz-button 
+      nzType="primary"
+      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Prev] || (pageNumber$ | async) === 1"
+      (click)="pageLoad(pageTokenKeyEnum.Prev)"
+    >
+      Prev
+    </button>
+    {{ pageNumber$ | async }}
+    <button 
+      nz-button 
+      nzType="primary"
+      [disabled]="!((pageTokens$ | async) || {})[pageTokenKeyEnum.Next]"
+      (click)="pageLoad(pageTokenKeyEnum.Next)"
+    >
+      Next
+    </button>
+  </div>
+}

@@ -107,10 +107,10 @@
         </div>
       </nz-form-item>
     }
-    @if (formArray.length !== MAX_TAGS) {
+    @if (formArray.length !== maxTags) {
       <div nz-row class="add-tag-container">
         <button 
-          [disabled]="formArray.length === MAX_TAGS" 
+          [disabled]="formArray.length === maxTags" 
           nz-button 
           class="login-form-button login-form-margin" 
           [nzType]="'primary'"

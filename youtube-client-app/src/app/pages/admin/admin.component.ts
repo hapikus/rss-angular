@@ -6,10 +6,14 @@ import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } 
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
-import { Page } from '@stores/types';
-import { store } from '@stores/store';
 import { ErrorsFormatterPipe } from '@shared/pipes/errors-formatter.pipe';
+import { Store } from '@ngrx/store';
+import { pageChange } from 'src/app/redux/actions/page.actions';
+import { Page } from 'src/app/redux/state.model';
+import { addCustomCard } from 'src/app/redux/actions/custom-card.actions';
 import { descriptionValidator, previewImageValidator, titleValidator, videoValidator } from './helpers';
+
+const MAX_TAGS = 5;
 
 @Component({
   selector: 'app-admin',
@@ -28,8 +32,10 @@ import { descriptionValidator, previewImageValidator, titleValidator, videoValid
   styleUrl: './admin.component.scss',
 })
 export class AdminComponent implements OnInit {
-  public MAX_TAGS = 5;
+  public maxTags = MAX_TAGS;
   public formArray = new FormArray<FormControl<string | null>>([]);
+
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   public createCardForm = this.fb.group({
     title: ['', [Validators.required, titleValidator()]],
@@ -41,7 +47,7 @@ export class AdminComponent implements OnInit {
   });
 
   public ngOnInit(): void {
-    store.page = Page.Admin;
+    this.store.dispatch(pageChange({ page: Page.Admin }));
   }
 
   public disabledDates(date: Date) {
@@ -68,8 +74,15 @@ export class AdminComponent implements OnInit {
   }
 
   public submit() {
+    const customCard = {
+      title: this.createCardForm.get(['title'])?.value ?? '',
+      description: this.createCardForm.get(['description'])?.value ?? '',
+      previewImage: this.createCardForm.get(['previewImage'])?.value ?? '',
+      video: this.createCardForm.get(['video'])?.value ?? '',
+      createDate: this.createCardForm.get(['createDate'])?.value ?? new Date(),
+      tags: this.createCardForm.get(['tags'])?.value ?? [],
+    };
+    this.store.dispatch(addCustomCard({ customCard }));
     this.createCardForm.reset();
   }
-
-  constructor(private fb: FormBuilder) {}
 }

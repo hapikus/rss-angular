@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzImageModule } from 'ng-zorro-antd/image';
-import { Page } from '@stores/types';
-import { store } from '@stores/store';
+import { pageChange } from 'src/app/redux/actions/page.actions';
+import { Page } from 'src/app/redux/state.model';
 
 @Component({
   selector: 'app-not-found',
@@ -14,6 +15,8 @@ import { store } from '@stores/store';
 })
 export class NotFoundComponent implements OnInit {
   public ngOnInit(): void {
-    store.page = Page.NotFound;
+    this.store.dispatch(pageChange({ page: Page.NotFound }));
   }
+
+  constructor(private store: Store) {}
 }

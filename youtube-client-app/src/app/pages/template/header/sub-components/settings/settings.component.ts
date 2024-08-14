@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -6,10 +6,14 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { store } from '@stores/store';
-import { SortType, SortDirection, Store } from '@stores/types';
-import { ApiService } from '@services/api/api.service';
-import { forkJoin, map } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { sortTypeChange } from 'src/app/redux/actions/sort-type.actions';
+import { selectSortType } from 'src/app/redux/selectors/sort-type.selector';
+import { selectSortDirection } from 'src/app/redux/selectors/sort-direction.selector';
+import { sortDirectionAsc, sortDirectionDesc } from 'src/app/redux/actions/sort-direction.actions';
+import { SortType, SortDirection } from 'src/app/redux/state.model';
+import { sortInputChange } from 'src/app/redux/actions/sort-input.actions';
 
 @Component({
   selector: 'app-settings',
@@ -26,72 +30,71 @@ import { forkJoin, map } from 'rxjs';
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
-export class SettingsComponent {
-  public store: Store = store;
+export class SettingsComponent implements OnInit, OnDestroy {
+  public sortTypeSubs?: Subscription;
+  public sortType$ = this.store.select(selectSortType);
+  public sortTypeCurrent: SortType = SortType.Date;
 
+  public sortDirectionSubs?: Subscription;
+  public sortDirection$ = this.store.select(selectSortDirection);
+  public sortDirectionCurrent = SortDirection.ASC;
+
+  public sortInput: string = '';
+
+  public sortDirectionEnum = SortDirection;
   public sortTypeButton = [
     SortType.Date,
     SortType.CountOfViews,
     SortType.ByWordOrSentance,
   ];
-  public sortDirectionEnum = SortDirection;
-  public sortTypeCurrent = store.sortType;
 
-  public getIds(): string[] {
-    return Array.from(
-      this.store.data.reduce((acc, item) => {
-        if (!item.statistics) {
-          acc.add(item.id.videoId);
-        }
-        return acc;
-      }, new Set()),
-    ) as string[];
-  }
-
-  public checkStatistics() {
-    const ids: string[] = this.getIds();
-
-    const observables = ids.map((id) =>
-      this.apiService.getVideo(id).pipe(
-        map((data) => ({
-          id,
-          statistics: data.items[0].statistics,
-        })),
-      ));
-
-    return forkJoin(observables).subscribe((results) => {
-      results.forEach(({ id, statistics }) => {
-        store.data.forEach((item) => {
-          if (item.id.videoId === id) {
-            item.statistics = statistics;
-          }
-        });
-      });
+  public ngOnInit(): void {
+    this.sortTypeSubs = this.sortType$.subscribe((type) => {
+      this.sortTypeCurrent = type;
+    });
+    this.sortDirectionSubs = this.sortDirection$.subscribe((direction) => {
+      this.sortDirectionCurrent = direction;
     });
   }
 
-  private updateSortTypeAndDirection(sortType: SortType) {
+  public ngOnDestroy(): void {
+    this.sortTypeSubs?.unsubscribe();
+    this.sortDirectionSubs?.unsubscribe();
+  }
+
+  private updateDirection(sortType: SortType) {
     if (this.sortTypeCurrent !== sortType) {
-      this.sortTypeCurrent = sortType;
-      store.sortType = sortType;
-      store.sortDirection = SortDirection.ASC;
-    } else {
-      store.sortDirection =
-        store.sortDirection === SortDirection.ASC
-          ? SortDirection.DESC
-          : SortDirection.ASC;
+      this.store.dispatch(sortDirectionAsc());
+      return;
+    }
+
+    if (this.sortDirectionCurrent === SortDirection.ASC) {
+      this.store.dispatch(sortDirectionDesc());
+      return;
+    }
+
+    this.store.dispatch(sortDirectionAsc());
+  }
+
+  public setSortType(sortType: SortType): void {
+    switch (sortType) {
+      case SortType.Date:
+        this.updateDirection(sortType);
+        this.store.dispatch(sortTypeChange({ sortType }));
+        break;
+      case SortType.CountOfViews:
+        this.updateDirection(sortType);
+        this.store.dispatch(sortTypeChange({ sortType }));
+        break;
+      case SortType.ByWordOrSentance:
+        this.store.dispatch(sortInputChange({ input: this.sortInput }));
+        this.updateDirection(sortType);
+        this.store.dispatch(sortTypeChange({ sortType }));
+        break;
+      default:
+        break;
     }
   }
 
-  public setDirection(sortType: SortType): void {
-    if (sortType === SortType.CountOfViews) {
-      this.checkStatistics()?.add(() => {
-        this.updateSortTypeAndDirection(sortType);
-      });
-    } else {
-      this.updateSortTypeAndDirection(sortType);
-    }
-  }
-
-  constructor(private apiService: ApiService) {}
+  constructor(private store: Store) {}
 }

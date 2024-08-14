@@ -1,31 +1,51 @@
-<div class="container" *ngIf="item">
+<div class="container">
   <button nz-button nzType="primary" class="to-main" [routerLink]="['']">
     <span nz-icon nzType="caret-left" nzTheme="outline"></span>
   </button>
+  <app-card-action
+    class="action"
+    [card]="{
+      id: this.card?.id ?? '',
+      title: this.card?.title ?? '',
+      description: this.card?.description ?? '',
+      previewUrl: this.previewUrl,
+      publishDate: this.publishDate,
+      statistics: this.card?.statistics,
+      cardType: this.card?.cardType ?? cardTypeEnum.YouTube,
+    }"
+    [isFavorite]="(isFavorite$ | async)"
+  />
   <div class="images">
     <img
       nz-image
-      [nzSrc]="previewImg"
+      [nzSrc]="previewUrl"
       alt=""
+      [nzFallback]="fallback"
+      nzDisablePreview
     />
   </div>
   <div class="additional-info">
     <div class="header">
-      <div class="publish-date">{{ item.snippet.publishedAt | dFormatter}}</div>
-      <div class="title"><h4 nz-typography>{{ item.snippet.title }}</h4></div>
+      <div class="publish-date">
+        {{ publishDate | dFormatter }}</div>
+      <div class="title">
+        <h4 nz-typography>
+          {{ title }}
+        </h4>
+      </div>
     </div>
     <div class="description">
       <p 
         nz-typography 
         nzEllipsis 
-        [nzEllipsisRows]="(isScreenSmall | async) ? rowsConst.smallScreen : rowsConst.bigScreen"
+        [nzEllipsisRows]="(isScreenSmall$ | async) ? rowsConst.smallScreen : rowsConst.bigScreen"
       >
-        {{ item.snippet.description }}
+        {{ description }}
       </p>
     </div>
-    @if (item.statistics) {
+    @if (card && card.statistics) {
       <div class="statistics">
-        <app-statistics [statistics]="item.statistics" />
+        <app-statistics [statistics]="card.statistics" />
       </div>
     }
   </div>
