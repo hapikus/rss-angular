@@ -4,6 +4,13 @@ import { AppStore, CustomCard } from '../state.model';
 import { initialStore } from '../state';
 import { customCardsReducer } from './custom-card.reducer';
 
+const customCardOneMock = { id: 1, title: 'Test Card' } as unknown as CustomCard;
+const customCardTwoMock = { id: 2, title: 'Test Card 2' } as unknown as CustomCard;
+
+const enum ActionsMock {
+  unknownAction = 'UNKNOWN_ACTION',
+}
+
 describe('customCardsReducer', () => {
   let mockInitialState: AppStore;
 
@@ -15,7 +22,7 @@ describe('customCardsReducer', () => {
   });
 
   it('should add a custom card when addCustomCard action is dispatched', () => {
-    const customCard = { id: 1, title: 'Test Card' } as unknown as CustomCard;
+    const customCard = customCardOneMock;
     const action = addCustomCard({ customCard });
     const state = customCardsReducer(mockInitialState, action);
 
@@ -24,8 +31,8 @@ describe('customCardsReducer', () => {
   });
 
   it('should remove a custom card when removeCustomCard action is dispatched', () => {
-    const customCard1 = { id: 1, title: 'Test Card 1' } as unknown as CustomCard;
-    const customCard2 = { id: 2, title: 'Test Card 2' } as unknown as CustomCard;
+    const customCard1 = customCardOneMock;
+    const customCard2 = customCardTwoMock;
     const modifiedState: AppStore = {
       ...mockInitialState,
       customCards: [customCard1, customCard2],
@@ -39,7 +46,7 @@ describe('customCardsReducer', () => {
   });
 
   it('should return the initial state when an unknown action is dispatched', () => {
-    const action = { type: 'UNKNOWN_ACTION' } as unknown as Action;
+    const action = { type: ActionsMock.unknownAction } as unknown as Action;
     const state = customCardsReducer(mockInitialState, action);
 
     expect(state).toEqual(mockInitialState);

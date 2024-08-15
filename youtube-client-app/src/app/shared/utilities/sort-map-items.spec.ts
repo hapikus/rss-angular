@@ -2,30 +2,33 @@ import { VideoCardWithDetails } from '@models/video-card.model';
 import { SortType } from 'src/app/redux/state.model';
 import { sortMapItems } from './sort-map-items';
 
+const cardOneMock = {
+  snippet: {
+    publishedAt: '2023-01-01T12:00:00Z',
+    description: 'This is a test video description with test word.',
+  },
+  statistics: {
+    viewCount: '100',
+  },
+} as unknown as VideoCardWithDetails;
+
+const cardTwoMock = {
+  snippet: {
+    publishedAt: '2023-01-02T12:00:00Z',
+    description: 'Another test video description with another test word.',
+  },
+  statistics: {
+    viewCount: '200',
+  },
+} as unknown as VideoCardWithDetails;
+
 describe('Sort Utilities', () => {
   let cardOne: VideoCardWithDetails;
   let cardTwo: VideoCardWithDetails;
 
   beforeEach(() => {
-    cardOne = {
-      snippet: {
-        publishedAt: '2023-01-01T12:00:00Z',
-        description: 'This is a test video description with test word.',
-      },
-      statistics: {
-        viewCount: '100',
-      },
-    } as unknown as VideoCardWithDetails;
-
-    cardTwo = {
-      snippet: {
-        publishedAt: '2023-01-02T12:00:00Z',
-        description: 'Another test video description with another test word.',
-      },
-      statistics: {
-        viewCount: '200',
-      },
-    } as unknown as VideoCardWithDetails;
+    cardOne = cardOneMock;
+    cardTwo = cardTwoMock;
   });
 
   it('should sort videos by date in descending order', () => {

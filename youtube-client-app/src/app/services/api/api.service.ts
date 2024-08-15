@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { finalize, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
 import { SearchResponse, SearchResponseDetails } from '@models/search.model';
+import { StatusService } from '@services/status/status.service';
 import { Params, ParamsVideo, Endpoints, ParamsStatistics, PageResponse } from './types';
 
 const MAX_RESULT = '8';
@@ -9,9 +10,7 @@ const MAX_RESULT = '8';
   providedIn: 'root',
 })
 export class ApiService {
-  public isLoadingSignal = signal(false);
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private statusService: StatusService) {}
 
   public getVideos(q: string, maxResult?: string, pageToken?: string): Observable<SearchResponse> {
     let params = new HttpParams();
@@ -44,7 +43,7 @@ export class ApiService {
 
   public getPage(q: string, token?: string): Observable<PageResponse> {
     return this.getVideos(q, MAX_RESULT, token).pipe(
-      tap(() => this.isLoadingSignal.set(true)),
+      tap(() => this.statusService.isApiLoading.set(true)),
       switchMap((response: SearchResponse) => {
         const videoIds = response.items.map((item) => item.id.videoId);
         const { nextPageToken, prevPageToken } = response;
@@ -57,7 +56,7 @@ export class ApiService {
             prevPageToken,
           })),
           finalize(() => {
-            this.isLoadingSignal.set(false);
+            this.statusService.isApiLoading.set(false);
           }),
         );
       }),

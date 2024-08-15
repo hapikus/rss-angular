@@ -11,6 +11,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { FavoritesComponent } from './favorites.component';
 
+const favoritesMock = [{ id: '1', title: 'Favorite 1' }];
+
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
@@ -54,7 +56,7 @@ describe('FavoritesComponent', () => {
   });
 
   it('should select favorites from the store', () => {
-    const favorites = [{ id: '1', title: 'Favorite 1' }];
+    const favorites = favoritesMock;
     jest.spyOn(store, 'select').mockReturnValue(of(favorites));
 
     component.favoritesData$.subscribe((data) => {

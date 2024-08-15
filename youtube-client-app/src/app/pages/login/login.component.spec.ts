@@ -13,6 +13,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { LoginComponent } from './login.component';
 
+const enum DataMock {
+  incorrectUser = 'userName',
+  incorrectPassword = 'password',
+  correctUser = 'test@example.com',
+  correctPassword = 'validPassword123QW!',
+}
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -70,8 +77,12 @@ describe('LoginComponent', () => {
   });
 
   it('should initialize form with validators', () => {
-    expect(component.loginForm.get('userName')?.validator).toBeTruthy();
-    expect(component.loginForm.get('password')?.validator).toBeTruthy();
+    expect(
+      component.loginForm.get(DataMock.incorrectUser)?.validator,
+    ).toBeTruthy();
+    expect(
+      component.loginForm.get(DataMock.incorrectPassword)?.validator,
+    ).toBeTruthy();
   });
 
   it('should return false if form is not valid', () => {
@@ -81,17 +92,20 @@ describe('LoginComponent', () => {
   });
 
   it('should return true if form is valid', () => {
-    component.loginForm.controls.userName.setValue('test@example.com');
-    component.loginForm.controls.password.setValue('validPassword123QW!');
+    component.loginForm.controls.userName.setValue(DataMock.correctUser);
+    component.loginForm.controls.password.setValue(DataMock.correctPassword);
     expect(component.formIsNotValid()).toBe(false);
   });
 
   it('should call loginService.login and router.navigate on submitForm if form is valid', () => {
-    component.loginForm.controls.userName.setValue('test@example.com');
-    component.loginForm.controls.password.setValue('validPassword123QW!');
+    component.loginForm.controls.userName.setValue(DataMock.correctUser);
+    component.loginForm.controls.password.setValue(DataMock.correctPassword);
     component.submitForm();
 
-    expect(loginService.login).toHaveBeenCalledWith('test@example.com', 'validPassword123QW!');
+    expect(loginService.login).toHaveBeenCalledWith(
+      DataMock.correctUser,
+      DataMock.correctPassword,
+    );
     expect(router.navigate).toHaveBeenCalledWith(['']);
   });
 

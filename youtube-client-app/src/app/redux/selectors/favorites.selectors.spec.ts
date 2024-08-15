@@ -7,17 +7,19 @@ import {
 import { AppStore, FavoriteCard } from '../state.model';
 import { initialStore } from '../state';
 
+const favoritesMock = [
+  { id: '1', title: 'Video 1' },
+  { id: '2', title: 'Video 2' },
+  { id: '3', title: 'Video 3' },
+] as unknown as FavoriteCard[];
+
 describe('Favorite Selectors', () => {
   let mockInitialState: AppStore;
 
   beforeEach(() => {
     mockInitialState = {
       ...initialStore,
-      favorites: [
-        { id: '1', title: 'Video 1' } as unknown as FavoriteCard,
-        { id: '2', title: 'Video 2' } as unknown as FavoriteCard,
-        { id: '3', title: 'Video 3' } as unknown as FavoriteCard,
-      ],
+      favorites: favoritesMock,
     };
   });
 

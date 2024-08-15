@@ -2,16 +2,18 @@ import { AppStore, PageTokenKey } from '../state.model';
 import { initialStore } from '../state';
 import { selectPageTokenByType, selectPageTokenFeature, selectPageTokens } from './page-token.selector';
 
+const pageTokensMock = {
+  [PageTokenKey.Prev]: 'prevPageToken',
+  [PageTokenKey.Next]: 'nextPageToken',
+};
+
 describe('PageToken Selectors', () => {
   let mockInitialState: AppStore;
 
   beforeEach(() => {
     mockInitialState = {
       ...initialStore,
-      pageTokens: {
-        [PageTokenKey.Prev]: 'prevPageToken',
-        [PageTokenKey.Next]: 'nextPageToken',
-      },
+      pageTokens: pageTokensMock,
     };
   });
 

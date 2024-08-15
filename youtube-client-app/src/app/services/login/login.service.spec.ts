@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { LoginService } from './login.service';
 
+const enum DataMock {
+  key = 'fakeToken',
+  value = 'user-password',
+}
+
 describe('LoginService', () => {
   let service: LoginService;
 
@@ -19,21 +24,21 @@ describe('LoginService', () => {
   });
 
   it('should initialize with isLoginSignal as true when token is present', () => {
-    localStorage.setItem('fakeToken', 'user-password');
+    localStorage.setItem(DataMock.key, DataMock.value);
     const newServiceInstance = new LoginService();
     expect(newServiceInstance.isLoginSignal()).toBeTruthy();
   });
 
   it('should set isLoginSignal to true on login', () => {
     service.login('user', 'password');
-    expect(localStorage.getItem('fakeToken')).toBe('user-password');
+    expect(localStorage.getItem(DataMock.key)).toBe(DataMock.value);
     expect(service.isLoginSignal()).toBeTruthy();
   });
 
   it('should set isLoginSignal to false on logout', () => {
-    localStorage.setItem('fakeToken', 'user-password');
+    localStorage.setItem(DataMock.key, DataMock.value);
     service.logout();
-    expect(localStorage.getItem('fakeToken')).toBeNull();
+    expect(localStorage.getItem(DataMock.key)).toBeNull();
     expect(service.isLoginSignal()).toBeFalsy();
   });
 });
