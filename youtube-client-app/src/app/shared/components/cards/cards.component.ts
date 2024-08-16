@@ -2,13 +2,15 @@ import { Component, Input } from '@angular/core';
 import { Card, VideoCardWithDetails } from '@models/video-card.model';
 import { CustomCard, FavoriteCard } from 'src/app/redux/state.model';
 import { CommonModule } from '@angular/common';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { ApiService } from '@services/api/api.service';
 import { VideoCardComponent } from './video-card/video-card.component';
 import { CardType } from './types';
 
 @Component({
   selector: 'app-cards',
   standalone: true,
-  imports: [VideoCardComponent, CommonModule],
+  imports: [VideoCardComponent, CommonModule, NzSpinModule],
   templateUrl: './cards.component.html',
   styleUrl: './cards.component.scss',
 })
@@ -16,6 +18,10 @@ export class CardsComponent {
   @Input() public videoCards?: VideoCardWithDetails[] = [];
   @Input() public favoriteCards?: FavoriteCard[];
   @Input() public customCards?: CustomCard[] = [];
+
+  constructor(private apiService: ApiService) {}
+
+  public isLoadingSignal = this.apiService.isLoadingSignal;
 
   public cardTypeEnum = CardType;
 

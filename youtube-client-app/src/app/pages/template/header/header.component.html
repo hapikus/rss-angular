@@ -1,7 +1,7 @@
 <div class="container">
   <div class="content">
     
-    @if (isLogin$ | async) {
+    @if (isLoginSignal()) {
       <div class="admin">
         <button nz-button nzType="primary" nzSize="large" [routerLink]="['/admin']">
           <span nz-icon nzType="bank" nzTheme="outline"></span>
@@ -24,7 +24,7 @@
     <app-login-area />
   </div>
 
-  @if (isSettingShow && !((page$ | async) !== pageEnum.Main)) {
+  @if (isSettingShow && !(pageSignal() !== pageEnum.Main)) {
      <app-settings />
   }
 </div>

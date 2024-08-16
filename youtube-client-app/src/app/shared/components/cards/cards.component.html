@@ -5,15 +5,17 @@
       'favorite': item.cardType === cardTypeEnum.FavoriteCard,
       'custom': item.cardType === cardTypeEnum.CustomCard,
     }">
-      <app-video-card
-        [title]="item.title"
-        [previewUrl]="item.previewUrl"
-        [description]="item.description"
-        [publishDate]="item.publishDate" 
-        [id]="item.id"
-        [statistics]="item.statistics"
-        [cardType]="item.cardType"
-      />
+      <nz-spin [nzSpinning]="isLoadingSignal()">
+        <app-video-card
+          [title]="item.title"
+          [previewUrl]="item.previewUrl"
+          [description]="item.description"
+          [publishDate]="item.publishDate" 
+          [id]="item.id"
+          [statistics]="item.statistics"
+          [cardType]="item.cardType"
+        />
+      </nz-spin>
     </div>
   }
 </div>

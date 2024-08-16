@@ -4,12 +4,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LoginService } from '@services/login/login.service';
-import { Observable } from 'rxjs';
 import { selectPage } from 'src/app/redux/selectors/page.selector';
 import { Store } from '@ngrx/store';
 import { Page } from 'src/app/redux/state.model';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { selectFavoriteCount } from 'src/app/redux/selectors/favorites.selector';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { SettingsComponent } from './sub-components/settings/settings.component';
 import { LoginAreaComponent } from './sub-components/login-area/login-area.component';
 import { SearchComponent } from './sub-components/search/search.component';
@@ -33,11 +33,11 @@ import { SettingsButtonComponent } from './sub-components/settings-button/settin
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  public page$ = this.store.select(selectPage);
+  public pageSignal = toSignal(this.store.select(selectPage));
   public pageEnum = Page;
 
   public isSettingShow: boolean = false;
-  public isLogin$: Observable<boolean> = this.loginService.isLogin$;
+  public isLoginSignal = this.loginService.isLoginSignal;
 
   public favoritesLength$ = this.store.select(selectFavoriteCount);
   public favoritesLength = 0;

@@ -1,6 +1,6 @@
 <div class="login">
   <p nz-typography>{{ loginText }}</p>
   <button nz-button nzType="primary" nzSize="large" (click)="loginHandle()">
-    <span nz-icon [nzType]="(isLogin$ | async) ? 'login' : 'logout'" nzTheme="outline"></span>
+    <span nz-icon [nzType]="isLoginSignal() ? 'login' : 'logout'" nzTheme="outline"></span>
   </button>
 </div>
