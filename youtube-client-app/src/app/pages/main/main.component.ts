@@ -10,7 +10,7 @@ import { selectPageTokens } from 'src/app/redux/selectors/page-token.selector';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { selectPageNumber } from 'src/app/redux/selectors/page-number.selector';
 import { videosFetchNext, videosFetchPrev } from 'src/app/redux/actions/videos.actions';
-import { ApiService } from '@services/api/api.service';
+import { StatusService } from '@services/status/status.service';
 
 @Component({
   selector: 'app-main',
@@ -30,11 +30,11 @@ export class MainComponent implements OnInit {
   public pageTokens$ = this.store.select(selectPageTokens);
   public pageNumber$ = this.store.select(selectPageNumber);
 
-  public isLoadingSignal = this.apiService.isLoadingSignal;
+  public isApiLoading = this.statusService.isApiLoading;
 
   public pageTokenKeyEnum = PageTokenKey;
 
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(private statusService: StatusService, private store: Store) {}
 
   public ngOnInit(): void {
     this.store.dispatch(pageChange({ page: Page.Main }));

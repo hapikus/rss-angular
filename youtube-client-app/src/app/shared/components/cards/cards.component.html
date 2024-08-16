@@ -5,7 +5,7 @@
       'favorite': item.cardType === cardTypeEnum.FavoriteCard,
       'custom': item.cardType === cardTypeEnum.CustomCard,
     }">
-      <nz-spin [nzSpinning]="isLoadingSignal()">
+      <nz-spin [nzSpinning]="isApiLoading()">
         <app-video-card
           [title]="item.title"
           [previewUrl]="item.previewUrl"

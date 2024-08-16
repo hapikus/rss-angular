@@ -3,7 +3,7 @@ import { Card, VideoCardWithDetails } from '@models/video-card.model';
 import { CustomCard, FavoriteCard } from 'src/app/redux/state.model';
 import { CommonModule } from '@angular/common';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { ApiService } from '@services/api/api.service';
+import { StatusService } from '@services/status/status.service';
 import { VideoCardComponent } from './video-card/video-card.component';
 import { CardType } from './types';
 
@@ -19,9 +19,9 @@ export class CardsComponent {
   @Input() public favoriteCards?: FavoriteCard[];
   @Input() public customCards?: CustomCard[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private statusService: StatusService) {}
 
-  public isLoadingSignal = this.apiService.isLoadingSignal;
+  public isApiLoading = this.statusService.isApiLoading;
 
   public cardTypeEnum = CardType;
 
